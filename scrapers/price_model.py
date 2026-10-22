@@ -1,7 +1,18 @@
 """kNN price model over real observations (per-head group spend from venues' own sites). Never a quote."""
-import json, math, statistics as S
-W=json.load(open("web/data.json")); V={w["id"]:w for w in W}
-O=[o for o in json.load(open("data/price_observations.json")) if o["venue_id"] in V]  # EXAMPLE rules never included
+import json, math, glob, re, statistics as S
+W=json.load(open("web/data.json"))
+ids={w["id"] for w in W}
+for f in sorted(glob.glob("data/london/*.json")):  # Greater London expansion (scrapers/expand_london.py)
+    if "/site_" in f: continue
+    for w in json.load(open(f)):
+        if w["id"] not in ids: ids.add(w["id"]); W.append(w)
+V={w["id"]:w for w in W}
+O=json.load(open("data/price_observations.json"))
+for f in sorted(glob.glob("data/london/site_*.json")):
+    for r in json.load(open(f)):
+        if r.get("cap") and V.get(r["id"]): V[r["id"]]["cap"]=dict(smax=r["cap"]["standing"] or r["cap"]["seated"])
+        O+=[o for o in r["obs"] if o["kind"]=="per_head" and not re.search(r"corkage|per bottle",o["snippet"],re.I)]  # hire_fee hits were review/membership noise
+O=[o for o in O if o["venue_id"] in V]  # EXAMPLE rules never included
 def hav(a,b,c,d):
     p=math.pi/180;x=math.sin((c-a)*p/2)**2+math.cos(a*p)*math.cos(c*p)*math.sin((d-b)*p/2)**2;return 12742*math.asin(math.sqrt(x))
 SIM={("pub","bar"):0.7,("bar","pub"):0.7}
@@ -56,6 +67,6 @@ print("LOO MAE £pp",round(S.median(err),2) if err else None,"n",len(err),"obs m
 for o in [x for x in out if x["conf"]!="high"][:3]+[x for x in out if x["conf"]=="high"][:2]:
     print(V[o["venue_id"]]["name"],o["low"],o["mid"],o["high"],o["conf"],[V[i]["name"] for i in o["near"]])
 q=lambda s:"null" if s is None else (str(s) if isinstance(s,(int,float)) else "'"+str(s).replace("'","''")+"'")
-sql="insert into price_observations(venue_id,source_url,kind,amount_gbp,day_scope,capacity,observed_at,matched_confidence,snippet) values "+",".join(f"({q(o['venue_id'])},{q(o['source_url'])},{q(o['kind'])},{o['amount_gbp']},{q(o['day_scope'])},null,{q(o['observed_at'])},{o['matched_confidence']},{q(o['snippet'])})" for o in O)+";\n"
+sql="delete from price_observations;\ninsert into price_observations(venue_id,source_url,kind,amount_gbp,day_scope,capacity,observed_at,matched_confidence,snippet) values "+",".join(f"({q(o['venue_id'])},{q(o['source_url'])},{q(o['kind'])},{o['amount_gbp']},{q(o['day_scope'])},null,{q(o['observed_at'])},{o['matched_confidence']},{q(o['snippet'])})" for o in O)+";\n"
 sql+="insert into venue_features(venue_id,price_est_low,price_est_mid,price_est_high,price_est_unit,price_n_comparables,price_comparable_ids,price_method,price_confidence) values "+",".join(f"({q(o['venue_id'])},{o['low']},{o['mid']},{o['high']},'gbp_per_head',{o['n']},array[{','.join(q(i) for i in o['near'])}]::text[],{q(o['method'])},{q(o['conf'])})" for o in out)+" on conflict (venue_id) do update set price_est_low=excluded.price_est_low,price_est_mid=excluded.price_est_mid,price_est_high=excluded.price_est_high,price_est_unit=excluded.price_est_unit,price_n_comparables=excluded.price_n_comparables,price_comparable_ids=excluded.price_comparable_ids,price_method=excluded.price_method,price_confidence=excluded.price_confidence;"
 open("supabase/price_seed.sql","w").write(sql)

@@ -18563,8 +18563,8 @@
   "name": "London, Pimlico, SW1",
   "address": "*private residence",
   "postcode": null,
-  "lat": 52.3668494,
-  "lng": -0.0675309,
+  "lat": null,
+  "lng": null,
   "place_ids": [],
   "sources": [
    "meetup"
@@ -18997,7 +18997,7 @@
    }
   ],
   "event_count": 1,
-  "geo_src": "nominatim"
+  "geo_src": "rejected (private residence / ambiguous Long Lane)"
  },
  {
   "id": "v0042",
@@ -24737,8 +24737,8 @@
   "name": "Russell Square Station (Zone 1)",
   "address": "Bernard St",
   "postcode": null,
-  "lat": 55.9759907,
-  "lng": -3.1685223,
+  "lat": 51.5234766,
+  "lng": -0.1232096,
   "place_ids": [],
   "sources": [
    "meetup"
@@ -25171,7 +25171,7 @@
    }
   ],
   "event_count": 1,
-  "geo_src": "nominatim"
+  "geo_src": "nominatim (London-bounded)"
  },
  {
   "id": "v0056",
@@ -26060,8 +26060,8 @@
   "name": "Edgware Road",
   "address": "Chapel Street",
   "postcode": null,
-  "lat": 53.6468651,
-  "lng": -3.0028279,
+  "lat": 51.5201004,
+  "lng": -0.1666628,
   "place_ids": [],
   "sources": [
    "meetup"
@@ -26494,7 +26494,7 @@
    }
   ],
   "event_count": 1,
-  "geo_src": "nominatim"
+  "geo_src": "nominatim (London-bounded)"
  },
  {
   "id": "v0059",
@@ -36644,8 +36644,8 @@
   "name": "Piano Smithfield",
   "address": "14 Long Lane",
   "postcode": null,
-  "lat": 51.7249072,
-  "lng": -1.218907,
+  "lat": null,
+  "lng": null,
   "place_ids": [],
   "sources": [
    "meetup"
@@ -37078,7 +37078,7 @@
    }
   ],
   "event_count": 1,
-  "geo_src": "nominatim"
+  "geo_src": "rejected (private residence / ambiguous Long Lane)"
  },
  {
   "id": "v0083",
