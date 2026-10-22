@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import maplibregl from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 import type { Venue } from "./data"
-import { capText, priceEst } from "./data"
+import { capText, priceEst, priceMid, priceClass, PRICE_RAMP } from "./data"
 import { P } from "./palette"
 export const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 
@@ -13,11 +13,11 @@ function square(lng: number, lat: number, r = 6) {
   const dx = r / (111320 * Math.cos(lat * Math.PI / 180)), dy = r / 110540
   return [[[lng - dx, lat - dy], [lng + dx, lat - dy], [lng + dx, lat + dy], [lng - dx, lat + dy], [lng - dx, lat - dy]]]
 }
-export default function Map3D({ venues, score, center, fly, onCenter }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void }) {
+export default function Map3D({ venues, score, center, fly, onCenter, breaks, here }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null }) {
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
-    const cols = { type: "FeatureCollection", features: venues.map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: v.id, s: score(v), k: capNum(v) > 0 ? 1 : 0, h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
+    const cols = { type: "FeatureCollection", features: venues.map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: v.id, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
     return { pts, cols } as any
   }
   useEffect(() => {
@@ -34,8 +34,8 @@ export default function Map3D({ venues, score, center, fly, onCenter }: { venues
       map.addLayer({ id: "heat", type: "heatmap", source: "pts", paint: { "heatmap-weight": ["get", "s"], "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 11, 12, 16, 40], "heatmap-opacity": 0.6,
         "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(0,0,0,0)", 0.15, P.busy, 0.5, P.mid, 1, P.free] } }, lbl)
       const ramp: any[] = ["interpolate", ["linear"], ["get", "s"]]; RAMP.forEach((c, i) => ramp.push(i / (RAMP.length - 1), c))
-      map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-opacity": 0.45, "fill-extrusion-color": P.muted } })
-      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ramp as any } })
+      map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-opacity": 0.35, "fill-extrusion-color": "#A8A8A2" } })
+      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]] as any } })
       ready.current = true
       const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 8 })
       for (const id of ["cols", "cols0"]) {
@@ -49,6 +49,8 @@ export default function Map3D({ venues, score, center, fly, onCenter }: { venues
   }, [])
   useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score])
   useEffect(() => { if (fly && m.current) go(m.current, fly.lng, fly.lat, 17) }, [fly])
+  useEffect(() => { if (!here || !m.current) return; const el = document.createElement("div"); el.title = "You are here"; el.style.cssText = "width:16px;height:16px;border-radius:50%;background:#2F5BEA;border:3px solid #fff;box-shadow:0 0 0 2px #2F5BEA55"
+    const mk = new maplibregl.Marker({ element: el }).setLngLat([here[1], here[0]]).addTo(m.current); return () => { mk.remove() } }, [here])
   return <div ref={el} className="h-full w-full" data-testid="map3d" />
 }
 function go(map: maplibregl.Map, lng: number, lat: number, zoom: number) {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type L from "leaflet"
-import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, SlidersHorizontal, Info } from "lucide-react"
+import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, LocateFixed, SlidersHorizontal, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -20,6 +20,8 @@ import type { Fly } from "./Map3D"
 const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 const Map3D = lazy(() => import("./Map3D"))
 import { P } from "./palette"
+import { priceBreaks, PRICE_RAMP, TYPE_EMOJI } from "./data"
+import { DOT_SIZES } from "./MapView"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
 
 const MUSTS = [[Speaker, "PA system"], [Monitor, "Projector"], [Mic2, "Mics"], [Accessibility, "Step-free"], [GlassWater, "Bar"]] as const
@@ -75,7 +77,8 @@ function TimeBand({ hrs }: { hrs: [number, number] }) {
   )
 }
 
-function Legend({ busy, slotLabel, nEst, is3d }: { busy: boolean; slotLabel: string; nEst: number; is3d?: boolean }) {
+function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLabel: string; nEst: number; is3d?: boolean; breaks: number[] }) {
+  const lab = (i: number) => i === 0 ? `<£${breaks[0]}` : i >= breaks.length ? `£${breaks[breaks.length - 1]}+` : `£${breaks[i - 1]}–${breaks[i]}`
   return (
     <div className="space-y-3 text-sm">
       
@@ -84,9 +87,14 @@ function Legend({ busy, slotLabel, nEst, is3d }: { busy: boolean; slotLabel: str
         <div className="flex justify-between text-xs mt-1 text-muted-foreground"><span>{busy ? "Usually free" : "Usually busy"}</span><span className="font-semibold text-ink">{busy ? "Very likely busy" : "Very likely free"}</span></div>
         <p className="text-xs text-muted-foreground mt-1">Colour shows {busy ? "how busy" : "how likely free"} rooms are on {slotLabel}.</p>
       </div>
-      {is3d && <div>
-        <div className="h-3 w-full rounded-sm" style={{ background: `linear-gradient(90deg,${(busy ? [...RAMP].reverse() : RAMP).join(",")})` }} />
-        <p className="text-xs text-muted-foreground mt-1">Columns: colour = {busy ? "how busy" : "how likely free"}, height = capacity (taller = bigger room). <span className="inline-block size-2.5 align-middle rounded-sm opacity-50" style={{ background: P.muted }} /> Grey, short = capacity unknown.</p>
+      {is3d ? <div>
+        <p className="text-xs font-medium mb-1">Tower colour = est. spend per head</p>
+        <div className="grid gap-0.5 text-[11px]" style={{ gridTemplateColumns: `repeat(${breaks.length + 1}, 1fr)` }}>{[...Array(breaks.length + 1)].map((_, i) => <div key={i}><div className="h-2.5 rounded-sm" style={{ background: PRICE_RAMP[i] }} /><span className="text-muted-foreground">{lab(i)}</span></div>)}</div>
+        <p className="text-xs text-muted-foreground mt-1">Height = capacity (taller = bigger room). <span className="inline-block size-2.5 align-middle rounded-sm opacity-50 bg-[#A8A8A2]" /> Grey = price unknown. Hover a tower for how likely it is free.</p>
+      </div> : breaks.length > 0 && <div>
+        <p className="text-xs font-medium mb-1">Dot size = est. spend per head</p>
+        <div className="flex items-end gap-2 text-[11px] text-muted-foreground">{DOT_SIZES.slice(0, breaks.length + 1).map((d, i) => <div key={i} className="flex flex-col items-center gap-0.5"><span className="rounded-full border-2 border-ink bg-white" style={{ width: d * 0.7, height: d * 0.7 }} />{lab(i)}</div>)}</div>
+        <p className="text-xs text-muted-foreground mt-1">Icons show the room type: {Object.entries(TYPE_EMOJI).map(([t, e]) => `${e} ${t}`).join(", ")}. Smallest dots: price unknown.</p>
       </div>}
       <ul className="grid gap-1.5 text-xs">
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-ink ring-2 ring-white" />Room seen in Luma or Meetup listings</li>
@@ -107,6 +115,7 @@ export default function App() {
   const [busy, setBusy] = useState(false), [types, setTypes] = useState<string[]>(Object.keys(TYPES))
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
+  const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
   const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
   const c3dLive = useRef<[number, number]>([51.5245, -0.0805])
@@ -119,10 +128,22 @@ export default function App() {
   const score = useCallback((v: Venue) => { const f = freeScore(v, day, hrs); return busy ? 1 - f : f }, [day, hrs[0], hrs[1], busy])
   const counts = useMemo(() => { const c: Record<string, number> = {}; data.forEach(v => { const t = typeOf(v); c[t] = (c[t] || 0) + 1 }); return c }, [data])
   const shown = useMemo(() => data.filter(v => types.includes(typeOf(v))), [data, types])
+  const breaks = useMemo(() => priceBreaks(data), [data])
   const nEst = useMemo(() => data.filter(priceEst).length, [data])
 
-  async function search() {
-    const c = (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.5245, lng: -0.0805 }
+  function locate() {
+    if (!navigator.geolocation) { setLocMsg("Your browser can't share location. Move the map instead."); return }
+    setLocMsg("Finding you…")
+    navigator.geolocation.getCurrentPosition(p => {
+      const { latitude: la, longitude: ln } = p.coords
+      if (la < 51.28 || la > 51.70 || ln < -0.52 || ln > 0.34) { setLocMsg("You seem to be outside London, so we kept the current map area."); return }
+      setHere([la, ln]); setLocMsg("")
+      if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false })
+      search({ lat: la, lng: ln })
+    }, e => setLocMsg(e.code === 1 ? "Location permission was denied. Move the map to choose an area." : "Couldn't get your location. Move the map to choose an area."), { timeout: 8000, maximumAge: 60000 })
+  }
+  async function search(at?: { lat: number; lng: number }) {
+    const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.5245, lng: -0.0805 }
     setStatus("Searching…")
     try {
       const r = await fetch(`${SB}/rest/v1/rpc/search_venues`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" },
@@ -156,6 +177,8 @@ export default function App() {
               <div className="space-y-1.5 col-span-2"><Label>Distance from the map centre</Label>
                 <Select items={RADII.map(([value,label]) => ({ value, label }))} value={radius} onValueChange={v => setRadius(String(v))}><SelectTrigger className="w-full bg-white"><SelectValue /></SelectTrigger>
                   <SelectContent>{RADII.map(([r,l]) => <SelectItem key={r} value={r}>{l}</SelectItem>)}</SelectContent></Select></div>
+              <div className="col-span-2"><Button type="button" variant="outline" className="w-full bg-white" onClick={locate}><LocateFixed className="size-4" />Use my location</Button>
+                {locMsg && <p role="status" className="text-xs text-muted-foreground mt-1.5">{locMsg}</p>}</div>
             </div>
             <fieldset className="space-y-1.5">
               <legend className="text-sm font-medium flex items-center gap-1">Must have
@@ -165,7 +188,7 @@ export default function App() {
                 {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
               </ToggleGroup>
             </fieldset>
-            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" onClick={search}><Search className="size-4" />Find rooms for {DAYNAME[day]} {custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}</Button>
+            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" onClick={() => search()}><Search className="size-4" />Find rooms for {DAYNAME[day]} {custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}</Button>
           </section>
 
           <section aria-labelledby="res" aria-live="polite" className="space-y-2">
@@ -211,8 +234,9 @@ export default function App() {
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
-          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} /></Suspense>
-            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />}
+          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} /></Suspense>
+            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} breaks={breaks} here={here} />}
+          <button onClick={locate} aria-label="Use my location" title="Use my location" className="absolute top-16 right-4 md:top-auto md:bottom-6 md:left-[7.5rem] md:right-auto z-[1000] size-9 grid place-items-center rounded-lg border border-ink/20 bg-white shadow-md hover:bg-fog"><LocateFixed className="size-4" /></button>
           <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
             {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
           </div>
@@ -223,7 +247,7 @@ export default function App() {
             {showKey && <div id="map-key" className="w-72 max-w-full max-h-[40vh] md:max-h-none overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
               <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
                 <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-7 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10 hover:text-ink active:bg-ink/15"><X className="size-4" /></button></div>
-              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} is3d={is3d} /></div>}
+              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} is3d={is3d} breaks={breaks} /></div>}
             <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key"
               className={`h-9 px-3 inline-flex items-center gap-2 rounded-lg border text-sm font-medium shadow-md transition-colors ${showKey ? "bg-ink text-fog border-ink hover:bg-ink/90" : "bg-white text-ink border-ink/20 hover:bg-fog"}`}>
               <Layers className="size-4" />{showKey ? "Hide map key" : "Show map key"}</button>

@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react"
-import { MapContainer, TileLayer, CircleMarker, Popup, Rectangle, Tooltip as LTooltip, ZoomControl, useMap, useMapEvents } from "react-leaflet"
+import { MapContainer, TileLayer, CircleMarker, Marker, Popup, Rectangle, Tooltip as LTooltip, ZoomControl, useMap, useMapEvents } from "react-leaflet"
 import L from "./leaflet-global"
 import "leaflet.heat"
 import type { Venue } from "./data"
-import { capText, isEx, priceEst } from "./data"
+import { capText, isEx, priceEst, priceMid, priceClass, typeOf, TYPE_EMOJI } from "./data"
+export const DOT_SIZES = [22, 26, 30, 35, 40]
 import { P } from "./palette"
 
 function Heat({ points }: { points: [number,number,number][] }) {
@@ -20,7 +21,7 @@ function ZoomWatch({ onZoom, onMap }: { onZoom: (z:number)=>void; onMap: (m:L.Ma
 }
 const feeNum = (l?:string|null) => { const m = (l||"").match(/£(\d+)/); return m && /^~?£/.test(l||"") ? +m[1] : null }
 
-export default function MapView({ venues, all, score, slotLabel, onMap }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void }) {
+export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null }) {
   const [zoom, setZoom] = useState(15), [mapRef, setMapRef] = useState<L.Map | null>(null)
   const points = useMemo(() => venues.map(v => [v.lat, v.lng, score(v)] as [number,number,number]), [venues, score])
   const cells = useMemo(() => {
@@ -54,7 +55,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
         </Rectangle>
       ))}
       {zoom >= 15 && venues.filter(v => mapRef?.getBounds().pad(0.2).contains([v.lat, v.lng])).map(v => { const f = score(v), pe = priceEst(v); return (
-        <CircleMarker key={v.id} center={[v.lat, v.lng]} radius={7} pathOptions={{ color: (v.events||0) > 0 ? "#fff" : P.ink, weight: 2, fillOpacity: 1, fillColor: (v.events||0) > 0 ? P.ink : "#fff" }}>
+        <Marker key={v.id} position={[v.lat, v.lng]} icon={icon(v, breaks)}>
           <Popup>
             <div className="min-w-[220px]">
               <div className="flex justify-between items-start gap-2"><b className="text-[15px] leading-tight">{v.name}{isEx(v.name) && <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">Example data</span>}</b><span className="text-[10px] bg-slate-100 px-1 rounded">{v.type}</span></div>
@@ -65,7 +66,17 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
               <a href={v.url || "#"} target="_blank" className="text-canal text-[11px] font-bold">Open source page</a>
             </div>
           </Popup>
-        </CircleMarker>) })}
+        </Marker>) })}
+      {here && <CircleMarker center={here} radius={8} pathOptions={{ color: "#fff", weight: 3, fillColor: "#2F5BEA", fillOpacity: 1 }}><LTooltip permanent direction="top">You are here</LTooltip></CircleMarker>}
     </MapContainer>
   )
+}
+
+const iconCache = new Map<string, L.DivIcon>()
+function icon(v: Venue, br: number[]) {
+  const c = priceClass(priceMid(v), br), d = DOT_SIZES[Math.max(c, 0)] - (c < 0 ? 4 : 0), ev = (v.events || 0) > 0, t = typeOf(v)
+  const k = `${t}|${c}|${ev}`; let i = iconCache.get(k); if (i) return i
+  i = L.divIcon({ className: "", iconSize: [d, d], iconAnchor: [d / 2, d / 2], popupAnchor: [0, -d / 2],
+    html: `<div style="width:${d}px;height:${d}px;border-radius:50%;display:grid;place-items:center;font-size:${Math.round(d * 0.5)}px;line-height:1;background:${ev ? P.ink : "#fff"};border:2px solid ${ev ? "#fff" : P.ink};box-shadow:0 1px 3px #0003">${TYPE_EMOJI[t] || "📍"}</div>` })
+  iconCache.set(k, i); return i
 }

@@ -41,3 +41,15 @@ export function dominantSlot(range:[number,number]) {
   return best
 }
 export const fmtH = (h:number) => String(h % 24).padStart(2,"0") + ":00"
+
+export const priceMid = (v: any): number | null => { const p = priceEst(v); return p && p.mid != null && isFinite(+p.mid) ? +p.mid : null }
+/** quantile breaks (4 cut points -> 5 classes) over known mids */
+export function priceBreaks(vs: any[]): number[] {
+  const a = vs.map(priceMid).filter((x): x is number => x != null).sort((x, y) => x - y)
+  if (a.length < 5) return []
+  const q = [0.2, 0.4, 0.6, 0.8].map(f => Math.round(a[Math.floor(f * (a.length - 1))]))
+  return q.filter((x, i) => i === 0 || x > q[i - 1])
+}
+export const priceClass = (m: number | null, br: number[]) => m == null ? -1 : br.filter(b => m >= b).length
+export const PRICE_RAMP = ["#C9DCC4", "#8FB08A", "#4E8A80", "#4A5A8F", "#7A4A7E"]
+export const TYPE_EMOJI: Record<string, string> = { pub: "🍺", bar: "🍸", cafe: "☕", music: "🎵", community: "🏛", other: "📍" }
