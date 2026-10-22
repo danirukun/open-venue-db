@@ -76,3 +76,6 @@ curl -X POST https://bwkxqyhycuwqpuieggbt.supabase.co/rest/v1/rpc/search_venues 
 
 ## Transit data
 Stations (488 tube/DLR/Overground/Elizabeth line/tram/rail) from the TfL Unified API StopPoint endpoint (Powered by TfL Open Data; contains OS data © Crown copyright and database rights 2016, Geomni UK Map data © and database rights 2019), fetched 22 Oct 2026. The OSM Overpass fetch failed (502 / timeout). `venues.transit_score` = 100 at <=200 m to the nearest station, falling linearly to 0 at 1500 m, +10 if >=2 stations are within 800 m (capped at 100). Scripts: `scrapers/enrich/`, migrations 008–009.
+
+## Crime data
+Street-level crime counts are from data.police.uk (crimes-street, all-crime), month 2026-08. They are counted per ~1 km grid cell (0.009° lat × 0.0144° lng) for the 1,177 cells that contain venues. `venues.safety_score` = 100 × (1 − percentile rank of the cell crime count), so higher means safer. Contains public sector information licensed under the Open Government Licence v3.0 (police.uk). Script: `scrapers/enrich/crime.py`.
