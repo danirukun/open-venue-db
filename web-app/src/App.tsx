@@ -160,6 +160,10 @@ export default function App() {
   useEffect(() => { if (data.length && results === null) search() }, [data, map])
 
   const slotObj = SLOTS.find(s => s.id === slot)!
+  const allTypes = Object.keys(TYPES)
+  const nActive = (types.length !== allTypes.length ? 1 : 0) + musts.length + (budget !== "0" && budget !== "" ? 1 : 0) + (radius !== "2000" ? 1 : 0) + (hc !== "45" ? 1 : 0) + (minT ? 1 : 0) + (minS ? 1 : 0)
+  const resetFilters = () => { setTypes(allTypes); setMusts([]); setBudget("0"); setRadius("2000"); setHc("45"); setMinT(0); setMinS(0); setSortBy("match") }
+  const mini = "text-xs text-muted-foreground underline-offset-2 hover:underline hover:text-ink rounded-sm"
   return (
     <TooltipProvider>
     {enq && <Enquiry ctx={enq} onClose={() => setEnq(null)} />}
@@ -170,7 +174,7 @@ export default function App() {
           <p className="mt-2 text-sm text-muted-foreground max-w-[34ch]">Quiet London rooms for meetups, comedy and gigs. Open data, kept up to date by organisers.</p>
         </header>
         <div className="flex-1 md:overflow-y-auto px-5 md:px-6 pb-6 space-y-7">
-          <section aria-labelledby="ask" className="space-y-4 pt-5 md:pt-2">
+          <section aria-labelledby="ask" className="space-y-4 pt-5 md:pt-2" onKeyDown={e => { if (e.key === "Enter" && (e.target as HTMLElement).tagName === "INPUT") { e.preventDefault(); search() } }}>
             <h2 id="ask" className="font-heading text-xl font-semibold">What are you running?</h2>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5 col-span-2"><Label>Event type</Label>
@@ -185,14 +189,16 @@ export default function App() {
                 {locMsg && <p role="status" className="text-xs text-muted-foreground mt-1.5">{locMsg}</p>}</div>
             </div>
             <fieldset className="space-y-1.5">
-              <legend className="text-sm font-medium flex items-center gap-1">Must have
+              <legend className="text-sm font-medium flex items-center gap-1 w-full">Must have
                 <Tooltip><TooltipTrigger aria-label="Why must-haves don't filter yet" className="text-muted-foreground rounded-sm"><Info className="size-3.5" /></TooltipTrigger><TooltipContent className="max-w-60">We don't have equipment data for most rooms yet. Your choices are saved with the request but don't narrow the results.</TooltipContent></Tooltip>
+                <span className="ml-auto flex gap-3 font-normal"><button type="button" className={mini} onClick={() => setMusts(MUSTS.map(m => m[1] as string))}>Select all</button><button type="button" className={mini} onClick={() => setMusts([])}>Clear</button></span>
               </legend>
               <ToggleGroup multiple variant="outline" size="sm" spacing={2} value={musts} onValueChange={v => setMusts(v as string[])} className="flex-wrap justify-start">
                 {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
               </ToggleGroup>
             </fieldset>
-            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" onClick={() => search()}><Search className="size-4" />Find rooms for {DAYNAME[day]} {custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}</Button>
+            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search()}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${DAYNAME[day]} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
+            {nActive > 0 && <div className="flex justify-between items-center text-xs text-muted-foreground"><span>{nActive} filter{nActive > 1 ? "s" : ""} changed</span><button type="button" className={mini} onClick={resetFilters}>Reset filters</button></div>}
           </section>
 
           <section aria-labelledby="res" aria-live="polite" className="space-y-2">
@@ -204,7 +210,7 @@ export default function App() {
               <Button size="sm" variant="outline" onClick={() => search()}>Apply</Button>
             </div>}
             {results === null && <p className="text-sm text-muted-foreground">Ranked by fit for your headcount, likely fee against your budget, and how likely the room is free.</p>}
-            {results?.length === 0 && status.startsWith("Showing") && <p className="text-sm text-muted-foreground">No rooms match yet. Zoom out, move the map or lower the headcount, then search again.</p>}
+            {results?.length === 0 && status.startsWith("Showing") && <p className="text-sm text-muted-foreground">No rooms match. Try a wider radius, lower the headcount or move the map, then search again.</p>}
             <ol className="divide-y divide-ink/10 border-y border-ink/10">
             {results?.map(v => {
               const p = Math.round(100 * v.likely_free), d = data.find(x => x.id == v.id) || ({} as Venue), pe = priceEst(d.id ? d : v)
@@ -294,6 +300,7 @@ export default function App() {
             <p className="text-sm font-semibold">{fmtH(range[0])} to {fmtH(range[1])}</p>
           </div>
         )}
+        <div className="flex gap-3"><button type="button" className={mini} onClick={() => setTypes(allTypes)}>Select all</button><button type="button" className={mini} onClick={() => setTypes([])}>Clear</button></div>
         <ToggleGroup multiple aria-label="Kinds of room" variant="outline" size="sm" spacing={2} value={types} onValueChange={v => setTypes(v as string[])} className="flex-wrap justify-start">
           {Object.entries(TYPES).map(([t, c]) => <ToggleGroupItem key={t} value={t} className="rounded-full bg-white text-muted-foreground border-dashed hover:bg-ink/5 hover:text-ink data-[pressed]:border-solid data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.cnt]:text-fog/70">
             <span className="size-2 rounded-full" style={{ background: c }} />{t[0].toUpperCase() + t.slice(1)} <span className="cnt text-muted-foreground">{counts[t] || 0}</span></ToggleGroupItem>)}
