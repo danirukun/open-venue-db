@@ -1,5 +1,7 @@
+node_modules/
+.vercel/
 .verify_token
 server.log
 tunnel.log
-node_modules/
 .env
+.session_key

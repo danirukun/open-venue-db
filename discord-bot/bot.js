@@ -1,7 +1,7 @@
 // Open Venue DB — Discord bot (kanichan). MIT.
 import { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder,
   ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } from 'discord.js';
-import { runAgent, llmConfig } from './agent.js';
+import { runAgent, llmConfig, filterResults } from './agent.js';
 
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
 const SB_URL = process.env.SUPABASE_URL || 'https://bwkxqyhycuwqpuieggbt.supabase.co';
@@ -84,8 +84,8 @@ const commands = [
 const pending = new Map(); // interaction-scoped draft requests awaiting must-haves
 
 async function runSearch(p) {
-  return rpc('search_venues', { q: p.q || null, lat: p.lat, lng: p.lng, radius_m: p.radius_m || 3000, min_capacity: p.min_capacity ?? null,
-    max_budget: p.max_budget ?? null, weekday: p.weekday || 'Wed', slot: p.slot || 'evening', types: p.types ?? null, lim: 3 });
+  return filterResults(await rpc('search_venues', { q: p.q || null, lat: p.lat, lng: p.lng, radius_m: p.radius_m || 3000, min_capacity: p.min_capacity ?? null,
+    max_budget: p.max_budget ?? null, weekday: p.weekday || 'Wed', slot: p.slot || 'evening', types: p.types ?? null, lim: 6 })).slice(0, 3);
 }
 
 const exec = (userId) => ({

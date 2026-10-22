@@ -43,7 +43,17 @@ Default slot evening (afternoon for popups), budget 0 if "free"/"no budget", bud
 Never contact venues; outreach is drafts awaiting approval. After results, you may mention the estimated total (price_est_mid x headcount, given as est_total_gbp) vs the budget, always saying it is an estimate, not a quote. Keep replies to 1-2 sentences; venue cards are shown separately.`;
 
 // state: { messages, request: {id,...}, asked }
+// Profanity filter on venue names (applies to every channel using this agent)
+const BAD = /\b(f+u+c+k\w*|fuk\w*|sh[i1!]t\w*|c+u+n+t\w*|b[i1]tch\w*|wank\w*|twat\w*|bollock\w*|arse(hole)?|asshole|dick(head)?|prick|bastard|slut|whore|piss\w*|cock\w*|nigg\w*|fag\w*)/i;
+export const cleanName = n => !BAD.test(String(n || '').replace(/[^a-z0-9 ]/gi, ' ')) && !BAD.test(String(n || ''));
+export const filterResults = rs => (rs || []).filter(v => cleanName(v.name));
+function withFilter(exec) {
+  return { ...exec,
+    search: async a => filterResults(await exec.search(a)),
+    createAndSearch: async p => { const r = await exec.createAndSearch(p); return { ...r, results: filterResults(r.results) }; } };
+}
 export async function runAgent(state, userText, exec) {
+  exec = withFilter(exec);
   const cfg = llmConfig();
   if (!cfg || state.mode === 'rule') return ruleAgent(state, userText, exec);
   try { return await (cfg.anthropic ? anthropicAgent : llmAgent)(state, userText, exec, cfg); }

@@ -1,0 +1,1 @@
+{"name":"open-venue-db-whatsapp","private":true,"type":"module","license":"MIT","engines":{"node":"24.x"},"scripts":{"sync-agent":"cp ../discord-bot/agent.js agent.js","start":"node server.js"},"dependencies":{"@vercel/functions":"^1.5.0"}}
