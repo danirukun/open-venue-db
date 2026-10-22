@@ -1,5 +1,5 @@
 """Geocode West London events (postcodes.io, then London-bounded Nominatim), reject outside Greater London bbox, match to venues
-(<=80m + fuzzy name>=80), write supabase/london/west_events.sql (venue_events + free_grid nudge: free=min(old, 1-(n+0.5)/(8+2)) over ~8 weeks, K=2)."""
+(<=250m, postcode centroids + fuzzy name>=85), write supabase/london/west_events.sql (venue_events + free_grid nudge: free=min(old, 1-(n+0.5)/(8+2)) over ~8 weeks, K=2)."""
 import json, re, time, glob, math, requests, datetime as dt
 from zoneinfo import ZoneInfo
 from rapidfuzz import fuzz
@@ -22,13 +22,13 @@ for e in ev:
     g+=bool(inb(e["lat"],e["lng"]))
 V=[];o=0
 while True:
-    r=requests.get(SB+f"venues?select=id,name,lat,lng,free_grid&lat=not.is.null&lat=gt.51.4&lat=lt.51.6&lng=gt.-0.35&lng=lt.-0.1&offset={o}&limit=1000",headers={"apikey":KEY},timeout=30).json(); V+=r; o+=1000
+    r=requests.get(SB+f"venues?select=id,name,lat,lng,free_grid&lat=not.is.null&lat=gt.51.4&lat=lt.51.6&lng=gt.-0.5&lng=lt.-0.1&offset={o}&limit=1000",headers={"apikey":KEY},timeout=30).json(); V+=r; o+=1000
     if len(r)<1000: break
 M=[]
 for e in ev:
     if not inb(e["lat"],e["lng"]): continue
-    c=[(fuzz.token_set_ratio(norm(e["venue_name"]),norm(v["name"])),v) for v in V if hav(e["lat"],e["lng"],v["lat"],v["lng"])<=80]
-    c=[x for x in c if x[0]>=80]
+    c=[(fuzz.token_set_ratio(norm(e["venue_name"]),norm(v["name"])),v) for v in V if hav(e["lat"],e["lng"],v["lat"],v["lng"])<=250]
+    c=[x for x in c if x[0]>=85]
     if c: M.append((e,max(c,key=lambda x:x[0])[1]))
 q=lambda s:"null" if s is None else "'"+str(s).replace("'","''")+"'"
 L=[]; cnt={}

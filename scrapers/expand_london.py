@@ -35,7 +35,7 @@ def existing():
     out=[];o=0
     while True:
         r=requests.get(SB+f"venues?select=id,name,lat,lng,osm_id&order=id&offset={o}&limit=1000",headers={"apikey":KEY},timeout=30).json()
-        out+=r; o+=1000
+        out+=[x for x in r if x.get("lat") is not None]; o+=1000
         if len(r)<1000: return out
 def grid(oh,amen):
     cd,close=closed_days(oh); g={}
@@ -71,7 +71,7 @@ def run(area,EX):
         if oid in byosm or (e["type"],e["id"]) in seen: continue
         if any(abs(x["lat"]-lat)<0.0006 and abs(x["lng"]-lng)<0.001 and hav(lat,lng,x["lat"],x["lng"])<50 and fuzz.token_set_ratio(norm(nm),norm(x["name"]))>=85 for x in EX+out): continue
         seen.add((e["type"],e["id"]))
-        typ=TYPE[amen]; oh=t.get("opening_hours")
+        typ=TYPE.get(amen,"other"); oh=t.get("opening_hours")
         v=dict(id=f"osm-{e['type'][0]}{e['id']}" if e["type"]!="node" else f"osm-{e['id']}",osm_id=oid,name=nm,type=typ,amenity=amen,lat=lat,lng=lng,
             opening_hours=oh,website=t.get("website") or t.get("contact:website"),postcode=t.get("addr:postcode"),
             address=" ".join(x for x in [t.get("addr:housenumber"),t.get("addr:street")] if x) or None,area=area,
