@@ -36,6 +36,7 @@ def predict(w,exclude=None,k=8):
     for vid,m in vmed.items():
         if vid==exclude or vid==w["id"]: continue
         u=V[vid]; d=hav(w["lat"],w["lng"],u["lat"],u["lng"])
+        if d>5: continue  # no estimate without a real price within 5 km
         wt=math.exp(-d/1.5)*tsim(w["type"],u["type"])
         c1,c2=cap(w),cap(u)
         if c1 and c2: wt*=math.exp(-abs(math.log(c1/c2)))

@@ -1,0 +1,1 @@
+-- coverage report (borough = OSM area each new venue was fetched from; legacy central venues = 'original')
