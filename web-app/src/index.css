@@ -1,15 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/bricolage-grotesque";
-@import "@fontsource-variable/public-sans";
+@import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: 'Bricolage Grotesque Variable', sans-serif;
-    --font-sans: 'Public Sans Variable', system-ui, sans-serif;
-    --color-ink: #1C2541; --color-lamp: #F2B134; --color-canal: #2E6F6A; --color-orders: #A23B5A; --color-fog: #F3F4F1;
+    --font-heading: 'Geist Variable', system-ui, sans-serif;
+    --font-sans: 'Geist Variable', system-ui, sans-serif;
+    --color-ink: var(--p-ink); --color-lamp: var(--p-accent); --color-lampink: var(--p-accentInk); --color-canal: var(--p-free); --color-orders: var(--p-busy); --color-fog: var(--p-fog); --color-mid: var(--p-mid);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -52,23 +51,23 @@
 
 :root {
     --background: oklch(1 0 0);
-    --foreground: #1C2541;
+    --foreground: var(--p-ink);
     --card: oklch(1 0 0);
-    --card-foreground: #1C2541;
+    --card-foreground: var(--p-ink);
     --popover: oklch(1 0 0);
-    --popover-foreground: #1C2541;
-    --primary: #1C2541;
+    --popover-foreground: var(--p-ink);
+    --primary: var(--p-ink);
     --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
-    --muted-foreground: #4B5368;
+    --muted-foreground: var(--p-muted);
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: #2E6F6A;
+    --border: var(--p-line);
+    --input: var(--p-line);
+    --ring: var(--p-accent);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -131,11 +130,11 @@
     }
 }
 html, body, #root { height: 100%; margin: 0; overflow: hidden; }
-.hatched { background-image: repeating-linear-gradient(45deg,#cbd5e1 0,#cbd5e1 2px,transparent 2px,transparent 4px); }
+.hatched { background-image: repeating-linear-gradient(45deg,var(--p-line) 0,var(--p-line) 2px,transparent 2px,transparent 4px); }
 .leaflet-container { font-family: inherit; }
 
-body { font-feature-settings: "tnum" 1; }
-:focus-visible { outline: 2px solid #2E6F6A; outline-offset: 2px; }
+body { font-feature-settings: "tnum" 1, "ss01" 0; letter-spacing: -0.005em; }
+:focus-visible { outline: 2px solid var(--p-ink); outline-offset: 2px; }
 .band-lit { transition: left .25s ease, width .25s ease; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 @media (max-width: 767px) { html, body { overflow: auto; } #root { height: auto; min-height: 100%; } }

@@ -4,10 +4,11 @@ import L from "./leaflet-global"
 import "leaflet.heat"
 import type { Venue } from "./data"
 import { capText, isEx, priceEst } from "./data"
+import { P } from "./palette"
 
 function Heat({ points }: { points: [number,number,number][] }) {
   const map = useMap()
-  const layer = useMemo(() => (L as any).heatLayer([], { radius: 30, blur: 24, maxZoom: 16, gradient: { 0.1: "#A23B5A", 0.45: "#E8D9B0", 0.7: "#F2B134", 1: "#2E6F6A" } }), [])
+  const layer = useMemo(() => (L as any).heatLayer([], { radius: 30, blur: 24, maxZoom: 16, gradient: { 0.1: P.busy, 0.5: P.mid, 1: P.free } }), [])
   useEffect(() => { layer.addTo(map); return () => { map.removeLayer(layer) } }, [map, layer])
   useEffect(() => { layer.setLatLngs(points) }, [layer, points])
   return null
@@ -40,7 +41,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
       <ZoomWatch onZoom={setZoom} onMap={onMap} />
       <Heat points={points} />
       {cells.map(c => (
-        <Rectangle key={c.k} bounds={c.bounds} pathOptions={{ weight: 0.5, color: "#1C2541", fillOpacity: c.nums.length ? 0.02 : 0.06, fillColor: c.nums.length ? "#1C2541" : "#8A90A0", dashArray: c.nums.length ? undefined : "2 3" }}>
+        <Rectangle key={c.k} bounds={c.bounds} pathOptions={{ weight: 0.5, color: P.ink, fillOpacity: c.nums.length ? 0.02 : 0.06, fillColor: c.nums.length ? P.ink : P.muted, dashArray: c.nums.length ? undefined : "2 3" }}>
           <LTooltip sticky>
             <div className="p-1 text-[13px] leading-tight">
               <div className="font-bold mb-1">{c.n} venues in this area</div>
@@ -53,7 +54,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
         </Rectangle>
       ))}
       {zoom >= 15 && venues.map(v => { const f = score(v), pe = priceEst(v); return (
-        <CircleMarker key={v.id} center={[v.lat, v.lng]} radius={7} pathOptions={{ color: (v.events||0) > 0 ? "#fff" : "#1C2541", weight: 2, fillOpacity: 1, fillColor: (v.events||0) > 0 ? "#1C2541" : "#fff" }}>
+        <CircleMarker key={v.id} center={[v.lat, v.lng]} radius={7} pathOptions={{ color: (v.events||0) > 0 ? "#fff" : P.ink, weight: 2, fillOpacity: 1, fillColor: (v.events||0) > 0 ? P.ink : "#fff" }}>
           <Popup>
             <div className="min-w-[220px]">
               <div className="flex justify-between items-start gap-2"><b className="text-[15px] leading-tight">{v.name}{isEx(v.name) && <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">Example data</span>}</b><span className="text-[10px] bg-slate-100 px-1 rounded">{v.type}</span></div>

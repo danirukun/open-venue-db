@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import type L from "leaflet"
-import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, SlidersHorizontal, Info } from "lucide-react"
+import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, SlidersHorizontal, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import MapView from "./MapView"
+import { P } from "./palette"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
 
 const MUSTS = [[Speaker, "PA system"], [Monitor, "Projector"], [Mic2, "Mics"], [Accessibility, "Step-free"], [GlassWater, "Bar"]] as const
@@ -42,12 +43,20 @@ const KINDS = [["meetup","Meetup or talk"],["comedy","Comedy night"],["gig","Gig
 const RADII = [["500","Within 500 m"],["1000","Within 1 km"],["2000","Within 2 km"],["5000","Within 5 km"]]
 const DAYNAME: Record<string,string> = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday", Sat:"Saturday", Sun:"Sunday" }
 
-/** 06:00 → 06:00 band; lit segment = chosen hours */
+/** 06:00 → 06:00 band; highlighted segment = chosen hours, with start/end labels */
 function TimeBand({ hrs }: { hrs: [number, number] }) {
   const pct = (h: number) => ((h - 6) / 24) * 100
+  const l = pct(hrs[0]), w = pct(hrs[1]) - l
   return (
-    <div className="relative h-2 rounded-full bg-ink/90" aria-hidden>
-      <div className="band-lit absolute inset-y-0 rounded-full bg-lamp shadow-[0_0_12px_#F2B134]" style={{ left: `${pct(hrs[0])}%`, width: `${pct(hrs[1]) - pct(hrs[0])}%` }} />
+    <div className="pt-6" aria-hidden>
+      <div className="relative h-4 rounded-md bg-ink/[.07] ring-1 ring-inset ring-ink/10">
+        {[12, 18, 24].map(h => <span key={h} className="absolute inset-y-1 w-px bg-ink/20" style={{ left: `${pct(h)}%` }} />)}
+        <div className="band-lit absolute -inset-y-0.5 rounded-md bg-lamp ring-2 ring-ink/80" style={{ left: `${l}%`, width: `${w}%` }}>
+          <span className="absolute -top-6 left-0 -translate-x-1/2 rounded bg-ink text-fog text-[11px] font-semibold px-1.5 py-0.5 whitespace-nowrap">{fmtH(hrs[0])}</span>
+          <span className="absolute -top-6 right-0 translate-x-1/2 rounded bg-ink text-fog text-[11px] font-semibold px-1.5 py-0.5 whitespace-nowrap">{fmtH(hrs[1])}</span>
+        </div>
+      </div>
+      <div className="flex justify-between text-[11px] text-muted-foreground mt-1"><span>6am</span><span>Noon</span><span>6pm</span><span>Midnight</span><span>6am</span></div>
     </div>
   )
 }
@@ -55,9 +64,9 @@ function TimeBand({ hrs }: { hrs: [number, number] }) {
 function Legend({ busy, slotLabel, nEst }: { busy: boolean; slotLabel: string; nEst: number }) {
   return (
     <div className="space-y-3 text-sm">
-      <h3 className="font-heading text-base font-semibold">How to read the map</h3>
+      
       <div>
-        <div className="h-3 w-full rounded-sm" style={{ background: busy ? "linear-gradient(90deg,#2E6F6A,#F2B134,#E8D9B0,#A23B5A)" : "linear-gradient(90deg,#A23B5A,#E8D9B0,#F2B134,#2E6F6A)" }} />
+        <div className="h-3 w-full rounded-sm" style={{ background: busy ? `linear-gradient(90deg,${P.free},${P.mid},${P.busy})` : `linear-gradient(90deg,${P.busy},${P.mid},${P.free})` }} />
         <div className="flex justify-between text-xs mt-1 text-muted-foreground"><span>{busy ? "Usually free" : "Usually busy"}</span><span className="font-semibold text-ink">{busy ? "Very likely busy" : "Very likely free"}</span></div>
         <p className="text-xs text-muted-foreground mt-1">Colour shows {busy ? "how busy" : "how likely free"} rooms are on {slotLabel}.</p>
       </div>
@@ -81,6 +90,8 @@ export default function App() {
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
   const [map, setMap] = useState<L.Map | null>(null)
+  const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
+  const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
 
   const hrs: [number, number] = custom ? range : (() => { const s = SLOTS.find(s => s.id === slot)!; return [s.from, s.to] })()
   const searchSlot = custom ? dominantSlot(range) : slot
@@ -109,7 +120,7 @@ export default function App() {
     <div className="flex flex-col md:flex-row md:h-full w-full text-ink bg-fog">
       <aside className="order-2 md:order-1 md:w-[400px] md:h-full bg-fog md:border-r border-ink/10 flex flex-col z-40">
         <header className="hidden md:block px-6 pt-6 pb-4">
-          <h1 className="font-heading text-[31px] leading-none font-extrabold tracking-tight">Open Venue DB</h1>
+          <h1 className="font-heading text-[31px] leading-none font-semibold tracking-[-0.02em]">Open Venue DB</h1>
           <p className="mt-2 text-sm text-muted-foreground max-w-[34ch]">Quiet London rooms for meetups, comedy and gigs. Open data, kept up to date by organisers.</p>
         </header>
         <div className="flex-1 md:overflow-y-auto px-5 md:px-6 pb-6 space-y-7">
@@ -130,10 +141,10 @@ export default function App() {
                 <Tooltip><TooltipTrigger aria-label="Why must-haves don't filter yet" className="text-muted-foreground rounded-sm"><Info className="size-3.5" /></TooltipTrigger><TooltipContent className="max-w-60">We don't have equipment data for most rooms yet. Your choices are saved with the request but don't narrow the results.</TooltipContent></Tooltip>
               </legend>
               <ToggleGroup multiple variant="outline" size="sm" spacing={2} value={musts} onValueChange={v => setMusts(v as string[])} className="flex-wrap justify-start">
-                {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white data-[pressed]:bg-ink data-[pressed]:text-white data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
+                {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
               </ToggleGroup>
             </fieldset>
-            <Button size="lg" className="w-full bg-canal hover:bg-canal/90 text-white" onClick={search}><Search className="size-4" />Find rooms for {DAYNAME[day]} {custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}</Button>
+            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" onClick={search}><Search className="size-4" />Find rooms for {DAYNAME[day]} {custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}</Button>
           </section>
 
           <section aria-labelledby="res" aria-live="polite" className="space-y-2">
@@ -143,7 +154,7 @@ export default function App() {
             <ol className="divide-y divide-ink/10 border-y border-ink/10">
             {results?.map(v => {
               const p = Math.round(100 * v.likely_free), d = data.find(x => x.id == v.id) || ({} as Venue), pe = priceEst(d.id ? d : v)
-              const barC = p >= 70 ? "#2E6F6A" : p >= 40 ? "#F2B134" : "#A23B5A"
+              const barC = p >= 70 ? P.free : p >= 40 ? P.accent : P.busy
               const dist = (v.distance_m / 1000).toFixed(1)
               return (
                 <li key={v.id}>
@@ -152,7 +163,7 @@ export default function App() {
                   <CardHeader className="px-2">
                     <div className="flex justify-between items-start gap-3">
                       <CardTitle className="font-heading text-[17px] leading-snug"><button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => d.lat && map?.setView([d.lat, d.lng], 17)}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
-                      <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === "#F2B134" ? "#8A5A00" : barC }}>{p}% likely free</span></HoverCardTrigger>
+                      <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
                         <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
                     </div>
                     <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.</CardDescription>
@@ -172,19 +183,26 @@ export default function App() {
             })}
             </ol>
           </section>
-          <div className="md:hidden"><Legend busy={busy} slotLabel={slotLabel} nEst={nEst} /></div>
         </div>
         <footer className="px-6 py-4 border-t border-ink/10"><p className="text-xs leading-relaxed text-muted-foreground max-w-[60ch]">These are estimates. Café, pub and bar scores come from opening hours, event rooms from a small set of Luma and Meetup listings. "~" capacities come from building size{nEst ? ", and \"Est.\" prices from similar rooms nearby" : ""}. Rooms marked example data are made up for the demo. Map © OpenStreetMap contributors. Data from {src}.</p></footer>
       </aside>
 
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
-        <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-extrabold tracking-tight">Open Venue DB</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
+        <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Open Venue DB</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
           <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />
           <section aria-label="When" className="md:absolute md:top-4 md:left-4 md:right-4 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 z-[1000] hidden md:block">
             {WhenPanel()}
           </section>
-          <div className="hidden md:block absolute bottom-6 right-14 z-[1000] w-72 bg-white/95 backdrop-blur rounded-[14px] border border-ink/10 p-4"><Legend busy={busy} slotLabel={slotLabel} nEst={nEst} /></div>
+          <div className="absolute bottom-4 left-4 md:bottom-6 md:left-auto md:right-14 z-[1000] flex flex-col items-start md:items-end gap-2 max-w-[calc(100%-2rem)]">
+            {showKey && <div id="map-key" className="w-72 max-w-full max-h-[40vh] md:max-h-none overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
+              <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
+                <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-7 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10 hover:text-ink active:bg-ink/15"><X className="size-4" /></button></div>
+              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} /></div>}
+            <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key"
+              className={`h-9 px-3 inline-flex items-center gap-2 rounded-lg border text-sm font-medium shadow-md transition-colors ${showKey ? "bg-ink text-fog border-ink hover:bg-ink/90" : "bg-white text-ink border-ink/20 hover:bg-fog"}`}>
+              <Layers className="size-4" />{showKey ? "Hide map key" : "Show map key"}</button>
+          </div>
         </div>
         <section aria-label="When" className="md:hidden px-4 py-3 bg-white border-b border-ink/10">{WhenPanel()}</section>
       </main>
@@ -194,10 +212,10 @@ export default function App() {
 
   function WhenPanel() {
     return (
-      <div className="md:bg-white md:rounded-[14px] md:border md:border-ink/10 md:shadow-[0_6px_24px_-12px_rgba(28,37,65,.45)] md:p-4 space-y-3 md:w-[620px] max-w-full">
+      <div className="md:bg-white md:rounded-[14px] md:border md:border-ink/10 md:shadow-lg md:p-4 space-y-3 md:w-[620px] max-w-full">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <ToggleGroup aria-label="Day of the week" value={[day]} onValueChange={v => v[0] && setDay(v[0] as string)} className="gap-0.5">
-            {DAYS.map(d => <ToggleGroupItem key={d} value={d} aria-label={DAYNAME[d] + (d === TODAY ? ", today" : "")} className="px-2.5 h-8 font-heading font-semibold text-[15px] text-muted-foreground data-[pressed]:bg-ink data-[pressed]:text-white">
+            {DAYS.map(d => <ToggleGroupItem key={d} value={d} aria-label={DAYNAME[d] + (d === TODAY ? ", today" : "")} className="px-2.5 h-8 font-medium text-sm text-muted-foreground hover:bg-ink/10 hover:text-ink data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:font-semibold">
               {d}{d === TODAY && <span aria-hidden className="ml-0.5 size-1.5 rounded-full bg-lamp inline-block align-top" />}</ToggleGroupItem>)}
           </ToggleGroup>
           <div className="flex items-center gap-4 text-sm">
@@ -207,20 +225,19 @@ export default function App() {
         </div>
         <TimeBand hrs={hrs} />
         {!custom ? (
-          <ToggleGroup aria-label="Time of day" value={[slot]} onValueChange={v => v[0] && setSlot(v[0] as string)} className="w-full gap-0 -mt-1">
-            {SLOTS.map(s => <ToggleGroupItem key={s.id} value={s.id} style={{ flexGrow: s.to - s.from, flexBasis: 0 }} className="h-auto py-1.5 px-1 flex-col items-start gap-0 rounded-md text-left data-[pressed]:bg-lamp/25">
-              <span className="text-sm font-semibold">{s.label}</span><span className="text-xs text-muted-foreground">{s.hours.replace("–", " to ")}</span></ToggleGroupItem>)}
+          <ToggleGroup aria-label="Time of day" value={[slot]} onValueChange={v => v[0] && setSlot(v[0] as string)} className="w-full gap-1">
+            {SLOTS.map(s => <ToggleGroupItem key={s.id} value={s.id} style={{ flexGrow: s.to - s.from, flexBasis: 0 }} className="h-auto py-1.5 px-2 flex-col items-start gap-0 rounded-md text-left border border-transparent hover:bg-ink/5 hover:border-ink/15 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.sub]:text-fog/75">
+              <span className="text-sm font-semibold">{s.label}</span><span className="sub text-xs text-muted-foreground">{s.hours.replace("–", " to ")}</span></ToggleGroupItem>)}
           </ToggleGroup>
         ) : (
           <div className="space-y-1">
             <Slider aria-label="Hours" min={6} max={30} step={1} value={range} onValueChange={v => setRange(v as [number, number])} />
-            <div className="flex justify-between text-xs text-muted-foreground"><span>6am</span><span>Noon</span><span>6pm</span><span>Midnight</span><span>6am</span></div>
             <p className="text-sm font-semibold">{fmtH(range[0])} to {fmtH(range[1])}</p>
           </div>
         )}
         <ToggleGroup multiple aria-label="Kinds of room" variant="outline" size="sm" spacing={2} value={types} onValueChange={v => setTypes(v as string[])} className="flex-wrap justify-start">
-          {Object.entries(TYPES).map(([t, c]) => <ToggleGroupItem key={t} value={t} className="rounded-full text-muted-foreground line-through decoration-ink/40 data-[pressed]:no-underline data-[pressed]:text-ink data-[pressed]:bg-white">
-            <span className="size-2 rounded-full" style={{ background: c }} />{t[0].toUpperCase() + t.slice(1)} <span className="text-muted-foreground">{counts[t] || 0}</span></ToggleGroupItem>)}
+          {Object.entries(TYPES).map(([t, c]) => <ToggleGroupItem key={t} value={t} className="rounded-full bg-white text-muted-foreground border-dashed hover:bg-ink/5 hover:text-ink data-[pressed]:border-solid data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.cnt]:text-fog/70">
+            <span className="size-2 rounded-full" style={{ background: c }} />{t[0].toUpperCase() + t.slice(1)} <span className="cnt text-muted-foreground">{counts[t] || 0}</span></ToggleGroupItem>)}
         </ToggleGroup>
       </div>
     )
