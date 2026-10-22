@@ -115,6 +115,7 @@ export default function App() {
   const [busy, setBusy] = useState(false), [types, setTypes] = useState<string[]>(Object.keys(TYPES))
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
+  const [sortBy, setSortBy] = useState("match"), [minT, setMinT] = useState(0), [minS, setMinS] = useState(0)
   const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
   const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
@@ -146,8 +147,11 @@ export default function App() {
     const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.5245, lng: -0.0805 }
     setStatus("Searching…")
     try {
-      const r = await fetch(`${SB}/rest/v1/rpc/search_venues`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" },
-        body: JSON.stringify({ lat: c.lat, lng: c.lng, radius_m: +radius, min_capacity: +hc || null, max_budget: budget === "" ? null : +budget, weekday: day, slot: searchSlot, types, lim: 15 }) })
+      const base = { lat: c.lat, lng: c.lng, radius_m: +radius, min_capacity: +hc || null, max_budget: budget === "" ? null : +budget, weekday: day, slot: searchSlot, types, lim: 15 }
+      const extra: Record<string, any> = {}; if (sortBy !== "match") extra.sort = sortBy; if (minT) extra.min_transit_score = minT; if (minS) extra.min_safety_score = minS
+      const call = (b: any) => fetch(`${SB}/rest/v1/rpc/search_venues`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: JSON.stringify(b) })
+      let r = await call({ ...base, ...extra })
+      if (!r.ok && Object.keys(extra).length) r = await call(base)
       if (!r.ok) throw r.status
       const rs = await r.json(); setResults(rs); setStatus(`Showing ${rs.length} matches`)
     } catch { setResults([]); setStatus("Search unavailable (Supabase unreachable).") }
@@ -193,6 +197,12 @@ export default function App() {
 
           <section aria-labelledby="res" aria-live="polite" className="space-y-2">
             <div className="flex justify-between items-baseline"><h2 id="res" className="font-heading text-xl font-semibold">Best matches</h2><span className="text-xs text-muted-foreground">{status.replace("Showing ", "").replace(" matches", " rooms")}</span></div>
+            {results?.some(r => "transit_score" in r || "safety_score" in r) && <div className="flex flex-wrap gap-2 text-sm">
+              <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value="match">Best match</option><option value="transit">Near transit</option><option value="safety">Safest</option></select>
+              <select aria-label="Minimum transit score" value={minT} onChange={e => setMinT(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any transit</option><option value={50}>Transit 50+</option><option value={70}>Transit 70+</option></select>
+              <select aria-label="Minimum safety score" value={minS} onChange={e => setMinS(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any safety</option><option value={50}>Safety 50+</option><option value={70}>Safety 70+</option></select>
+              <Button size="sm" variant="outline" onClick={() => search()}>Apply</Button>
+            </div>}
             {results === null && <p className="text-sm text-muted-foreground">Ranked by fit for your headcount, likely fee against your budget, and how likely the room is free.</p>}
             {results?.length === 0 && status.startsWith("Showing") && <p className="text-sm text-muted-foreground">No rooms match yet. Zoom out, move the map or lower the headcount, then search again.</p>}
             <ol className="divide-y divide-ink/10 border-y border-ink/10">
@@ -210,7 +220,7 @@ export default function App() {
                       <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
                         <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
                     </div>
-                    <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.</CardDescription>
+                    <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.{(v.nearest_station_name || v.safety_score != null) && <span className="block mt-0.5">{v.nearest_station_name ? `${v.nearest_station_m != null ? `${Math.max(1, Math.round(v.nearest_station_m / 80))} min walk to ` : "Near "}${v.nearest_station_name}` : ""}{v.nearest_station_name && v.safety_score != null ? ", " : ""}{v.safety_score != null ? `safety ${Math.round(v.safety_score)}/100` : ""}</span>}</CardDescription>
                   </CardHeader>
                   <CardContent className="px-2 space-y-2.5">
                     <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label} />
