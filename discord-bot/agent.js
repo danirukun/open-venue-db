@@ -10,11 +10,13 @@ const PROVIDERS = [
   ['OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1', 'openai/gpt-4o-mini'],
 ];
 export function llmConfig() {
+  if (process.env.ANTHROPIC_API_KEY) return { anthropic: true, key: process.env.ANTHROPIC_API_KEY, model: process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5', via: 'ANTHROPIC_API_KEY' };
   for (const [k, base, model] of PROVIDERS) if (process.env[k]) return { key: process.env[k], base, model: process.env.LLM_MODEL || model, via: k };
   return null;
 }
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const DEALS = ['door_split','guarantee','flat_hire','bar_minimum','promoter_split'];
+const ZONES = { 'east london': 'Hackney', 'west london': 'Hammersmith', 'north london': 'Camden', 'south london': 'Brixton', 'central london': 'Soho', 'london': 'Soho' };
 const MUST = ['PA','projector','mics','bar','step-free','box office','wifi','stage','food'];
 
 const TOOLS = [
@@ -36,7 +38,7 @@ const TOOLS = [
 
 const SYSTEM = `You are kanichan, the Open Venue DB assistant for London community organisers and show runners.
 Turn free-text requests into a VenueRequest. event_type: meetup (talks, hack nights), show (gig, comedy, theatre), popup (1-2 day pop-up, often cafes).
-Required before create_venue_request: headcount AND (area OR date/weekday). If missing, call ask_followup ONCE with a single combined question; if still missing after that, assume area Shoreditch / weekday Wed.
+Always use the ask_followup tool (never plain text) to ask questions. Required before create_venue_request: headcount AND (area OR date/weekday). If missing, call ask_followup ONCE with a single combined question; if still missing after that, assume area Shoreditch / weekday Wed.
 Default slot evening (afternoon for popups), budget 0 if "free"/"no budget", budget null-equivalent 0 if unstated. Today is ${new Date().toISOString().slice(0,10)}.
 Never contact venues; outreach is drafts awaiting approval. Keep replies to 1-2 sentences; venue cards are shown separately.`;
 
@@ -44,7 +46,7 @@ Never contact venues; outreach is drafts awaiting approval. Keep replies to 1-2 
 export async function runAgent(state, userText, exec) {
   const cfg = llmConfig();
   if (!cfg || state.mode === 'rule') return ruleAgent(state, userText, exec);
-  try { return await llmAgent(state, userText, exec, cfg); }
+  try { return await (cfg.anthropic ? anthropicAgent : llmAgent)(state, userText, exec, cfg); }
   catch (e) { console.error('LLM failed, using rule parser:', e.message.slice(0, 160)); state.mode = 'rule'; return ruleAgent(state, userText, exec); }
 }
 async function llmAgent(state, userText, exec, cfg) {
@@ -94,7 +96,7 @@ function normalise(a) {
   if (date) weekday = DAYS[(new Date(date + 'T12:00:00Z').getUTCDay() + 6) % 7];
   return { event_type: ['meetup','show','popup'].includes(a.event_type) ? a.event_type : 'meetup', date, weekday: weekday || 'Wed',
     slot: a.slot || (a.event_type === 'popup' ? 'afternoon' : 'evening'), deal_type: DEALS.includes(a.deal_type) ? a.deal_type : null, headcount: Math.max(1, parseInt(a.headcount) || 30), budget: Math.max(0, Number(a.budget) || 0),
-    must_haves: (a.must_haves || []).filter(m => MUST.includes(m)), area: a.area || null };
+    must_haves: (a.must_haves || []).filter(m => MUST.includes(m)), area: ZONES[(a.area || '').toLowerCase().trim()] || a.area || null };
 }
 
 // ---- no-key fallback: deterministic parser ----
@@ -130,4 +132,34 @@ async function ruleAgent(state, text, exec) {
   const { requestId, results, geo } = await exec.createAndSearch(p);
   state.request = { id: requestId, ...p };
   return { text: '', results, requestId, geo, parsed: p, via: 'rule-parser (no LLM key set)' };
+}
+
+async function anthropicAgent(state, userText, exec, cfg) {
+  if (!state.am) state.am = [];
+  state.am.push({ role: 'user', content: userText });
+  const tools = TOOLS.map(t => ({ name: t.function.name, description: t.function.description, input_schema: t.function.parameters }));
+  const out = { text: '', results: null, requestId: state.request?.id || null, followup: false, parsed: null, via: `anthropic:${cfg.model}`, tools: [] };
+  for (let step = 0; step < 6; step++) {
+    const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST',
+      headers: { 'x-api-key': cfg.key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({ model: cfg.model, max_tokens: 1024, system: SYSTEM, tools, messages: state.am, temperature: 0 }) });
+    if (!r.ok) throw new Error(`Anthropic ${r.status}: ${(await r.text()).slice(0,200)}`);
+    const msg = await r.json();
+    state.am.push({ role: 'assistant', content: msg.content });
+    const uses = msg.content.filter(c => c.type === 'tool_use');
+    const text = msg.content.filter(c => c.type === 'text').map(c => c.text).join(' ').trim();
+    if (!uses.length) { if (!out.followup) { out.text = text; if (!out.results) out.followup = true; } return out; }
+    const results = [];
+    for (const u of uses) {
+      out.tools.push(u.name); let res;
+      if (u.name === 'ask_followup') {
+        if (state.asked) res = { error: 'already asked once; use defaults' };
+        else { state.asked = true; out.text = u.input.question; out.followup = true; res = { ok: true, note: 'question shown; wait for reply' }; }
+      } else { try { res = await execTool(u.name, u.input || {}, state, exec, out); } catch (e) { res = { error: e.message }; } }
+      results.push({ type: 'tool_result', tool_use_id: u.id, content: JSON.stringify(res).slice(0, 4000) });
+    }
+    state.am.push({ role: 'user', content: results });
+    if (out.followup) return out;
+  }
+  return out;
 }

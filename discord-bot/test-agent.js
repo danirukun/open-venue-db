@@ -7,5 +7,5 @@ const exec={geocode:geo,createAndSearch:async p=>{const g=await geo(p.area);retu
 for (const conv of [["I run a 40 person tech meetup, zero budget, need a projector and wifi on a Wednesday evening in Shoreditch"],
   ["Comedy night, 80 seated, Tuesday, door split, needs mics and a PA, East London"],
   ["want to do a weekend coffee pop-up", "about 25 people, around Hackney, budget £150"]]) {
-  const st={}; for (const t of conv){const o=await runAgent(st,t,exec);console.log('>',t);console.log(o.followup?'  FOLLOWUP: '+o.text:'  PARSED: '+JSON.stringify(o.parsed)+'\n  TOP: '+(o.results||[]).map(v=>`${v.name} [${v.type}] ${v.fee_label}`).join(' | '));}
+  const st={}; for (const t of conv){const o=await runAgent(st,t,exec);console.log('>',t,'| via',o.via,'| tools',(o.tools||[]).join(','));console.log(o.followup?'  FOLLOWUP: '+o.text:'  PARSED: '+JSON.stringify(o.parsed)+'\n  TOP: '+(o.results||[]).map(v=>`${v.name} [${v.type}] ${v.fee_label}`).join(' | '));}
 }
