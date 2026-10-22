@@ -92,6 +92,7 @@ const exec = (userId) => ({
       p_date_from: p.date, p_flexible_days: p.date ? null : [p.weekday], p_slot: p.slot, p_lat: g.lat, p_lng: g.lng, p_area: g.label, p_must_have: p.must_haves, p_radius_m: radius_m });
     const base = { lat: g.lat, lng: g.lng, radius_m, min_capacity: p.headcount, max_budget: p.budget, weekday: p.weekday, slot: p.slot };
     let results = await runSearch({ ...base, types: TYPES[p.event_type] }); if (!results?.length) results = await runSearch(base);
+    if (p.deal_type) await rpc('set_request_deal', { p_request_id: requestId, p_discord_user_id: userId, p_deal_type: p.deal_type }).catch(() => {});
     return { requestId, results: results || [], geo: g };
   },
   shortlist: (rid, vid) => rpc('shortlist_venue', { p_request_id: rid, p_discord_user_id: userId, p_venue_id: vid }),
@@ -102,7 +103,7 @@ function agentPayload(out, userId) {
   if (out.followup || !out.results) return { content: out.text || 'Tell me headcount, area and day.' };
   const p = out.parsed || {};
   const head = `📍 <@${userId}> VenueRequest: **${p.headcount}** · **${p.event_type}** · £${p.budget} · ${p.date || p.weekday} ${p.slot} · near ${out.geo?.label || p.area}` +
-    (p.must_haves?.length ? ` · needs ${p.must_haves.join(', ')}` : '') + (out.requestId ? `\nRequest \`${String(out.requestId).slice(0,8)}\`` : '') +
+    (p.must_haves?.length ? ` · needs ${p.must_haves.join(', ')}` : '') + (p.deal_type ? ` · deal ${p.deal_type.replace('_',' ')}` : '') + (out.requestId ? `\nRequest \`${String(out.requestId).slice(0,8)}\`` : '') +
     ` · estimates only · [map](${MAP_URL})` + (out.text ? `\n${out.text}` : '');
   if (!out.results.length) return { content: head + '\nNo matches yet — try a bigger area.' };
   return { content: head, embeds: out.results.slice(0,3).map(embedFor), components: out.requestId ? buttons(out.requestId, out.results.slice(0,3)) : [] };

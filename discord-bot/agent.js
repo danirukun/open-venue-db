@@ -3,7 +3,7 @@
 // With no key, a rule-based parser is used so the bot still works (clearly labelled).
 const PROVIDERS = [
   ['LLM_API_KEY', process.env.LLM_BASE_URL || 'https://api.openai.com/v1', process.env.LLM_MODEL || 'gpt-4o-mini'],
-  ['AI_GATEWAY_API_KEY', 'https://ai-gateway.vercel.sh/v1', 'openai/gpt-4o-mini'],
+  ['AI_GATEWAY_API_KEY', 'https://ai-gateway.vercel.sh/v1', process.env.LLM_MODEL || 'xai/grok-4-fast-non-reasoning'],
   ['OPENAI_API_KEY', 'https://api.openai.com/v1', 'gpt-4o-mini'],
   ['XAI_API_KEY', 'https://api.x.ai/v1', 'grok-3-mini'],
   ['GROQ_API_KEY', 'https://api.groq.com/openai/v1', 'llama-3.3-70b-versatile'],
@@ -14,6 +14,7 @@ export function llmConfig() {
   return null;
 }
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DEALS = ['door_split','guarantee','flat_hire','bar_minimum','promoter_split'];
 const MUST = ['PA','projector','mics','bar','step-free','box office','wifi','stage','food'];
 
 const TOOLS = [
@@ -23,7 +24,8 @@ const TOOLS = [
       event_type: { type: 'string', enum: ['meetup','show','popup'] }, date: { type: 'string', description: 'YYYY-MM-DD if specific' },
       weekday: { type: 'string', enum: DAYS }, slot: { type: 'string', enum: ['morning','afternoon','evening','late'] },
       headcount: { type: 'integer' }, budget: { type: 'number', description: 'max venue fee GBP, 0 if free/none' },
-      must_haves: { type: 'array', items: { type: 'string', enum: MUST } }, area: { type: 'string' } },
+      must_haves: { type: 'array', items: { type: 'string', enum: MUST } }, area: { type: 'string' },
+      deal_type: { type: 'string', enum: DEALS, description: 'e.g. "door split" -> door_split' } },
       required: ['event_type','headcount'] } },
   { name: 'search_venues', description: 'Ad-hoc venue search without saving a request', parameters: { type: 'object', properties: {
       q: { type: 'string' }, area: { type: 'string' }, min_capacity: { type: 'integer' }, max_budget: { type: 'number' }, weekday: { type: 'string', enum: DAYS } } } },
@@ -35,13 +37,17 @@ const TOOLS = [
 const SYSTEM = `You are kanichan, the Open Venue DB assistant for London community organisers and show runners.
 Turn free-text requests into a VenueRequest. event_type: meetup (talks, hack nights), show (gig, comedy, theatre), popup (1-2 day pop-up, often cafes).
 Required before create_venue_request: headcount AND (area OR date/weekday). If missing, call ask_followup ONCE with a single combined question; if still missing after that, assume area Shoreditch / weekday Wed.
-Default slot evening, budget 0 if "free"/"no budget", budget null-equivalent 0 if unstated. Today is ${new Date().toISOString().slice(0,10)}.
+Default slot evening (afternoon for popups), budget 0 if "free"/"no budget", budget null-equivalent 0 if unstated. Today is ${new Date().toISOString().slice(0,10)}.
 Never contact venues; outreach is drafts awaiting approval. Keep replies to 1-2 sentences; venue cards are shown separately.`;
 
 // state: { messages, request: {id,...}, asked }
 export async function runAgent(state, userText, exec) {
   const cfg = llmConfig();
-  if (!cfg) return ruleAgent(state, userText, exec);
+  if (!cfg || state.mode === 'rule') return ruleAgent(state, userText, exec);
+  try { return await llmAgent(state, userText, exec, cfg); }
+  catch (e) { console.error('LLM failed, using rule parser:', e.message.slice(0, 160)); state.mode = 'rule'; return ruleAgent(state, userText, exec); }
+}
+async function llmAgent(state, userText, exec, cfg) {
   if (!state.messages) state.messages = [{ role: 'system', content: SYSTEM }];
   state.messages.push({ role: 'user', content: userText });
   const out = { text: '', results: null, requestId: state.request?.id || null, followup: false, parsed: null, via: cfg.via };
@@ -87,7 +93,7 @@ function normalise(a) {
   let weekday = DAYS.includes(a.weekday) ? a.weekday : null; const date = /^\d{4}-\d{2}-\d{2}$/.test(a.date || '') ? a.date : null;
   if (date) weekday = DAYS[(new Date(date + 'T12:00:00Z').getUTCDay() + 6) % 7];
   return { event_type: ['meetup','show','popup'].includes(a.event_type) ? a.event_type : 'meetup', date, weekday: weekday || 'Wed',
-    slot: a.slot || 'evening', headcount: Math.max(1, parseInt(a.headcount) || 30), budget: Math.max(0, Number(a.budget) || 0),
+    slot: a.slot || (a.event_type === 'popup' ? 'afternoon' : 'evening'), deal_type: DEALS.includes(a.deal_type) ? a.deal_type : null, headcount: Math.max(1, parseInt(a.headcount) || 30), budget: Math.max(0, Number(a.budget) || 0),
     must_haves: (a.must_haves || []).filter(m => MUST.includes(m)), area: a.area || null };
 }
 
@@ -103,7 +109,8 @@ export function ruleParse(t) {
   const d = s.match(/\b(mon|tue|wed|thu|fri|sat|sun)[a-z]*\b/); if (d) p.weekday = full[d[1]];
   if (/\bweekend\b/.test(s) && !p.weekday) p.weekday = 'Sat';
   const dt = s.match(/\b(20\d\d-\d\d-\d\d)\b/); if (dt) p.date = dt[1];
-  p.slot = /\bmorning\b/.test(s) ? 'morning' : /\b(afternoon|daytime|lunch)\b/.test(s) ? 'afternoon' : /\b(late|after midnight)\b/.test(s) ? 'late' : 'evening';
+  p.slot = /\bmorning\b/.test(s) ? 'morning' : /\b(afternoon|daytime|lunch)\b/.test(s) ? 'afternoon' : /\b(late|after midnight)\b/.test(s) ? 'late' : /\b(evening|night|tonight)\b/.test(s) ? 'evening' : null;
+  p.deal_type = /door[- ]?split/.test(s) ? 'door_split' : /guarantee/.test(s) ? 'guarantee' : /min(imum)? spend|bar min/.test(s) ? 'bar_minimum' : /flat (fee|hire)/.test(s) ? 'flat_hire' : /\d+\s*\/\s*\d+ split|promoter/.test(s) ? 'promoter_split' : null;
   const m = [['PA',/\b(pa|sound system|speakers)\b/],['projector',/projector|screen/],['mics',/\bmics?\b|microphone/],['bar',/\bbar\b|drinks/],
     ['step-free',/step[- ]free|wheelchair|accessib/],['box office',/box office|ticket(ing)? desk|tickets? office/],['wifi',/wi-?fi/],['stage',/\bstage\b/],['food',/\bfood|kitchen|pizza\b/]];
   p.must_haves = m.filter(([, r]) => r.test(s)).map(([k]) => k);
@@ -115,7 +122,7 @@ export function ruleParse(t) {
 }
 async function ruleAgent(state, text, exec) {
   const prev = state.partial || {}; const now = ruleParse(text);
-  const merged = { ...prev }; for (const [k, v] of Object.entries(now)) if (v != null && !(Array.isArray(v) && !v.length) && !(k === 'event_type' && prev.event_type && v === 'meetup') && !(k === 'slot' && prev.slot && v === 'evening')) merged[k] = v;
+  const merged = { ...prev }; for (const [k, v] of Object.entries(now)) if (v != null && !(Array.isArray(v) && !v.length) && !(k === 'event_type' && prev.event_type && v === 'meetup') ) merged[k] = v;
   state.partial = merged;
   const missing = [!merged.headcount && 'how many people', !(merged.area || merged.date || merged.weekday) && 'which area or day'].filter(Boolean);
   if (missing.length && !state.asked) { state.asked = true; return { text: `Quick one: ${missing.join(' and ')}?`, followup: true, via: 'rule-parser', parsed: merged }; }
