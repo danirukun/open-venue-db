@@ -40,7 +40,7 @@ const SYSTEM = `You are kanichan, the Open Venue DB assistant for London communi
 Turn free-text requests into a VenueRequest. event_type: meetup (talks, hack nights), show (gig, comedy, theatre), popup (1-2 day pop-up, often cafes).
 Always use the ask_followup tool (never plain text) to ask questions. Required before create_venue_request: headcount AND (area OR date/weekday). If missing, call ask_followup ONCE with a single combined question; if still missing after that, assume area Shoreditch / weekday Wed.
 Default slot evening (afternoon for popups), budget 0 if "free"/"no budget", budget null-equivalent 0 if unstated. Today is ${new Date().toISOString().slice(0,10)}.
-Never contact venues; outreach is drafts awaiting approval. Keep replies to 1-2 sentences; venue cards are shown separately.`;
+Never contact venues; outreach is drafts awaiting approval. After results, you may mention the estimated total (price_est_mid x headcount, given as est_total_gbp) vs the budget, always saying it is an estimate, not a quote. Keep replies to 1-2 sentences; venue cards are shown separately.`;
 
 // state: { messages, request: {id,...}, asked }
 export async function runAgent(state, userText, exec) {
@@ -82,7 +82,7 @@ async function execTool(name, a, state, exec, out) {
     const p = normalise(a); out.parsed = p;
     const { requestId, results, geo } = await exec.createAndSearch(p);
     state.request = { id: requestId, ...p }; out.requestId = requestId; out.results = results; out.geo = geo;
-    return { request_id: requestId, results: results.map(v => ({ id: v.id, name: v.name, type: v.type, fee: v.fee_label, likely_free: v.likely_free })) };
+    return { request_id: requestId, results: results.map(v => ({ id: v.id, name: v.name, type: v.type, fee: v.fee_label, likely_free: v.likely_free, price_label: v.price_label, est_total_gbp: v.price_est_mid != null ? Math.round(v.price_est_mid * p.headcount) : null })), budget_gbp: p.budget };
   }
   if (name === 'search_venues') { const r = await exec.search(a); out.results = r; return r.map(v => ({ id: v.id, name: v.name })); }
   if (!state.request?.id) return { error: 'no request yet' };

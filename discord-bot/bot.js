@@ -37,7 +37,7 @@ async function geocode(area) {
 }
 
 const isExample = v => /example|demo|sample/i.test(`${v.id} ${v.name} ${v.fee_label||''}`);
-function embedFor(v, i) {
+function embedFor(v, i, ctx = {}) {
   const e = new EmbedBuilder().setColor(isExample(v) ? 0xf59e0b : 0x2563eb)
     .setTitle(`${i+1}. ${v.name}${isExample(v) ? '  ⚠️ EXAMPLE' : ''}`.slice(0,256))
     .addFields(
@@ -45,7 +45,12 @@ function embedFor(v, i) {
       { name: 'Distance', value: v.distance_m != null ? `${(v.distance_m/1000).toFixed(1)} km` : '?', inline: true },
       { name: 'Likely free', value: v.likely_free != null ? `${Math.round(v.likely_free*100)}% (estimate)` : '?', inline: true },
       { name: 'Capacity', value: v.capacity ? `~${v.capacity}` : 'unknown', inline: true },
-      { name: 'Fee', value: v.fee_label || 'fee unknown', inline: true });
+      { name: 'Fee', value: v.fee_label || 'fee unknown', inline: true },
+      { name: 'Est. price', value: (v.price_label || 'price unknown').slice(0, 1000) });
+  if (v.price_est_mid != null && ctx.headcount) {
+    const tot = Math.round(v.price_est_mid * ctx.headcount);
+    e.addFields({ name: 'Est. total', value: `~£${tot} (£${v.price_est_mid}/head mid × ${ctx.headcount})` + (ctx.budget != null ? ` vs £${ctx.budget} budget — ${tot <= ctx.budget ? 'within' : 'over'}` : '') + ' · not a quote' });
+  }
   if (v.source_url && /^https?:\/\//.test(v.source_url)) e.setURL(v.source_url).addFields({ name: 'Source', value: v.source_url.slice(0,1000) });
   if (isExample(v)) e.setFooter({ text: 'Example/demo data — not a real venue offer' });
   return e;
@@ -106,7 +111,7 @@ function agentPayload(out, userId) {
     (p.must_haves?.length ? ` · needs ${p.must_haves.join(', ')}` : '') + (p.deal_type ? ` · deal ${p.deal_type.replace('_',' ')}` : '') + (out.requestId ? `\nRequest \`${String(out.requestId).slice(0,8)}\`` : '') +
     ` · estimates only · [map](${MAP_URL})` + (out.text ? `\n${out.text}` : '');
   if (!out.results.length) return { content: head + '\nNo matches yet — try a bigger area.' };
-  return { content: head, embeds: out.results.slice(0,3).map(embedFor), components: out.requestId ? buttons(out.requestId, out.results.slice(0,3)) : [] };
+  return { content: head, embeds: out.results.slice(0,3).map((v, i) => embedFor(v, i, p)), components: out.requestId ? buttons(out.requestId, out.results.slice(0,3)) : [] };
 }
 async function ask(key, userId, text) {
   const st = convo.get(key) || {}; st.user = userId; st.ts = Date.now(); convo.set(key, st);
@@ -190,7 +195,7 @@ client.on('interactionCreate', async (it) => {
         (must.length ? ` · needs ${must.join(', ')}` : '') + `\nRequest \`${String(reqId).slice(0,8)}\` · availability & capacity are estimates · [map](${MAP_URL})`;
       if (!res?.length) return it.followUp(head + '\nNo matches yet — try a larger radius.');
       return it.followUp({ content: head + (must.length ? '\n_Must-haves are recorded on the request; feature data is still sparse, so confirm with the venue._' : ''),
-        embeds: res.map(embedFor), components: buttons(reqId, res) });
+        embeds: res.map((v, i) => embedFor(v, i, p)), components: buttons(reqId, res) });
     }
     if (it.isButton() && /^(sl|od)\|/.test(it.customId)) {
       const [kind, reqId, venueId] = it.customId.split('|');
