@@ -152,6 +152,25 @@ export default function App() {
       search({ lat: la, lng: ln })
     }, e => setLocMsg(e.code === 1 ? "Location permission was denied. Move the map to choose an area." : "Couldn't get your location. Move the map to choose an area."), { timeout: 8000, maximumAge: 60000 })
   }
+  const [place, setPlace] = useState(""), [placeMsg, setPlaceMsg] = useState("")
+  async function centreOn() {
+    const q = place.trim(); if (!q) return
+    setPlaceMsg("Looking up…")
+    try {
+      let at: [number, number] | null = null
+      if (/^[A-Za-z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2}$/.test(q)) {
+        const r = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(q)}`); if (r.ok) { const j = await r.json(); at = [j.result.latitude, j.result.longitude] }
+      }
+      if (!at) {
+        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=gb&viewbox=-0.52,51.70,0.34,51.28&bounded=1&q=${encodeURIComponent(q)}`)
+        const j = r.ok ? await r.json() : []; if (j[0]) at = [+j[0].lat, +j[0].lon]
+      }
+      if (!at) { setPlaceMsg(`Couldn't find "${q}" in London. Try a postcode or a station name.`); return }
+      const [la, ln] = at; setPlaceMsg("")
+      if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false })
+      search({ lat: la, lng: ln })
+    } catch { setPlaceMsg("Place search is unavailable right now. Move the map instead.") }
+  }
   async function search(at?: { lat: number; lng: number }) {
     const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.4927, lng: -0.2240 }
     setStatus("Searching…"); setSc([c.lat, c.lng])
@@ -197,6 +216,9 @@ export default function App() {
                   <SelectContent>{RADII.map(([r,l]) => <SelectItem key={r} value={r}>{l}</SelectItem>)}</SelectContent></Select></div>
               <div className="col-span-2"><Button type="button" variant="outline" className="w-full bg-white" onClick={locate}><LocateFixed className="size-4" />Use my location</Button>
                 {locMsg && <p role="status" className="text-xs text-muted-foreground mt-1.5">{locMsg}</p>}</div>
+              <div className="col-span-2 space-y-1.5"><Label htmlFor="place">Centre on a place or postcode</Label>
+                <div className="flex gap-2" onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); centreOn() } }}><Input id="place" placeholder="e.g. W6 9YD or Angel" className="bg-white" value={place} onChange={e => setPlace(e.target.value)} /><Button type="button" variant="outline" className="bg-white" onClick={centreOn}><MapPin className="size-4" />Go</Button></div>
+                {placeMsg && <p role="status" className="text-xs text-muted-foreground">{placeMsg}</p>}</div>
             </div>
             <fieldset className="space-y-1.5">
               <legend className="text-sm font-medium flex items-center gap-1 w-full">Must have
