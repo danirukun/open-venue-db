@@ -1,0 +1,79 @@
+[
+ {
+  "osm_id": 21686579,
+  "venue": "White Haus",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "minimum spend for private hire? Minimum spend varies depending on the space, day and time",
+  "source_url": "https://www.whitehauslondon.com",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 21686579,
+  "venue": "White Haus",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "minimum spends",
+  "source_url": "https://www.whitehauslondon.com",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 266560384,
+  "venue": "The Banker",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "Min Spend All Features Audio Internet Screen Max Seated - 75 Max Standing - 180 Min Spend Children Allowed Natural Light Business",
+  "source_url": "https://www.banker-london.co.uk/functions",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 301516360,
+  "venue": "The Princess of Shoreditch",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "minimum spend applies",
+  "source_url": "https://www.theprincessofshoreditch.com",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 666475908,
+  "venue": "The Saint",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "Min Spend Celebrations Corporate Events All Features Internet Max Seated - 20 Max Standing - 50 Min Spend Celebrations Corporate ",
+  "source_url": "https://www.thesaint-bow.co.uk/functions",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 666475908,
+  "venue": "The Saint",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "Min Spend Wheelchair Accessible Celebrations All Features Internet Max Seated - 12 Max Standing - 30 Min Spend Wheelchair Accessi",
+  "source_url": "https://www.thesaint-bow.co.uk/functions",
+  "confidence": 0.4,
+  "example": false
+ },
+ {
+  "osm_id": 2749842102,
+  "venue": "Baranis",
+  "kind": "waive",
+  "condition_type": "min_spend",
+  "threshold": null,
+  "snippet": "minimum spend to include your food and drinks choices",
+  "source_url": "https://www.baranis.co.uk/private-hire",
+  "confidence": 0.4,
+  "example": false
+ }
+]

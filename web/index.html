@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Open Venue DB – quiet nights map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<style>html,body,#map{margin:0;height:100%;font-family:system-ui}#ctl{position:absolute;z-index:1000;top:10px;right:10px;background:#fff;padding:10px 12px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:13px;width:240px}
+#ctl label{display:inline-block;margin-right:6px}.lg{display:inline-block;width:14px;height:10px;margin-right:4px;vertical-align:middle}#legend{font-size:12px;margin-top:6px}#note{font-size:11px;color:#555;margin-top:6px}</style></head><body>
+<div id="map"></div><div id="ctl"><b>Open Venue DB</b><br>
+Day <select id="day"></select><br>Slot: <b id="slotname"></b><br><input id="slot" type="range" min="0" max="3" value="2" style="width:100%"><br>
+<div id="types"></div>
+<label><input type="radio" name="mode" value="quiet" checked> quiet</label><label><input type="radio" name="mode" value="busy"> busy</label>
+<div id="count"></div>
+<div id="legend"><b>Heat colour</b> (quiet mode)<div style="height:10px;background:linear-gradient(90deg,#00f,#0ff,#0f0,#ff0,#f00);margin:3px 0"></div>
+<div style="display:flex;justify-content:space-between;font-size:10px"><span>Usually busy / few venues</span><span>Very likely free</span></div>
+In busy mode the scale flips (red = usually busy).<br>
+<span class="lg" style="background:#d33;border-radius:50%"></span>event venue (Luma/Meetup)<br>
+<span class="lg" style="background:#36c;border-radius:50%"></span>OSM venue (cafe/pub/bar)<br>
+<span class="lg" style="border:1px solid #555"></span>300 m grid cell, hover for price range<br>
+Slots: morning 06–12, afternoon 12–17, evening 17–21, <b>late 21:00–06:00</b></div>
+<div id="note">Cafe/pub/bar scores come from OSM opening hours (closed = free). Event venues use sparse Luma/Meetup listings blended with a citywide prior. Indicative only.</div></div>
+<script>
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],SLOTS=["morning","afternoon","evening","late"],TYPES=["pub","bar","cafe","music","community","other"];
+const map=L.map('map').setView([51.524,-0.08],14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+DAYS.forEach((d,i)=>day.add(new Option(d,d,false,i==2)));
+TYPES.forEach(t=>types.insertAdjacentHTML('beforeend',`<label><input type="checkbox" value="${t}" checked> ${t}</label>`));
+let data=[],heat=L.heatLayer([],{radius:28,blur:22,maxZoom:16}).addTo(map),markers=L.layerGroup().addTo(map);
+function render(){const k=day.value+"_"+SLOTS[slot.value];slotname.textContent=SLOTS[slot.value];
+ const on=[...types.querySelectorAll('input:checked')].map(x=>x.value),busy=document.querySelector('[name=mode]:checked').value=="busy";
+ const vs=data.filter(v=>on.includes(v.type));
+ heat.setLatLngs(vs.map(v=>[v.lat,v.lng,busy?1-v.free[k]:v.free[k]]));markers.clearLayers();
+ if(map.getZoom()>=15)vs.forEach(v=>L.circleMarker([v.lat,v.lng],{radius:5,color:v.events?'#d33':'#36c'}).bindPopup(
+  `<b>${v.name}</b><br>${v.type}${v.capacity?' · cap '+v.capacity:''}<br>Free ${k.replace('_',' ')}: <b>${v.free[k]}</b> (${v.basis})<br>${v.fee_label}<br><a href="${v.url}" target=_blank>source</a>`).addTo(markers));
+ count.textContent=vs.length+" venues shown";}
+const grid=L.layerGroup().addTo(map);
+function buildGrid(){grid.clearLayers();const dl=0.0027,dg=0.0043,cells={};
+ data.forEach(v=>{const k=Math.floor(v.lat/dl)+"_"+Math.floor(v.lng/dg);(cells[k]=cells[k]||[]).push(v)});
+ Object.entries(cells).forEach(([k,vs])=>{const [a,b]=k.split("_").map(Number);
+  const fees=vs.filter(v=>v.fee_min!=null),unk=vs.length-fees.length;
+  const rng=fees.length?`£${Math.min(...fees.map(v=>v.fee_min))}–£${Math.max(...fees.map(v=>v.fee_max))}`:"price unknown";
+  const ms=vs.filter(v=>/inimum spend/.test(v.fee_label)).length;
+  L.rectangle([[a*dl,b*dg],[(a+1)*dl,(b+1)*dg]],{weight:0.5,color:'#555',fillOpacity:0.02}).bindTooltip(
+   `<b>${vs.length} venues</b><br>Venue fee / min spend: <b>${rng}</b><br>${ms} with "minimum spend applies" (amount unknown)<br>${Math.round(100*unk/vs.length)}% price unknown`,{sticky:true}).addTo(grid)})}
+fetch('data.json').then(r=>r.json()).then(d=>{data=d;buildGrid();render()});
+[day,slot,types].forEach(e=>e.addEventListener('input',render));document.querySelectorAll('[name=mode]').forEach(e=>e.onchange=render);map.on('zoomend',render);
+</script></body></html>

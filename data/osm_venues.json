@@ -1,0 +1,5832 @@
+[
+ {
+  "osm_id": 21686579,
+  "name": "White Haus",
+  "amenity": "pub",
+  "lat": 51.5154029,
+  "lng": -0.1043348,
+  "opening_hours": null,
+  "website": "https://www.whitehauslondon.com/",
+  "postcode": "EC4A 4AB"
+ },
+ {
+  "osm_id": 21693791,
+  "name": "The Saint",
+  "amenity": "bar",
+  "lat": 51.5150736,
+  "lng": -0.0997325,
+  "opening_hours": "Mo-Fr 10:00+",
+  "website": "http://www.jamies.london/bars/the-saint",
+  "postcode": "EC4M 7DQ"
+ },
+ {
+  "osm_id": 25473538,
+  "name": "The Liberty Bounds",
+  "amenity": "pub",
+  "lat": 51.509731,
+  "lng": -0.0785318,
+  "opening_hours": null,
+  "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/london/the-liberty-bounds-tower-of-london",
+  "postcode": "EC3N 4AA"
+ },
+ {
+  "osm_id": 25475187,
+  "name": "The Cheshire Cheese",
+  "amenity": "pub",
+  "lat": 51.5114165,
+  "lng": -0.0776978,
+  "opening_hours": "Mo-Fr 11:00-23:00; Sa 12:00-22:00; Su 12:00-20:00",
+  "website": "https://www.greatukpubs.co.uk/cheshire-cheese-tower-hill",
+  "postcode": "EC3N 2AP"
+ },
+ {
+  "osm_id": 25597628,
+  "name": "George IV",
+  "amenity": "pub",
+  "lat": 51.5347892,
+  "lng": -0.1072883,
+  "opening_hours": null,
+  "website": "https://www.george4th.net/",
+  "postcode": "N1 0RJ"
+ },
+ {
+  "osm_id": 25746185,
+  "name": "The Cheshire Cheese",
+  "amenity": "pub",
+  "lat": 51.5123895,
+  "lng": -0.1131849,
+  "opening_hours": "Mo-Sa 11:00-23:00; Su 12:00-22:00",
+  "website": "https://www.cheshirecheese.pub/",
+  "postcode": "WC2R 3LD"
+ },
+ {
+  "osm_id": 116097320,
+  "name": "The Alice",
+  "amenity": "pub",
+  "lat": 51.5149285,
+  "lng": -0.0778751,
+  "opening_hours": null,
+  "website": "https://www.crafted-social.co.uk/alice-houndsditch-london",
+  "postcode": "EC3A 7BX"
+ },
+ {
+  "osm_id": 140681851,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.4989916,
+  "lng": -0.1354995,
+  "opening_hours": "Mo-Fr 06:00-19:00; Sa 09:00-17:00",
+  "website": null,
+  "postcode": "SW1H 0AD"
+ },
+ {
+  "osm_id": 248074287,
+  "name": "El Vino",
+  "amenity": "bar",
+  "lat": 51.5124286,
+  "lng": -0.1040162,
+  "opening_hours": null,
+  "website": "https://elvino.co.uk/bars/blackfriars/",
+  "postcode": "EC4V 6BJ"
+ },
+ {
+  "osm_id": 249314702,
+  "name": "Turk's Head Cafe",
+  "amenity": "cafe",
+  "lat": 51.5042616,
+  "lng": -0.0612495,
+  "opening_hours": "Mo 16:00-22:00; Tu-Fr 18:00-23:00; Sa 09:00-23:00",
+  "website": "https://www.bistrobardot.co.uk/",
+  "postcode": "E1W 2PA"
+ },
+ {
+  "osm_id": 256497884,
+  "name": "The Garrick",
+  "amenity": "cafe",
+  "lat": 51.5134807,
+  "lng": -0.1165232,
+  "opening_hours": "Mo-Fr 08:00-19:00",
+  "website": "http://www.lse.ac.uk/intranet/LSEServices/cateringServices/restaurantsAndCafes/garrick.aspx",
+  "postcode": "WC2B 4RR"
+ },
+ {
+  "osm_id": 259245834,
+  "name": "The Slug and Lettuce",
+  "amenity": "bar",
+  "lat": 51.5084245,
+  "lng": -0.0734303,
+  "opening_hours": "Su-We 10:00-23:00; Th-Sa 10:00+",
+  "website": "https://www.slugandlettuce.co.uk/tower-bridge",
+  "postcode": "E1W 1AA"
+ },
+ {
+  "osm_id": 259253467,
+  "name": "The Ship",
+  "amenity": "pub",
+  "lat": 51.5110721,
+  "lng": -0.0847581,
+  "opening_hours": null,
+  "website": "https://www.nicholsonspubs.co.uk/restaurants/london/theshiptalbotcourtlondon",
+  "postcode": "EC3V 0BP"
+ },
+ {
+  "osm_id": 265664308,
+  "name": "Dickens Inn",
+  "amenity": "pub",
+  "lat": 51.5067525,
+  "lng": -0.0702178,
+  "opening_hours": "Mo-Su 12:00-23:00",
+  "website": "https://www.dickensinn.co.uk/",
+  "postcode": "E1W 1UH"
+ },
+ {
+  "osm_id": 266560384,
+  "name": "The Banker",
+  "amenity": "pub",
+  "lat": 51.5093933,
+  "lng": -0.0916244,
+  "opening_hours": "Mo 11:00-22:00; Tu-We, Fr 11:00-23:00; Th 11:00-17:00; Sa 12:00-20:00",
+  "website": "https://www.banker-london.co.uk/",
+  "postcode": "EC4R 3TE"
+ },
+ {
+  "osm_id": 267406074,
+  "name": "Riverside Terrace Cafe",
+  "amenity": "cafe",
+  "lat": 51.5059312,
+  "lng": -0.1171709,
+  "opening_hours": "Mo-Tu 10:00-18:00; We-Su 10:00-20:30",
+  "website": null,
+  "postcode": "SE1 8XX"
+ },
+ {
+  "osm_id": 273217510,
+  "name": "Cafe Nuvo",
+  "amenity": "cafe",
+  "lat": 51.4964968,
+  "lng": -0.1357931,
+  "opening_hours": "Mo-Fr 06:00-16:00; Sa 07:00-14:00",
+  "website": null,
+  "postcode": "SW1P 1RZ"
+ },
+ {
+  "osm_id": 277906484,
+  "name": "Forge",
+  "amenity": "pub",
+  "lat": 51.5132004,
+  "lng": -0.0871776,
+  "opening_hours": null,
+  "website": "https://www.forgedinlondon.com/london",
+  "postcode": "EC3V 3ND"
+ },
+ {
+  "osm_id": 277909036,
+  "name": "The Castle",
+  "amenity": "pub",
+  "lat": 51.5148862,
+  "lng": -0.0687963,
+  "opening_hours": "Su-Tu 16:00-24:00, We 16:00-01:00, Th 16:00-01:30, Fr,Sa 16:00-03:00",
+  "website": "http://www.thecastlelondon.com/",
+  "postcode": "E1 1LN"
+ },
+ {
+  "osm_id": 278291760,
+  "name": "The Moretown Belle",
+  "amenity": "pub",
+  "lat": 51.5071618,
+  "lng": -0.0674954,
+  "opening_hours": null,
+  "website": "https://www.moretownbelle.co.uk/",
+  "postcode": "E1W 1YW"
+ },
+ {
+  "osm_id": 281455014,
+  "name": "The Lucas Arms",
+  "amenity": "pub",
+  "lat": 51.5284133,
+  "lng": -0.1195557,
+  "opening_hours": null,
+  "website": "https://www.greeneking.co.uk/pubs/greater-london/lucas-arms",
+  "postcode": "WC1X 8QY"
+ },
+ {
+  "osm_id": 287749130,
+  "name": "The Wellington",
+  "amenity": "pub",
+  "lat": 51.5036385,
+  "lng": -0.111312,
+  "opening_hours": null,
+  "website": "https://www.wellingtonhotelwaterloo.co.uk/",
+  "postcode": "SE1 8UD"
+ },
+ {
+  "osm_id": 288045288,
+  "name": "Hoop and Grapes",
+  "amenity": "pub",
+  "lat": 51.5142543,
+  "lng": -0.0742015,
+  "opening_hours": "Su-Fr 12:00-23:30; Sa 11:00-18:00",
+  "website": "https://www.nicholsonspubs.co.uk/restaurants/london/thehoopandgrapesaldgatelondon",
+  "postcode": "EC3N 1AL"
+ },
+ {
+  "osm_id": 291953084,
+  "name": "The Whitecross Tap",
+  "amenity": "pub",
+  "lat": 51.5241672,
+  "lng": -0.0934981,
+  "opening_hours": null,
+  "website": "https://www.crafted-social.co.uk/whitecross-tap-old-street",
+  "postcode": "EC1Y 8QJ"
+ },
+ {
+  "osm_id": 292705417,
+  "name": "The Hydrant",
+  "amenity": "pub",
+  "lat": 51.5102919,
+  "lng": -0.0861975,
+  "opening_hours": "Mo-Fr 08:00-23:00; Sa 10:00-23:00; Su 10:00-18:00",
+  "website": "https://www.thehydrant.co.uk/",
+  "postcode": "EC3R 8BG"
+ },
+ {
+  "osm_id": 292705418,
+  "name": "London Cocktail Club",
+  "amenity": "bar",
+  "lat": 51.5107157,
+  "lng": -0.0860166,
+  "opening_hours": "Mo-We 16:00-00:00; Th 16:00-01:00; Fr-Sa 16:00-02:00",
+  "website": "https://www.londoncocktailclub.co.uk/monument/",
+  "postcode": "EC3M 1AE"
+ },
+ {
+  "osm_id": 294950903,
+  "name": "The Masque Haunt",
+  "amenity": "pub",
+  "lat": 51.5251618,
+  "lng": -0.0905437,
+  "opening_hours": null,
+  "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/london/the-masque-haunt-old-street",
+  "postcode": "EC1V 9BP"
+ },
+ {
+  "osm_id": 295971752,
+  "name": "The Fire Station",
+  "amenity": "pub",
+  "lat": 51.5025485,
+  "lng": -0.1105758,
+  "opening_hours": "Mo-Th 09:00-23:00; Fr-Sa 09:00-24:00; Su 09:00-22:30",
+  "website": "https://www.firestationwaterloo.co.uk/",
+  "postcode": "SE1 8SB"
+ },
+ {
+  "osm_id": 295979629,
+  "name": "Duke of Somerset",
+  "amenity": "pub",
+  "lat": 51.513604,
+  "lng": -0.0737842,
+  "opening_hours": null,
+  "website": "https://www.crafted-social.co.uk/duke-of-somerset-aldgate-london",
+  "postcode": "E1 8AH"
+ },
+ {
+  "osm_id": 296614817,
+  "name": "Balls Brothers",
+  "amenity": "pub",
+  "lat": 51.5108903,
+  "lng": -0.0808223,
+  "opening_hours": null,
+  "website": "https://ballsbrothersminstercourt.co.uk/",
+  "postcode": "EC3R 7PP"
+ },
+ {
+  "osm_id": 299444032,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5363861,
+  "lng": -0.1037828,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa,Su 07:30-20:00",
+  "website": "https://www.caffenero.com/uk/stores/islington",
+  "postcode": "N1 0NU"
+ },
+ {
+  "osm_id": 301516360,
+  "name": "The Princess of Shoreditch",
+  "amenity": "pub",
+  "lat": 51.5253696,
+  "lng": -0.08372,
+  "opening_hours": null,
+  "website": "https://www.theprincessofshoreditch.com/",
+  "postcode": "EC2A 4NE"
+ },
+ {
+  "osm_id": 306666717,
+  "name": "The Windmill",
+  "amenity": "pub",
+  "lat": 51.5029506,
+  "lng": -0.1081212,
+  "opening_hours": null,
+  "website": "https://www.windmillwaterloo.co.uk/",
+  "postcode": "SE1 8LW"
+ },
+ {
+  "osm_id": 308839732,
+  "name": "The Shepherdess",
+  "amenity": "cafe",
+  "lat": 51.5283695,
+  "lng": -0.0916174,
+  "opening_hours": "Mo-Fr 06:30-16:00, Sa 07:30-15:00",
+  "website": null,
+  "postcode": "EC1V 1JN"
+ },
+ {
+  "osm_id": 334369944,
+  "name": "Star in Shoreditch",
+  "amenity": "bar",
+  "lat": 51.526571,
+  "lng": -0.0841847,
+  "opening_hours": "Tu-We 16:00-00:00; Th-Sa 16:00-04:00; Su 20:00-00:00",
+  "website": "https://starinshoreditch.co.uk/",
+  "postcode": "EC1V 9EY"
+ },
+ {
+  "osm_id": 338472534,
+  "name": "Sir Christopher Hatton",
+  "amenity": "pub",
+  "lat": 51.5181575,
+  "lng": -0.1088985,
+  "opening_hours": "Mo-Th 10:00-23:30, Fr,Sa 10:00-00:30, Su 10:00-22:30",
+  "website": "https://www.nicholsonspubs.co.uk/restaurants/london/thesirchristopherhattonhattongardenlondon",
+  "postcode": "EC1N 7RA"
+ },
+ {
+  "osm_id": 338504993,
+  "name": "Horse and Wig",
+  "amenity": "pub",
+  "lat": 51.5190282,
+  "lng": -0.1135508,
+  "opening_hours": null,
+  "website": "https://www.horseandwig.com/",
+  "postcode": "WC1V 6HZ"
+ },
+ {
+  "osm_id": 338507320,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5175712,
+  "lng": -0.1200835,
+  "opening_hours": "Mo-Fr 06:00-17:00; Sa,Su 06:30-16:00",
+  "website": null,
+  "postcode": "WC1V 7DZ"
+ },
+ {
+  "osm_id": 338507462,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.516089,
+  "lng": -0.119735,
+  "opening_hours": "Mo-Fr 06:30-21:00; Sa 07:00-21:00; Su 08:00-18:00",
+  "website": "https://www.caffenero.com/uk/stores/kingsway",
+  "postcode": "WC2B 6SR"
+ },
+ {
+  "osm_id": 347412853,
+  "name": "Belushi's London Bridge",
+  "amenity": "bar",
+  "lat": 51.5028201,
+  "lng": -0.0918016,
+  "opening_hours": "Mo-Th 08:00-02:00; Fr-Su 08:00-03:00",
+  "website": "https://belushis.com/",
+  "postcode": "SE1 1HR"
+ },
+ {
+  "osm_id": 348426433,
+  "name": "Be At One",
+  "amenity": "bar",
+  "lat": 51.5338394,
+  "lng": -0.1057791,
+  "opening_hours": null,
+  "website": "https://www.beatone.co.uk/islington",
+  "postcode": "N1 0PQ"
+ },
+ {
+  "osm_id": 348871686,
+  "name": "Caff\u00e8 Concerto",
+  "amenity": "cafe",
+  "lat": 51.5114536,
+  "lng": -0.1328353,
+  "opening_hours": "07:30-23:00",
+  "website": "https://www.caffeconcerto.co.uk/restaurant/shaftesbury-avenue.html",
+  "postcode": "W1D 6LW"
+ },
+ {
+  "osm_id": 350437645,
+  "name": "The WIld Swan",
+  "amenity": "pub",
+  "lat": 51.5163939,
+  "lng": -0.1092995,
+  "opening_hours": "Mo-Sa 12:00-23:00",
+  "website": "http://wildswanlondon.co.uk/",
+  "postcode": "EC4A 1BT"
+ },
+ {
+  "osm_id": 352930271,
+  "name": "The Leather Exchange",
+  "amenity": "pub",
+  "lat": 51.5003106,
+  "lng": -0.0842325,
+  "opening_hours": null,
+  "website": "https://www.theleatherexchange.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 369119280,
+  "name": "The Sterling Bar & Kitchen",
+  "amenity": "pub",
+  "lat": 51.51452,
+  "lng": -0.0800751,
+  "opening_hours": null,
+  "website": "https://www.thesterlingbar.co.uk/",
+  "postcode": "EC3A 8BF"
+ },
+ {
+  "osm_id": 369119286,
+  "name": "Slug and Lettuce",
+  "amenity": "bar",
+  "lat": 51.5147902,
+  "lng": -0.0809501,
+  "opening_hours": null,
+  "website": "https://www.slugandlettuce.co.uk/st-mary-axe",
+  "postcode": "EC3A 8AA"
+ },
+ {
+  "osm_id": 372519553,
+  "name": "Bar Italia",
+  "amenity": "cafe",
+  "lat": 51.513421,
+  "lng": -0.1312352,
+  "opening_hours": "24/7",
+  "website": "http://www.baritaliasoho.co.uk",
+  "postcode": "W1D 4RP"
+ },
+ {
+  "osm_id": 375848733,
+  "name": "Duke of Cambridge",
+  "amenity": "pub",
+  "lat": 51.5345894,
+  "lng": -0.0986938,
+  "opening_hours": "Tu-Sa 12:00-23:00; Su 12:00-18:00",
+  "website": "https://dukeorganic.co.uk/",
+  "postcode": "N1 8JT"
+ },
+ {
+  "osm_id": 380568360,
+  "name": "The Yorkshire Grey",
+  "amenity": "pub",
+  "lat": 51.5215753,
+  "lng": -0.1136199,
+  "opening_hours": "Mo-Th 12:00-23:00; Fr 12:00-24:00; Sa 12:00-18:00",
+  "website": "https://www.yorkshiregrey.com/",
+  "postcode": "WC1X 8PN"
+ },
+ {
+  "osm_id": 382513023,
+  "name": "Cocomelt",
+  "amenity": "cafe",
+  "lat": 51.5143782,
+  "lng": -0.1345304,
+  "opening_hours": "Mo-Sa 10:00-23:00; Su 10:00-22:00",
+  "website": null,
+  "postcode": "W1F 8ZW"
+ },
+ {
+  "osm_id": 388111146,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5252013,
+  "lng": -0.1281271,
+  "opening_hours": "Mo-Fr 06:00-20:00; Sa 07:00-20:00",
+  "website": null,
+  "postcode": "WC1H 9LT"
+ },
+ {
+  "osm_id": 390073204,
+  "name": "Barbican Kitchen",
+  "amenity": "cafe",
+  "lat": 51.5195292,
+  "lng": -0.093295,
+  "opening_hours": "08:00-20:00",
+  "website": null,
+  "postcode": "EC2Y 8DS"
+ },
+ {
+  "osm_id": 423598119,
+  "name": "Bad Moon Cafe",
+  "amenity": "cafe",
+  "lat": 51.4966026,
+  "lng": -0.0883479,
+  "opening_hours": "Mo-Sa 08:00-23:00; Su 10:00-18:00",
+  "website": "https://www.badmooncafe.co.uk/",
+  "postcode": "SE1 4GZ"
+ },
+ {
+  "osm_id": 425175495,
+  "name": "King Charles I",
+  "amenity": "pub",
+  "lat": 51.5324518,
+  "lng": -0.1197093,
+  "opening_hours": "Mo-Th 12:00-23:00; Fr 12:00-00:00; Sa 12:00-23:00; Su 12:00-22:00",
+  "website": "https://kingcharles1st.co.uk/",
+  "postcode": "N1 9BL"
+ },
+ {
+  "osm_id": 425451848,
+  "name": "Meat House London",
+  "amenity": "bar",
+  "lat": 51.5313188,
+  "lng": -0.1167116,
+  "opening_hours": null,
+  "website": "https://www.meathouselondon.co.uk/",
+  "postcode": "N1 9JP"
+ },
+ {
+  "osm_id": 425720564,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5319837,
+  "lng": -0.1222953,
+  "opening_hours": "07:30-16:00",
+  "website": null,
+  "postcode": "N1 9AA"
+ },
+ {
+  "osm_id": 443029946,
+  "name": "TomTom Coffee House",
+  "amenity": "cafe",
+  "lat": 51.4934413,
+  "lng": -0.1503154,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa,Su 09:00-18:00",
+  "website": "https://www.tomtomcoffee.co.uk/coffee-house/",
+  "postcode": "SW1W 9QD"
+ },
+ {
+  "osm_id": 456213965,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5102976,
+  "lng": -0.1391473,
+  "opening_hours": "Mo-Fr 07:00-20:00; Sa 07:30-20:30,09:00-20:00",
+  "website": null,
+  "postcode": "W1S 3HF"
+ },
+ {
+  "osm_id": 456718344,
+  "name": "Nkora",
+  "amenity": "cafe",
+  "lat": 51.5112419,
+  "lng": -0.1413145,
+  "opening_hours": "Mo-Fr 07:00-18:30; Sa 07:00-18:00; Su 08:00-16:00",
+  "website": "http://nkora.co.uk",
+  "postcode": "W1S 2JR"
+ },
+ {
+  "osm_id": 462025234,
+  "name": "H.R. Higgins",
+  "amenity": "cafe",
+  "lat": 51.5130973,
+  "lng": -0.1506616,
+  "opening_hours": "Mo-Fr 08:00-17:30; Sa 10:00-18:00; Su 11:00-17:00",
+  "website": "https://www.hrhiggins.co.uk/",
+  "postcode": "W1K 5AS"
+ },
+ {
+  "osm_id": 475868738,
+  "name": "Winemakers Club",
+  "amenity": "bar",
+  "lat": 51.5171622,
+  "lng": -0.1047894,
+  "opening_hours": "Tu-Fr 11:00-23:00, Mo 11:00-17:00",
+  "website": "https://thewinemakersclub.co.uk/",
+  "postcode": "EC4A 4AN"
+ },
+ {
+  "osm_id": 475933772,
+  "name": "The Castle",
+  "amenity": "pub",
+  "lat": 51.5202193,
+  "lng": -0.1041739,
+  "opening_hours": "Mo-Su 10:00-23:00",
+  "website": "https://www.thecastlefarringdon.co.uk/",
+  "postcode": "EC1M 6DB"
+ },
+ {
+  "osm_id": 505769332,
+  "name": "The Albion",
+  "amenity": "pub",
+  "lat": 51.5139036,
+  "lng": -0.1045738,
+  "opening_hours": null,
+  "website": "http://www.thealbionlondon.co.uk/",
+  "postcode": "EC4V 6AA"
+ },
+ {
+  "osm_id": 534907516,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5149324,
+  "lng": -0.0977564,
+  "opening_hours": "Mo-Fr 06:00-19:30; Sa 06:30-20:00; Su 07:00-20:00",
+  "website": "https://www.caffenero.com/uk/stores/paternoster-sq",
+  "postcode": "EC1A 7HL"
+ },
+ {
+  "osm_id": 534962782,
+  "name": "The Sheaf",
+  "amenity": "pub",
+  "lat": 51.5048141,
+  "lng": -0.0911485,
+  "opening_hours": null,
+  "website": "http://sheaf.london/",
+  "postcode": "SE1 1TY"
+ },
+ {
+  "osm_id": 534964186,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.506748,
+  "lng": -0.0906,
+  "opening_hours": "Mo-Fr 06:30-20:30; Sa-Su 07:30-21:00",
+  "website": "https://www.caffenero.com/uk/stores/golden-hind",
+  "postcode": "SE1 9DE"
+ },
+ {
+  "osm_id": 544456208,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5011196,
+  "lng": -0.1246162,
+  "opening_hours": "Mo-Fr 06:00-21:30; Sa 07:00-21:30; Su 07:30-21:00",
+  "website": "https://www.caffenero.com/uk/stores/portcullis-house",
+  "postcode": "SW1A 2LW"
+ },
+ {
+  "osm_id": 544460891,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5020386,
+  "lng": -0.1178012,
+  "opening_hours": "Mo-Fr 06:30-21:30; Sa 07:30-21:30; Su 07:30-21:00",
+  "website": null,
+  "postcode": "SE1 7GQ"
+ },
+ {
+  "osm_id": 554974745,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5300206,
+  "lng": -0.1243694,
+  "opening_hours": "Mo-Fr 06:00-21:00, Sa,Su 07:00-20:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 559520875,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5072772,
+  "lng": -0.1283651,
+  "opening_hours": "Mo-Fr 06:30-21:00; Sa 07:00-21:00; Su 07:30-20:00",
+  "website": "https://www.caffenero.com/uk/stores/trafalgar-sq",
+  "postcode": "WC2N 5DS"
+ },
+ {
+  "osm_id": 569524162,
+  "name": "Slug and Lettuce",
+  "amenity": "bar",
+  "lat": 51.5026134,
+  "lng": -0.1168689,
+  "opening_hours": "Mo-Th 09:00-23:00; Fr 09:00-00:00; Sa 10:00-00:00; Su 10:00-22:30",
+  "website": "https://www.slugandlettuce.co.uk/county-hall",
+  "postcode": "SE1 7PJ"
+ },
+ {
+  "osm_id": 569524165,
+  "name": "All Bar One",
+  "amenity": "bar",
+  "lat": 51.5026748,
+  "lng": -0.1171122,
+  "opening_hours": null,
+  "website": "https://www.allbarone.co.uk/",
+  "postcode": "SE1 7PY"
+ },
+ {
+  "osm_id": 587741450,
+  "name": "Jack's",
+  "amenity": "bar",
+  "lat": 51.5041555,
+  "lng": -0.105828,
+  "opening_hours": null,
+  "website": "http://www.jackslounge.co.uk",
+  "postcode": "SE1 8DD"
+ },
+ {
+  "osm_id": 587775005,
+  "name": "La Cucina Di Mamma",
+  "amenity": "cafe",
+  "lat": 51.502499,
+  "lng": -0.11761,
+  "opening_hours": "Mo-Sa 11:00-00:00; Su 11:00-22:30",
+  "website": "https://cucina-restaurant.com/",
+  "postcode": "SE1 7GQ"
+ },
+ {
+  "osm_id": 591974938,
+  "name": "The Monument",
+  "amenity": "pub",
+  "lat": 51.5100863,
+  "lng": -0.0862828,
+  "opening_hours": "Mo-We, Fr-Sa 11:00-23:00; Th 11:00-00:00; Su 12:00-19:00",
+  "website": "https://www.greeneking.co.uk/pubs/greater-london/monument",
+  "postcode": "EC3R 6DB"
+ },
+ {
+  "osm_id": 592029659,
+  "name": "The Britannia",
+  "amenity": "pub",
+  "lat": 51.5099446,
+  "lng": -0.085924,
+  "opening_hours": null,
+  "website": "https://www.crafted-social.co.uk/britannia-monument-london",
+  "postcode": "EC3R 8AJ"
+ },
+ {
+  "osm_id": 592642006,
+  "name": "Be At One Monument",
+  "amenity": "bar",
+  "lat": 51.510472,
+  "lng": -0.0870841,
+  "opening_hours": null,
+  "website": "https://www.beatone.co.uk/monument",
+  "postcode": "EC4R 9AT"
+ },
+ {
+  "osm_id": 593553106,
+  "name": "The Boundary",
+  "amenity": "pub",
+  "lat": 51.5204548,
+  "lng": -0.1033955,
+  "opening_hours": null,
+  "website": "https://www.sportsbarandgrill.co.uk/farringdon",
+  "postcode": "EC1M 5UG"
+ },
+ {
+  "osm_id": 595303835,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5094715,
+  "lng": -0.1323526,
+  "opening_hours": "Mo-Th 06:30-21:00; Fr-Sa 06:30-22:00; Su 07:00-21:00",
+  "website": "https://www.caffenero.com/uk/stores/haymarket",
+  "postcode": "SW1Y 4SP"
+ },
+ {
+  "osm_id": 603128624,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5114893,
+  "lng": -0.1276746,
+  "opening_hours": "Mo-Th 06:00-21:00; Fr 06:00-22:00; Sa 07:00-22:00; Su 08:00-19:00",
+  "website": "https://www.caffenero.com/uk/stores/cranbourn-st",
+  "postcode": "WC2H 7AD"
+ },
+ {
+  "osm_id": 621771171,
+  "name": "Duncan Terrace Cafe",
+  "amenity": "cafe",
+  "lat": 51.5317157,
+  "lng": -0.1046939,
+  "opening_hours": "Mo-Fr 07:00-17:00",
+  "website": "https://www.duncanterrace.co.uk/",
+  "postcode": "EC1V 1NE"
+ },
+ {
+  "osm_id": 638925838,
+  "name": "Candid Cafe",
+  "amenity": "cafe",
+  "lat": 51.532188,
+  "lng": -0.105164,
+  "opening_hours": "Mo-Sa 12:00-22:00; Su 12:00-17:00",
+  "website": "https://candidarts.wordpress.com/cafe/",
+  "postcode": "EC1V 1NQ"
+ },
+ {
+  "osm_id": 644625847,
+  "name": "Bloomsbury Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5252191,
+  "lng": -0.1327573,
+  "opening_hours": "Mo-Fr 09:00-16:00",
+  "website": "https://studentsunionucl.org/eat-drink-shop/cafes/bloomsbury-cafe",
+  "postcode": "WC1H 0AY"
+ },
+ {
+  "osm_id": 647004373,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5322247,
+  "lng": -0.1264865,
+  "opening_hours": "Mo-Su 00:00-24:00",
+  "website": "https://www.starbucks.com/store-locator/store/2828/st-pancras-international-stati-st-pancras-international-station-london-eng-nw-1-2",
+  "postcode": null
+ },
+ {
+  "osm_id": 647052117,
+  "name": "Benugo",
+  "amenity": "cafe",
+  "lat": 51.5319049,
+  "lng": -0.1263153,
+  "opening_hours": "Mo-Sa 06:00-21:00; Su 07:00-21:00",
+  "website": "https://www.benugo.com/sites/cafes/benugo-st-pancras/",
+  "postcode": "N1C 4QP"
+ },
+ {
+  "osm_id": 647875599,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5208569,
+  "lng": -0.1164931,
+  "opening_hours": "Mo-Fr 07:00-19:00, Sa 07:30-18:00, Su 07:30-17:30",
+  "website": "https://www.caffenero.com/uk/stores/theobalds-rd",
+  "postcode": "WC1X 8NW"
+ },
+ {
+  "osm_id": 653142618,
+  "name": "The Cat & Cucumber",
+  "amenity": "cafe",
+  "lat": 51.5013164,
+  "lng": -0.07786,
+  "opening_hours": "Mo-Fr 06:30-15:00; Sa 07:30-14:00",
+  "website": null,
+  "postcode": "SE1 2AD"
+ },
+ {
+  "osm_id": 661038345,
+  "name": "Espressamente",
+  "amenity": "cafe",
+  "lat": 51.500624,
+  "lng": -0.116915,
+  "opening_hours": "Mo-Su 06:30-18:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 664966075,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.5195479,
+  "lng": -0.135626,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa,Su 07:00-19:00",
+  "website": null,
+  "postcode": "W1T 2NR"
+ },
+ {
+  "osm_id": 666475908,
+  "name": "The Saint",
+  "amenity": "pub",
+  "lat": 51.5135985,
+  "lng": -0.0940496,
+  "opening_hours": "Mo-Fr 12:00-23:00; Sa,Su off",
+  "website": "https://www.thesaint-bow.co.uk/",
+  "postcode": "EC4M 9DQ"
+ },
+ {
+  "osm_id": 666475916,
+  "name": "Cafe Below",
+  "amenity": "cafe",
+  "lat": 51.5138693,
+  "lng": -0.0935309,
+  "opening_hours": "Mo-Fr 07:00-10:00, 11:30-14:30",
+  "website": "https://www.cafebelow.co.uk/",
+  "postcode": "EC2V 6AU"
+ },
+ {
+  "osm_id": 666918951,
+  "name": "The Chamberlain",
+  "amenity": "pub",
+  "lat": 51.5121747,
+  "lng": -0.0757376,
+  "opening_hours": null,
+  "website": "https://www.thechamberlainhotel.co.uk/",
+  "postcode": "EC3N 1NU"
+ },
+ {
+  "osm_id": 666918952,
+  "name": "Dirty Martini Minories",
+  "amenity": "bar",
+  "lat": 51.5118709,
+  "lng": -0.0756786,
+  "opening_hours": null,
+  "website": "https://www.maryjanesbar.com/",
+  "postcode": "EC3N 1NT"
+ },
+ {
+  "osm_id": 666920103,
+  "name": "Slug and Lettuce",
+  "amenity": "bar",
+  "lat": 51.512367,
+  "lng": -0.0754101,
+  "opening_hours": null,
+  "website": "https://www.slugandlettuce.co.uk/aldgate",
+  "postcode": "EC3N 1DD"
+ },
+ {
+  "osm_id": 668820569,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.511976,
+  "lng": -0.079927,
+  "opening_hours": "Mo-Fr 06:00-18:30",
+  "website": "https://www.caffenero.com/uk/stores/fenchurch-street",
+  "postcode": "EC3R 7JP"
+ },
+ {
+  "osm_id": 675866067,
+  "name": "Redemption Roasters",
+  "amenity": "cafe",
+  "lat": 51.5084676,
+  "lng": -0.136869,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa,Su 09:00-18:00",
+  "website": null,
+  "postcode": "SW1Y 6DT"
+ },
+ {
+  "osm_id": 681200105,
+  "name": "Panopolis",
+  "amenity": "cafe",
+  "lat": 51.5282488,
+  "lng": -0.1336117,
+  "opening_hours": "Mo-Sa 06:30-22:30; Su 07:00-22:30",
+  "website": null,
+  "postcode": "NW1 2HS"
+ },
+ {
+  "osm_id": 690721437,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5069374,
+  "lng": -0.1459816,
+  "opening_hours": "Mo-Su 06:30-19:30",
+  "website": "https://www.caffenero.com/uk/stores/curzon-st",
+  "postcode": "W1J 7UW"
+ },
+ {
+  "osm_id": 691084094,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5158824,
+  "lng": -0.1406487,
+  "opening_hours": "Mo-Fr 06:00-23:00; Sa 07:00-23:00; Su 07:30-21:00",
+  "website": null,
+  "postcode": "W1W 8QJ"
+ },
+ {
+  "osm_id": 696746887,
+  "name": "Dillons",
+  "amenity": "cafe",
+  "lat": 51.5223949,
+  "lng": -0.1322463,
+  "opening_hours": "Mo-Sa 08:30-20:00; Su 12:00-17:30",
+  "website": null,
+  "postcode": "WC1E 6EG"
+ },
+ {
+  "osm_id": 698447397,
+  "name": "Engineering Cafe",
+  "amenity": "cafe",
+  "lat": 51.5228705,
+  "lng": -0.132082,
+  "opening_hours": "Mo-Fr 08:30-18:00; SH Mo-Fr 08:30-16:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 702773347,
+  "name": "The Cannick Tapps",
+  "amenity": "pub",
+  "lat": 51.5116546,
+  "lng": -0.0897347,
+  "opening_hours": "Mo-We 11:00-00:00, 09:00-18:00; Th, Fr 11:00-01:00; Sa 11:00-22:00",
+  "website": "https://www.crafted-social.co.uk/cannick-tapps-london",
+  "postcode": "EC4N 5AD"
+ },
+ {
+  "osm_id": 702796635,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5126035,
+  "lng": -0.090075,
+  "opening_hours": "Mo-Fr 06:00-19:00",
+  "website": null,
+  "postcode": "EC4N 8BN"
+ },
+ {
+  "osm_id": 707299370,
+  "name": "De Vine",
+  "amenity": "cafe",
+  "lat": 51.5110877,
+  "lng": -0.0756382,
+  "opening_hours": "Mo-Fr 07:00-14:00",
+  "website": null,
+  "postcode": "EC3N 2PX"
+ },
+ {
+  "osm_id": 708866092,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5152475,
+  "lng": -0.0799419,
+  "opening_hours": "Mo-Th 06:30-17:30; Fr 06:30-17:00; Sa-Su closed",
+  "website": "https://www.caffenero.com/uk/stores/st-mary-axe",
+  "postcode": "EC3A 8FR"
+ },
+ {
+  "osm_id": 714549513,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5024863,
+  "lng": -0.092428,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa,Su 08:00-17:00",
+  "website": null,
+  "postcode": "SE1 1LB"
+ },
+ {
+  "osm_id": 720890821,
+  "name": "Print Room Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5241273,
+  "lng": -0.133231,
+  "opening_hours": "Mo-Fr 08:00-20:00",
+  "website": "https://studentsunionucl.org/eat-drink-shop/cafes/print-room-cafe",
+  "postcode": "WC1E 6BT"
+ },
+ {
+  "osm_id": 739967562,
+  "name": "The Walrus & The Carpenter",
+  "amenity": "pub",
+  "lat": 51.5095114,
+  "lng": -0.0842105,
+  "opening_hours": null,
+  "website": "https://www.nicholsonspubs.co.uk/restaurants/london/thewalrusandthecarpentermonumentlondon",
+  "postcode": "EC3R 8BU"
+ },
+ {
+  "osm_id": 752177862,
+  "name": "Strongroom",
+  "amenity": "bar",
+  "lat": 51.5260809,
+  "lng": -0.0799005,
+  "opening_hours": "Mo 12:00-23:00; Tu-We 12:00-24:00; Th 12:00-01:00; Fr-Sa 12:00-02:00; Su 12:00-22:00",
+  "website": "https://www.strongroombar.com",
+  "postcode": "EC2A 3SQ"
+ },
+ {
+  "osm_id": 799284830,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5145479,
+  "lng": -0.1387551,
+  "opening_hours": "Mo-Fr 06:30-19:30; Sa 07:30-20:00; Su 08:00-19:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 821344552,
+  "name": "Santa Nata",
+  "amenity": "cafe",
+  "lat": 51.5110536,
+  "lng": -0.1261615,
+  "opening_hours": "Mo-Su 10:00-22:00",
+  "website": "https://santanata.com/",
+  "postcode": "WC2N 4LH"
+ },
+ {
+  "osm_id": 830477754,
+  "name": "Shuffle Club",
+  "amenity": "bar",
+  "lat": 51.5239027,
+  "lng": -0.074397,
+  "opening_hours": null,
+  "website": "https://shuffleclub.com/",
+  "postcode": "E1 6LA"
+ },
+ {
+  "osm_id": 858431027,
+  "name": "Duke of Wellington",
+  "amenity": "pub",
+  "lat": 51.517868,
+  "lng": -0.07459,
+  "opening_hours": null,
+  "website": "https://www.duke.london/",
+  "postcode": "E1 7NE"
+ },
+ {
+  "osm_id": 863838548,
+  "name": "Little Bread Pedlar",
+  "amenity": "cafe",
+  "lat": 51.5006197,
+  "lng": -0.1130387,
+  "opening_hours": "Mo-Fr 08:00-15:00, Sa-Su 09:00-16:00",
+  "website": "https://www.lbpedlar.com",
+  "postcode": "SE1 7RJ"
+ },
+ {
+  "osm_id": 878029964,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.495592,
+  "lng": -0.129055,
+  "opening_hours": "Mo-Fr 07:00-18:30; Sa 08:30-18:00; Su 08:30-17:30",
+  "website": "https://www.caffenero.com/uk/stores/marsham-st",
+  "postcode": "SW1P 3DP"
+ },
+ {
+  "osm_id": 893489167,
+  "name": "Beck's cafe",
+  "amenity": "cafe",
+  "lat": 51.5196419,
+  "lng": -0.1171107,
+  "opening_hours": "Mo-Fr 07:00-22:00; Sa,Su 07:00-15:00",
+  "website": "http://www.beckscafe.co.uk/",
+  "postcode": "WC1R 4PS"
+ },
+ {
+  "osm_id": 916986417,
+  "name": "Peter's Cafe",
+  "amenity": "cafe",
+  "lat": 51.5138266,
+  "lng": -0.0753846,
+  "opening_hours": "Mo-Th 06:00-16:30; Fr 06:00-15:00; Sa-Su 07:30-15:00",
+  "website": null,
+  "postcode": "EC3N 1BD"
+ },
+ {
+  "osm_id": 1024570955,
+  "name": "E. Pellicci",
+  "amenity": "cafe",
+  "lat": 51.5264955,
+  "lng": -0.0633785,
+  "opening_hours": "Mo-Sa 08:00-15:30",
+  "website": "https://epellicci.co.uk/",
+  "postcode": "E2 0AG"
+ },
+ {
+  "osm_id": 1043301728,
+  "name": "Gordon's Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.525692,
+  "lng": -0.1333174,
+  "opening_hours": "Mo-Fr 08:00-18:00",
+  "website": "https://studentsunionucl.org/eat-drink-shop/cafes/gordons-cafe",
+  "postcode": "WC1H 0AY"
+ },
+ {
+  "osm_id": 1144626359,
+  "name": "The Sea Horse",
+  "amenity": "pub",
+  "lat": 51.5121486,
+  "lng": -0.0955817,
+  "opening_hours": null,
+  "website": "https://www.greatukpubs.co.uk/sea-horse-fleet-street",
+  "postcode": "EC4N 4SJ"
+ },
+ {
+  "osm_id": 1164110889,
+  "name": "Singer Tavern",
+  "amenity": "bar",
+  "lat": 51.5222905,
+  "lng": -0.0868419,
+  "opening_hours": "Mo-We 11:00-24:00; Th-Sa 11:00-02:00; Su off",
+  "website": "https://www.singertavern.com/",
+  "postcode": "EC1Y 1AG"
+ },
+ {
+  "osm_id": 1203028972,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5150107,
+  "lng": -0.0729333,
+  "opening_hours": "Mo-Sa 06:30-19:00; Su 07:30-18:30",
+  "website": null,
+  "postcode": "E1 7PT"
+ },
+ {
+  "osm_id": 1212531400,
+  "name": "Gallery Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5298538,
+  "lng": -0.0545697,
+  "opening_hours": "Su-We 09:00-16:00; Th-Sa 09:00-17:00",
+  "website": "https://www.stmargaretshouse.org.uk/the-gallery-cafe",
+  "postcode": "E2 9PJ"
+ },
+ {
+  "osm_id": 1215861506,
+  "name": "The Queen's Head",
+  "amenity": "pub",
+  "lat": 51.5284524,
+  "lng": -0.1181488,
+  "opening_hours": "Tu-Sa 12:00-00:00; Su-Mo 12:00-23:00",
+  "website": "https://www.queensheadlondon.com/",
+  "postcode": "WC1X 9NB"
+ },
+ {
+  "osm_id": 1230966521,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.4970389,
+  "lng": -0.1411462,
+  "opening_hours": "Mo-Fr 06:30-19:00; Su 07:30-18:00; Sa 06:30-20:00",
+  "website": "https://www.costa.co.uk/stores/cardinal-place-ldn",
+  "postcode": "SW1E 5JE"
+ },
+ {
+  "osm_id": 1232048577,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.494309,
+  "lng": -0.1468458,
+  "opening_hours": "Mo-Fr 05:30-21:30; Sa,Su 06:00-21:00",
+  "website": "https://www.starbucks.com/store-locator/store/2508/victoria-buckingham-palace-r-98-buckingham-palace-road-london-eng-sw-1-w-0-ss-g",
+  "postcode": "SW1W 0SS"
+ },
+ {
+  "osm_id": 1262681790,
+  "name": "WA Bakery",
+  "amenity": "cafe",
+  "lat": 51.5178173,
+  "lng": -0.1516381,
+  "opening_hours": "Mo-Su 09:00-18:00",
+  "website": null,
+  "postcode": "W1U 3JG"
+ },
+ {
+  "osm_id": 1267855186,
+  "name": "l'eau a la bouche",
+  "amenity": "cafe",
+  "lat": 51.5367457,
+  "lng": -0.0618461,
+  "opening_hours": "Mo-Fr 08:00-19:00; Sa 08:30-18:00; Su 09:00-17:00",
+  "website": null,
+  "postcode": "E8 4PH"
+ },
+ {
+  "osm_id": 1497452168,
+  "name": "Jamaica Wine House",
+  "amenity": "pub",
+  "lat": 51.5129704,
+  "lng": -0.0856635,
+  "opening_hours": "Mo-Fr 11:00-23:00",
+  "website": "https://www.shepherdneame.co.uk/pubs/london/jamaica-wine-house",
+  "postcode": "EC3V 9DS"
+ },
+ {
+  "osm_id": 1497452177,
+  "name": "Cloth Cornhill",
+  "amenity": "pub",
+  "lat": 51.5130283,
+  "lng": -0.0859508,
+  "opening_hours": null,
+  "website": "https://www.clothrestaurants.com/cloth-restaurants-cloth-cornhill-london-reservations",
+  "postcode": "EC3V 9DR"
+ },
+ {
+  "osm_id": 1547392947,
+  "name": "The Windsor",
+  "amenity": "pub",
+  "lat": 51.5113698,
+  "lng": -0.0794105,
+  "opening_hours": "Mo-Th 10:00-23:00; Fr 10:00-25:00; Sa 11:00-20:00",
+  "website": "https://www.greatukpubs.co.uk/windsor-fenchurch-place",
+  "postcode": "EC3R 7NA"
+ },
+ {
+  "osm_id": 1561417481,
+  "name": "Hung, Drawn and Quartered",
+  "amenity": "pub",
+  "lat": 51.5095282,
+  "lng": -0.0807865,
+  "opening_hours": "Mo-Sa 12:00-23:00; Su 12:00-18:00",
+  "website": "https://www.hung-drawn-and-quartered.co.uk/",
+  "postcode": "EC3R 5AQ"
+ },
+ {
+  "osm_id": 1588688119,
+  "name": "Curious Yellow Kafe",
+  "amenity": "cafe",
+  "lat": 51.5296588,
+  "lng": -0.0836722,
+  "opening_hours": "Mo-We 08:00-18:00; Th-Fr 08:00-19:00; Sa-Su 09:00-19:00",
+  "website": null,
+  "postcode": "N1 6BT"
+ },
+ {
+  "osm_id": 1613019140,
+  "name": "Kibco coffee",
+  "amenity": "cafe",
+  "lat": 51.5358008,
+  "lng": -0.1165392,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa 08:00-16:00; Su 09:00-16:00",
+  "website": null,
+  "postcode": "N1 0SQ"
+ },
+ {
+  "osm_id": 1662606928,
+  "name": "The Refinery",
+  "amenity": "bar",
+  "lat": 51.5060174,
+  "lng": -0.0995696,
+  "opening_hours": "Mo-We 08:00-23:00; Th-Fr 08:00-00:00; Sa 10:00-00:00; Su 10:00-18:00",
+  "website": "https://drakeandmorgan.co.uk/the-refinery-bankside",
+  "postcode": "SE1 0TF"
+ },
+ {
+  "osm_id": 1669491400,
+  "name": "Neo",
+  "amenity": "bar",
+  "lat": 51.5205378,
+  "lng": -0.0980208,
+  "opening_hours": "Mo-Th 12:00-00:00; Fr-Sa 12:00+",
+  "website": "https://www.neobarbican.com/",
+  "postcode": "EC1M 6AD"
+ },
+ {
+  "osm_id": 1684709914,
+  "name": "Slug & Lettuce",
+  "amenity": "bar",
+  "lat": 51.5163243,
+  "lng": -0.0940154,
+  "opening_hours": null,
+  "website": "https://www.slugandlettuce.co.uk/st-pauls-london",
+  "postcode": "EC2V 7JQ"
+ },
+ {
+  "osm_id": 1695378571,
+  "name": "The Drift Bar",
+  "amenity": "bar",
+  "lat": 51.5162765,
+  "lng": -0.0808289,
+  "opening_hours": null,
+  "website": "http://thedriftbar.co.uk/",
+  "postcode": "EC2N 4AY"
+ },
+ {
+  "osm_id": 1707216586,
+  "name": "The Thirsty Bear",
+  "amenity": "pub",
+  "lat": 51.5070706,
+  "lng": -0.1081175,
+  "opening_hours": null,
+  "website": "https://www.thethirstybear.com/",
+  "postcode": "SE1 9LX"
+ },
+ {
+  "osm_id": 1754142781,
+  "name": "Humble Grape",
+  "amenity": "bar",
+  "lat": 51.5135582,
+  "lng": -0.1052849,
+  "opening_hours": null,
+  "website": "https://www.humblegrape.co.uk/fleet-street",
+  "postcode": null
+ },
+ {
+  "osm_id": 1769294100,
+  "name": "The Oyster Shed",
+  "amenity": "bar",
+  "lat": 51.5091099,
+  "lng": -0.0897444,
+  "opening_hours": "Mo-Sa 10:00-23:00; Su 11:00-17:00",
+  "website": "https://www.oystershed.co.uk/",
+  "postcode": "EC4R 3AB"
+ },
+ {
+  "osm_id": 1844622465,
+  "name": "Press",
+  "amenity": "cafe",
+  "lat": 51.5159067,
+  "lng": -0.1120482,
+  "opening_hours": "Mo-Fr 07:30-16:30; Sa-Su off",
+  "website": null,
+  "postcode": "WC2A 1DD"
+ },
+ {
+  "osm_id": 1853003791,
+  "name": "Billy's Cafe",
+  "amenity": "cafe",
+  "lat": 51.5323759,
+  "lng": -0.0612455,
+  "opening_hours": "Mo-Fr 06:30-15:30; Sa 07:00-14:00; Su off",
+  "website": null,
+  "postcode": "E2 9AP"
+ },
+ {
+  "osm_id": 1913487611,
+  "name": "British Library cafe",
+  "amenity": "cafe",
+  "lat": 51.5301995,
+  "lng": -0.1277044,
+  "opening_hours": "Mo-Fr 09:00-19:30; Sa,Su 09:00-16:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 1941606902,
+  "name": "FWD:Coffee",
+  "amenity": "cafe",
+  "lat": 51.5233467,
+  "lng": -0.0932624,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa-Su 08:00-19:00",
+  "website": "https://www.fwdcoffee.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 1962952854,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.513443,
+  "lng": -0.1179483,
+  "opening_hours": "Mo-Fr 07:00-20:00; Sa 08:30-19:00; Su 09:00-17:30",
+  "website": "https://www.caffenero.com/uk/stores/kingsway-aldwych",
+  "postcode": "WC2B 6XG"
+ },
+ {
+  "osm_id": 1987144890,
+  "name": "Ravello",
+  "amenity": "cafe",
+  "lat": 51.494712,
+  "lng": -0.1306765,
+  "opening_hours": "Mo-Th 06:30-17:00; Fr 06:30-16:30",
+  "website": null,
+  "postcode": "SW1P 2AA"
+ },
+ {
+  "osm_id": 1998673258,
+  "name": "Heytea",
+  "amenity": "cafe",
+  "lat": 51.517866,
+  "lng": -0.1163249,
+  "opening_hours": "11:00-22:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 2122653029,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5084102,
+  "lng": -0.1084814,
+  "opening_hours": "Mo-Th 06:30-22:00, Fr 06:30-22:30, Sa 07:00-22:30, Su 07:30-22:00",
+  "website": "https://www.caffenero.com/uk/stores/oxo-tower",
+  "postcode": "SE1 9PH"
+ },
+ {
+  "osm_id": 2184078818,
+  "name": "Cinnamon Coffee Shop",
+  "amenity": "cafe",
+  "lat": 51.5048101,
+  "lng": -0.0572693,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 08:00-17:00",
+  "website": null,
+  "postcode": "E1W 2RW"
+ },
+ {
+  "osm_id": 2343903782,
+  "name": "Imax Cafe",
+  "amenity": "cafe",
+  "lat": 51.5047874,
+  "lng": -0.1133912,
+  "opening_hours": "Mo-Fr 08:00-21:00; Sa 09:00-21:00; Su 09:30-21:00",
+  "website": null,
+  "postcode": "SE1 8XR"
+ },
+ {
+  "osm_id": 2345097820,
+  "name": "Sandwhich Express",
+  "amenity": "cafe",
+  "lat": 51.509073,
+  "lng": -0.130491,
+  "opening_hours": "Mo-Fr 07:00-16:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 2414012810,
+  "name": "Caf\u00e9 Fresco",
+  "amenity": "cafe",
+  "lat": 51.4996087,
+  "lng": -0.1309482,
+  "opening_hours": "Mo-Fr 06:00-18:00; Sa,Su 07:00-16:00",
+  "website": null,
+  "postcode": "SW1H 9LH"
+ },
+ {
+  "osm_id": 2457229991,
+  "name": "Paper & Cup",
+  "amenity": "cafe",
+  "lat": 51.5262152,
+  "lng": -0.0768401,
+  "opening_hours": "Mo-Sa 10:00-18:00; Su 11:00-17:00",
+  "website": null,
+  "postcode": "E2 7JP"
+ },
+ {
+  "osm_id": 2466428731,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.4952187,
+  "lng": -0.1442373,
+  "opening_hours": "Mo-We 05:30-23:00; Th-Fr 05:30-24:00; Sa 05:30-00:30; Su 05:30-23:00",
+  "website": "https://www.caffenero.com/uk/stores/victoria-central",
+  "postcode": "SW1W 9SJ"
+ },
+ {
+  "osm_id": 2642857190,
+  "name": "The Libertine",
+  "amenity": "bar",
+  "lat": 51.5134249,
+  "lng": -0.0875835,
+  "opening_hours": null,
+  "website": "https://www.theroyalexchange.co.uk/The-Libertine/",
+  "postcode": "EC3V 3LL"
+ },
+ {
+  "osm_id": 2642857238,
+  "name": "Tossed",
+  "amenity": "cafe",
+  "lat": 51.5113198,
+  "lng": -0.0873492,
+  "opening_hours": "Mo-Fr 07:00-16:00",
+  "website": "https://www.tosseduk.com/",
+  "postcode": "EC4N 7BP"
+ },
+ {
+  "osm_id": 2737653447,
+  "name": "The Folly",
+  "amenity": "bar",
+  "lat": 51.5111185,
+  "lng": -0.0858916,
+  "opening_hours": null,
+  "website": "http://www.thefollybar.co.uk",
+  "postcode": "EC3V 0BT"
+ },
+ {
+  "osm_id": 2749842102,
+  "name": "Baranis",
+  "amenity": "bar",
+  "lat": 51.5145746,
+  "lng": -0.1114169,
+  "opening_hours": null,
+  "website": "https://www.baranis.co.uk/",
+  "postcode": "WC2A 1PP"
+ },
+ {
+  "osm_id": 2754581096,
+  "name": "Barbican Foodhall",
+  "amenity": "cafe",
+  "lat": 51.5196883,
+  "lng": -0.093761,
+  "opening_hours": "Mo-Sa 09:00-20:00; Su 11:00-20:00",
+  "website": "https://www.barbican.org.uk/restaurants-bars/barbican-foodhall",
+  "postcode": null
+ },
+ {
+  "osm_id": 2778358255,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.521384,
+  "lng": -0.1434842,
+  "opening_hours": "Mo-Fr 06:15-20:30; Sa, Su 07:00-20:00",
+  "website": "https://www.starbucks.co.uk/store-locator/store/2378/great-portland-street-159-great-portland-street-london-eng-w-1-n-5-fd-gb",
+  "postcode": "W1W 5PA"
+ },
+ {
+  "osm_id": 2898949673,
+  "name": "City C\u00e0ph\u00ea",
+  "amenity": "cafe",
+  "lat": 51.5147635,
+  "lng": -0.0915874,
+  "opening_hours": "Mo-Fr 11:30-13:00",
+  "website": "https://www.citycaphe.com/",
+  "postcode": "EC2V 8EY"
+ },
+ {
+  "osm_id": 2905803701,
+  "name": "carpo Piccadilly",
+  "amenity": "cafe",
+  "lat": 51.510505,
+  "lng": -0.1355164,
+  "opening_hours": "Mo-Th 08:00-21:00; Fr 08:00-21:30; Sa,Su 10:00-21:30",
+  "website": null,
+  "postcode": "W1B 5AR"
+ },
+ {
+  "osm_id": 2935383884,
+  "name": "Balls Brothers",
+  "amenity": "pub",
+  "lat": 51.510937,
+  "lng": -0.0803664,
+  "opening_hours": "Mo-Fr 11:00-23:00; Sa-Su off",
+  "website": "https://www.ballsbrothers.co.uk/venues/mark-lane/",
+  "postcode": "EC3R 7BB"
+ },
+ {
+  "osm_id": 2935383885,
+  "name": "Davy\u2019s at Plantation Place",
+  "amenity": "bar",
+  "lat": 51.5107359,
+  "lng": -0.0816565,
+  "opening_hours": "Mo-Fr 08:00-23:00",
+  "website": "https://www.davy.co.uk/plantationplace",
+  "postcode": "EC3R 7BD"
+ },
+ {
+  "osm_id": 2970155233,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.527627,
+  "lng": -0.129332,
+  "opening_hours": "Mo-Fr 07:00-19:30; Sa 07:31-18:30; Su 08:00-18:00",
+  "website": null,
+  "postcode": "WC1H 9PJ"
+ },
+ {
+  "osm_id": 2979737106,
+  "name": "Tank & Paddle",
+  "amenity": "bar",
+  "lat": 51.520738,
+  "lng": -0.0791089,
+  "opening_hours": "Mo-Th 12:00-23:00; Fr-Sa 12:00-00:00; Su 12:00-19:30",
+  "website": "https://www.tankandpaddle.co.uk/bishopsgate",
+  "postcode": "EC2M 3AB"
+ },
+ {
+  "osm_id": 3010451545,
+  "name": "Sager + Wilde",
+  "amenity": "bar",
+  "lat": 51.5309903,
+  "lng": -0.0721293,
+  "opening_hours": "Mo-Fr 17:00-00:00; Sa-Su 12:00-00:00",
+  "website": "https://www.sagerandwilde.com/",
+  "postcode": "E2 8JL"
+ },
+ {
+  "osm_id": 3061368740,
+  "name": "The Ragged Canteen At Beaconsfield",
+  "amenity": "cafe",
+  "lat": 51.492093,
+  "lng": -0.118698,
+  "opening_hours": "We-Fr 08:00-16:00; Sa 10:00-16:00",
+  "website": null,
+  "postcode": "SE11 6AY"
+ },
+ {
+  "osm_id": 3080553851,
+  "name": "Half Cup",
+  "amenity": "cafe",
+  "lat": 51.5278337,
+  "lng": -0.1248108,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa,Su 09:00-16:00",
+  "website": "https://halfcup.co.uk/",
+  "postcode": "WC1H 9NT"
+ },
+ {
+  "osm_id": 3085263821,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.5166847,
+  "lng": -0.1291004,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa 07:00-20:00; Su 07:30-20:00",
+  "website": "https://www.blankstreet.com/",
+  "postcode": "WC1A 1HD"
+ },
+ {
+  "osm_id": 3154058988,
+  "name": "Home Bar",
+  "amenity": "bar",
+  "lat": 51.5248286,
+  "lng": -0.0821566,
+  "opening_hours": null,
+  "website": "https://homeonravey.com/",
+  "postcode": "EC2A 4QW"
+ },
+ {
+  "osm_id": 3159073264,
+  "name": "Koshari Street",
+  "amenity": "cafe",
+  "lat": 51.5109081,
+  "lng": -0.1268618,
+  "opening_hours": "Mo-Sa 11:30-21:30; Su 12:00-20:00",
+  "website": "https://www.kosharistreet.com/",
+  "postcode": "WC2N 4EA"
+ },
+ {
+  "osm_id": 3206389319,
+  "name": "Attendant",
+  "amenity": "cafe",
+  "lat": 51.5212703,
+  "lng": -0.0789223,
+  "opening_hours": "Mo-Fr 08:00-16:00, Sa-Su 09:00-16:00",
+  "website": "https://www.the-attendant.com/",
+  "postcode": "E1 6DB"
+ },
+ {
+  "osm_id": 3218826552,
+  "name": "Moonshine Saloon",
+  "amenity": "bar",
+  "lat": 51.5147613,
+  "lng": -0.0780054,
+  "opening_hours": null,
+  "website": "www.secretfrog.co.uk",
+  "postcode": "EC3A 7DB"
+ },
+ {
+  "osm_id": 3223507049,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.4930058,
+  "lng": -0.1490416,
+  "opening_hours": "Mo-Fr 05:45-19:00; Sa 06:30-19:00; Su 07:00-19:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/elizabeth-street",
+  "postcode": "SW1W 9RB"
+ },
+ {
+  "osm_id": 3224669473,
+  "name": "Cona",
+  "amenity": "cafe",
+  "lat": 51.5197262,
+  "lng": -0.1350801,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa,Su 10:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 3306596294,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.5106118,
+  "lng": -0.0854066,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa 07:00-19:00; Su 07:30-18:00",
+  "website": "https://www.blankstreet.com/en-GB/locations/london/LB9VF0QD2PKPT-monument",
+  "postcode": "EC3M 1AE"
+ },
+ {
+  "osm_id": 3310086151,
+  "name": "EL&N",
+  "amenity": "cafe",
+  "lat": 51.5317441,
+  "lng": -0.1266408,
+  "opening_hours": "Mo-Fr 06:30-22:00; Sa-Su 06:30-22:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 3310086154,
+  "name": "Paul",
+  "amenity": "cafe",
+  "lat": 51.5305318,
+  "lng": -0.1259753,
+  "opening_hours": "Mo-Su 06:00-22:00",
+  "website": null,
+  "postcode": "N1C 4QL"
+ },
+ {
+  "osm_id": 3320744028,
+  "name": "Balls Brothers",
+  "amenity": "bar",
+  "lat": 51.5156651,
+  "lng": -0.0852995,
+  "opening_hours": null,
+  "website": "https://ballsbrothersaustinfriars.co.uk/",
+  "postcode": "EC2N 2HG"
+ },
+ {
+  "osm_id": 3357569133,
+  "name": "Double Six Cafe",
+  "amenity": "cafe",
+  "lat": 51.5295511,
+  "lng": -0.1329833,
+  "opening_hours": "Mo-Fr 07:00-16:30; Sa 07:00-16:00; Su 08:00-15:00",
+  "website": null,
+  "postcode": "NW1 1DA"
+ },
+ {
+  "osm_id": 3357919382,
+  "name": "Caffe Concerto",
+  "amenity": "cafe",
+  "lat": 51.5141057,
+  "lng": -0.1485786,
+  "opening_hours": "Su-Th 08:00-22:00; Fr-Sa 07:30-23:00",
+  "website": "https://www.caffeconcerto.co.uk/locations/united-kingdom/central-london/caffe-concerto-bond-street",
+  "postcode": "W1K 5RN"
+ },
+ {
+  "osm_id": 3357928853,
+  "name": "Crepe Coffee & Chai",
+  "amenity": "cafe",
+  "lat": 51.5174295,
+  "lng": -0.1309123,
+  "opening_hours": "Mo-Fr 07:00-20:00; Sa-Su 08:00-20:00",
+  "website": null,
+  "postcode": "W1T 7RF"
+ },
+ {
+  "osm_id": 3384334002,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.521489,
+  "lng": -0.0754491,
+  "opening_hours": "Mo-Fr 06:00-19:00; Sa 07:00-19:00; Su 06:30-19:30",
+  "website": null,
+  "postcode": "E1 6AZ"
+ },
+ {
+  "osm_id": 3426008568,
+  "name": "The Common E2",
+  "amenity": "cafe",
+  "lat": 51.5293782,
+  "lng": -0.0610867,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa-Su 09:30-16:00",
+  "website": null,
+  "postcode": "E2 6QA"
+ },
+ {
+  "osm_id": 3457361810,
+  "name": "Crumpets",
+  "amenity": "cafe",
+  "lat": 51.4991875,
+  "lng": -0.1382016,
+  "opening_hours": "Mo-Fr 07:00-16:00",
+  "website": null,
+  "postcode": "SW1E 6PD"
+ },
+ {
+  "osm_id": 3469151252,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5136046,
+  "lng": -0.1180694,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa 06:30-20:00; Su 07:00-19:00",
+  "website": null,
+  "postcode": "WC2B 6XF"
+ },
+ {
+  "osm_id": 3469593504,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5209027,
+  "lng": -0.0752626,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa-Su 08:00-18:00",
+  "website": null,
+  "postcode": "E1 6BJ"
+ },
+ {
+  "osm_id": 3471126065,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5150216,
+  "lng": -0.0719241,
+  "opening_hours": "Mo-Fr 06:15-18:00; Sa,Su 07:00-19:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/aldgate-east-station",
+  "postcode": "E1 8FA"
+ },
+ {
+  "osm_id": 3567118898,
+  "name": "Harris + Hoole",
+  "amenity": "cafe",
+  "lat": 51.5043704,
+  "lng": -0.0817713,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa 09:00-17:00; Su 10:00-16:00",
+  "website": "https://www.harrisandhoole.co.uk/shops/tooley-st",
+  "postcode": "SE1 2RT"
+ },
+ {
+  "osm_id": 3567118899,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5042201,
+  "lng": -0.0815541,
+  "opening_hours": "Mo-Fr 06:00-19:30, Sa 07:00-19:00, Su 07:30-19:00",
+  "website": null,
+  "postcode": "SE1 2RS"
+ },
+ {
+  "osm_id": 3589831010,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5012973,
+  "lng": -0.1043523,
+  "opening_hours": "Mo-Fr 06:00-19:00; Su 07:00-18:00",
+  "website": null,
+  "postcode": "SE1 8EZ"
+ },
+ {
+  "osm_id": 3612921136,
+  "name": "Truedan",
+  "amenity": "cafe",
+  "lat": 51.5168425,
+  "lng": -0.120245,
+  "opening_hours": "Mo-Th 11:00-21:30; Fr 11:00-22:00; Sa 12:00-22:00; Su 12:00-21:00",
+  "website": null,
+  "postcode": "WC2B 6PP"
+ },
+ {
+  "osm_id": 3637713284,
+  "name": "Kiss the Hippo",
+  "amenity": "cafe",
+  "lat": 51.5164828,
+  "lng": -0.1416198,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa 08:30-17:00; Su 09:30-17:00",
+  "website": "https://kissthehippo.com/",
+  "postcode": "W1W 8SG"
+ },
+ {
+  "osm_id": 3639031393,
+  "name": "Seed Library",
+  "amenity": "bar",
+  "lat": 51.5258164,
+  "lng": -0.0774226,
+  "opening_hours": "Mo,We,Th 18:00-01:00; Fr 18:00-02:00; Sa 16:00-02:00; Su 17:00-24:00",
+  "website": "https://onehundredshoreditch.com/eat-drink/seed-library/",
+  "postcode": "E1 6JQ"
+ },
+ {
+  "osm_id": 3639031394,
+  "name": "Coffee Shop",
+  "amenity": "cafe",
+  "lat": 51.5258023,
+  "lng": -0.0775261,
+  "opening_hours": "Mo-Su 07:00-17:00",
+  "website": "https://www.onehundredshoreditch.com/eat-drink/coffee-shop/",
+  "postcode": "E1 6JQ"
+ },
+ {
+  "osm_id": 3639471792,
+  "name": "Aurax",
+  "amenity": "bar",
+  "lat": 51.5259174,
+  "lng": -0.0780296,
+  "opening_hours": "Mo-Sa 12:00-02:00, Su 12:00-00:00",
+  "website": "http://theshoreditch-london.com",
+  "postcode": "E1 6JE"
+ },
+ {
+  "osm_id": 3655366838,
+  "name": "Fuckoffee",
+  "amenity": "cafe",
+  "lat": 51.5261491,
+  "lng": -0.0679494,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa,Su 08:00-18:00",
+  "website": null,
+  "postcode": "E2 6AB"
+ },
+ {
+  "osm_id": 3711917738,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5315603,
+  "lng": -0.1269403,
+  "opening_hours": "Mo-Sa 06:00-21:30; Su 07:00-20:00",
+  "website": null,
+  "postcode": "N1C 4QP"
+ },
+ {
+  "osm_id": 3734465133,
+  "name": "munchies",
+  "amenity": "cafe",
+  "lat": 51.502226,
+  "lng": -0.0953577,
+  "opening_hours": "Mo-Fr 06:00-15:00",
+  "website": null,
+  "postcode": "SE1 1HF"
+ },
+ {
+  "osm_id": 3751773924,
+  "name": "Katsute100 Broadway Market",
+  "amenity": "cafe",
+  "lat": 51.536142,
+  "lng": -0.0624184,
+  "opening_hours": "Tu-Fr 12:00-18:00; Sa-Su 11:00-17:00; Mo off",
+  "website": "https://www.katsute100.com/",
+  "postcode": "E8 4TS"
+ },
+ {
+  "osm_id": 3766479965,
+  "name": "Quaker Centre Cafe",
+  "amenity": "cafe",
+  "lat": 51.5266044,
+  "lng": -0.1321457,
+  "opening_hours": "Mo-Fr 08:00-16:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 3767594694,
+  "name": "The Piano Works",
+  "amenity": "bar",
+  "lat": 51.5229616,
+  "lng": -0.1081365,
+  "opening_hours": "16:00-01:00",
+  "website": "https://pianoworks.bar/",
+  "postcode": "EC1R 3BX"
+ },
+ {
+  "osm_id": 3787420113,
+  "name": "TwoRuba",
+  "amenity": "bar",
+  "lat": 51.5046899,
+  "lng": -0.0824531,
+  "opening_hours": "Mo-Sa 07:00-01:00, Su 07:00-00:00",
+  "website": "https://tworuba.com/",
+  "postcode": "SE1 2BY"
+ },
+ {
+  "osm_id": 3799624401,
+  "name": "Bounce Farringdon",
+  "amenity": "bar",
+  "lat": 51.5179943,
+  "lng": -0.10831,
+  "opening_hours": "Mo-We 16:00-24:00, Th 16:00-01:00, Fr,Sa 12:00-01:00, Su 12:00-23:00",
+  "website": "https://www.bouncepingpong.com/farringdon",
+  "postcode": "EC1N 2TD"
+ },
+ {
+  "osm_id": 3801496832,
+  "name": "Nine Lives",
+  "amenity": "bar",
+  "lat": 51.5033757,
+  "lng": -0.0820609,
+  "opening_hours": "Tu-We 17:00-23:00; Th-Fr 17:00-00:00; Sa 15:00-00:00",
+  "website": "https://www.ninelivesbar.com/",
+  "postcode": "SE1 2EL"
+ },
+ {
+  "osm_id": 3811092605,
+  "name": "Trade",
+  "amenity": "cafe",
+  "lat": 51.5175015,
+  "lng": -0.0738484,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa-Su 10:00-17:00",
+  "website": "https://www.trade-made.co.uk/",
+  "postcode": "E1 6BD"
+ },
+ {
+  "osm_id": 3811097649,
+  "name": "Notes",
+  "amenity": "cafe",
+  "lat": 51.5331102,
+  "lng": -0.1251194,
+  "opening_hours": "Mo-We 07:30-21:00; We-Fr 07:30-22:00; Sa 09:00-22:00; Su 09:00-18:00",
+  "website": "http://notes-uk.co.uk/",
+  "postcode": "N1C 4AG"
+ },
+ {
+  "osm_id": 3822113518,
+  "name": "Zebrano",
+  "amenity": "bar",
+  "lat": 51.5143791,
+  "lng": -0.0776815,
+  "opening_hours": "Mo-Fr 17:00+",
+  "website": "http://www.zebranobars.com",
+  "postcode": "EC3A 7LP"
+ },
+ {
+  "osm_id": 3822812080,
+  "name": "Kaffeine",
+  "amenity": "cafe",
+  "lat": 51.5168792,
+  "lng": -0.137156,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa 08:30-17:00; Su 09:00-17:00",
+  "website": "https://kaffeine.co.uk/",
+  "postcode": "W1T 3AY"
+ },
+ {
+  "osm_id": 3827161416,
+  "name": "Sontag",
+  "amenity": "cafe",
+  "lat": 51.515425,
+  "lng": -0.119303,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa 09:00-17:00; Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 3985644392,
+  "name": "Sun Cafe",
+  "amenity": "cafe",
+  "lat": 51.5242915,
+  "lng": -0.099328,
+  "opening_hours": "Mo-Fr 06:30-15:30",
+  "website": null,
+  "postcode": "EC1V 7EN"
+ },
+ {
+  "osm_id": 4056131599,
+  "name": "Thenga",
+  "amenity": "cafe",
+  "lat": 51.5275599,
+  "lng": -0.1245956,
+  "opening_hours": "Mo-Th 11:00-18:00; Fr-Sa 11:00-16:00; Su off",
+  "website": "https://www.thengacafe.com/",
+  "postcode": "WC1H 8BS"
+ },
+ {
+  "osm_id": 4076126439,
+  "name": "Starbucks Coffee",
+  "amenity": "cafe",
+  "lat": 51.5164788,
+  "lng": -0.1034052,
+  "opening_hours": "Mo-Fr 06:00-20:00; Sa-Su,PH off",
+  "website": null,
+  "postcode": "EC4M 7RA"
+ },
+ {
+  "osm_id": 4098297910,
+  "name": "El&a\u2019s Brunch",
+  "amenity": "cafe",
+  "lat": 51.5058998,
+  "lng": -0.0541571,
+  "opening_hours": "Mo-Su 07:00-17:00",
+  "website": null,
+  "postcode": "E1W 3QS"
+ },
+ {
+  "osm_id": 4103049892,
+  "name": "Workshop Coffee Co",
+  "amenity": "cafe",
+  "lat": 51.5152041,
+  "lng": -0.1499837,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa-Su 09:00-18:00",
+  "website": "https://workshopcoffee.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 4156455196,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.5305323,
+  "lng": -0.1256799,
+  "opening_hours": "Mo-Sa 06:00-21:00; Su 07:00-20:00",
+  "website": "https://www.blankstreet.com/locations/london/LGZQ6Y7AEEV9D-st-pancras",
+  "postcode": "N1C 4QP"
+ },
+ {
+  "osm_id": 4167409327,
+  "name": "White Mulberries",
+  "amenity": "cafe",
+  "lat": 51.5071803,
+  "lng": -0.0710652,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa 08:00-18:00; Su 08:30-18:00",
+  "website": "https://www.whitemulberries.com/",
+  "postcode": "E1W 1AT"
+ },
+ {
+  "osm_id": 4171866105,
+  "name": "Hermanos Colombian Coffee Roasters",
+  "amenity": "cafe",
+  "lat": 51.5312447,
+  "lng": -0.1248121,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa,Su 07:30-18:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 4185611903,
+  "name": "Prufrock Coffee",
+  "amenity": "cafe",
+  "lat": 51.5199496,
+  "lng": -0.1095201,
+  "opening_hours": "Mo-Fr 07:30-16:30; Sa 08:00-17:00; Su 09:00-17:00",
+  "website": "https://prufrockcoffee.com/cafe/",
+  "postcode": "EC1N 7TE"
+ },
+ {
+  "osm_id": 4194381991,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.520283,
+  "lng": -0.1223833,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa-Su 07:30-18:00",
+  "website": "https://www.caffenero.com/uk/stores/southampton-row",
+  "postcode": null
+ },
+ {
+  "osm_id": 4226590396,
+  "name": "Saint Espresso",
+  "amenity": "cafe",
+  "lat": 51.5320355,
+  "lng": -0.1076117,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa-Su 09:00-18:00",
+  "website": "https://www.saintespresso.com/",
+  "postcode": "N1 9HJ"
+ },
+ {
+  "osm_id": 4227764089,
+  "name": "Casa Tua",
+  "amenity": "cafe",
+  "lat": 51.5276612,
+  "lng": -0.123561,
+  "opening_hours": "Mo-Fr 11:00-22:00; Sa-Su 09:00-22:00",
+  "website": "https://www.casatualondon.com/",
+  "postcode": "WC1H 8BZ"
+ },
+ {
+  "osm_id": 4238029494,
+  "name": "The Griff Inn Bar & Kitchen",
+  "amenity": "pub",
+  "lat": 51.517315,
+  "lng": -0.0613634,
+  "opening_hours": "Mo-Tu 08:30-21:00; We 08:30-01:00; Th-Fr 08:30-21:00",
+  "website": "https://www.qmsu.org/griffinn/",
+  "postcode": "E1 2AT"
+ },
+ {
+  "osm_id": 4270686796,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5237697,
+  "lng": -0.1438102,
+  "opening_hours": "Mo-Fr 06:00-17:30; Sa 06:30-18:30; Su 08:30-18:30",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/great-portland-street",
+  "postcode": "W1W 5PW"
+ },
+ {
+  "osm_id": 4270686799,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5275077,
+  "lng": -0.1345002,
+  "opening_hours": "Mo-Fr 06:00-21:30; Sa 06:30-21:00; Su 07:30-19:00",
+  "website": "https://www.caffenero.com/uk/stores/euston-colonade",
+  "postcode": "NW1 2DU"
+ },
+ {
+  "osm_id": 4270689596,
+  "name": "Beeyond",
+  "amenity": "cafe",
+  "lat": 51.4985231,
+  "lng": -0.1126984,
+  "opening_hours": "Mo-Su 07:30-18:00",
+  "website": "https://beeyondcafe.com/",
+  "postcode": "SE1 7DP"
+ },
+ {
+  "osm_id": 4278671706,
+  "name": "Caffe Grana",
+  "amenity": "cafe",
+  "lat": 51.4994525,
+  "lng": -0.1337101,
+  "opening_hours": "Mo-Fr 07:30-19:00; Sa-Su 08:30-18:00",
+  "website": null,
+  "postcode": "SW1H 0BB"
+ },
+ {
+  "osm_id": 4307623429,
+  "name": "Eat Well",
+  "amenity": "cafe",
+  "lat": 51.5182371,
+  "lng": -0.0610617,
+  "opening_hours": "Mo-Fr 08:00-17:00",
+  "website": null,
+  "postcode": "E1 1FR"
+ },
+ {
+  "osm_id": 4308455491,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.4943579,
+  "lng": -0.1460369,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa-Su 06:30-19:00",
+  "website": "https://www.caffenero.com/uk/stores/buckingham-palace-rd",
+  "postcode": "SW1W 9SJ"
+ },
+ {
+  "osm_id": 4324478924,
+  "name": "DeLites",
+  "amenity": "cafe",
+  "lat": 51.5115792,
+  "lng": -0.056453,
+  "opening_hours": "Mo-Fr 08:00-22:00; Sa 09:00-22:00; Su 09:00-21:00",
+  "website": null,
+  "postcode": "E1 2QE"
+ },
+ {
+  "osm_id": 4327900878,
+  "name": "Istanbul Cafe & Bistro",
+  "amenity": "cafe",
+  "lat": 51.5236491,
+  "lng": -0.1439285,
+  "opening_hours": "Mo-Su 08:00-23:00",
+  "website": "https://bistroistanbul.com/",
+  "postcode": "W1W 5PW"
+ },
+ {
+  "osm_id": 4329962743,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.5082124,
+  "lng": -0.1248521,
+  "opening_hours": "Mo-Fr 06:00-23:00; Sa 06:30-23:00; Su 07:00-22:00",
+  "website": "https://www.caffenero.com/uk/stores/charing-cross",
+  "postcode": "WC2N 5HS"
+ },
+ {
+  "osm_id": 4360076798,
+  "name": "Simmons",
+  "amenity": "bar",
+  "lat": 51.5132639,
+  "lng": -0.0862317,
+  "opening_hours": null,
+  "website": "https://www.simmonsbar.co.uk/venues/bank/",
+  "postcode": "EC3V 3ND"
+ },
+ {
+  "osm_id": 4362474890,
+  "name": "Bankside Cafe",
+  "amenity": "cafe",
+  "lat": 51.5038989,
+  "lng": -0.1067472,
+  "opening_hours": "Mo-Fr 06:00-17:00; Sa 06:00-15:00",
+  "website": "https://www.london-se1.co.uk/restaurants/info/588/bankside-cafe",
+  "postcode": "SE1 8DQ"
+ },
+ {
+  "osm_id": 4420467413,
+  "name": "Hopper Coffee",
+  "amenity": "cafe",
+  "lat": 51.522885,
+  "lng": -0.1147155,
+  "opening_hours": "Mo-Fr 07:00-16:00",
+  "website": "https://www.hoppercoffeehouse.com/",
+  "postcode": "WC1X 8TP"
+ },
+ {
+  "osm_id": 4428611560,
+  "name": "Royal Exchange Grind",
+  "amenity": "cafe",
+  "lat": 51.5136823,
+  "lng": -0.0877795,
+  "opening_hours": "Mo-Fr 06:30-19:00",
+  "website": null,
+  "postcode": "EC3V 3LP"
+ },
+ {
+  "osm_id": 4452603012,
+  "name": "Coppa Club",
+  "amenity": "bar",
+  "lat": 51.5080209,
+  "lng": -0.0797169,
+  "opening_hours": "Mo-Th 07:30-23:00; Fr 07:30-00:00; Sa 09:00-00:00; Su 09:00-22:30",
+  "website": "https://www.coppaclub.co.uk/",
+  "postcode": "EC3R 6AH"
+ },
+ {
+  "osm_id": 4452603364,
+  "name": "London Grind",
+  "amenity": "cafe",
+  "lat": 51.506607,
+  "lng": -0.0885343,
+  "opening_hours": "Mo-Th 07:00-00:00; Fr 07:00-01:00; Sa 08:00-01:00; Su 09:00-19:00",
+  "website": null,
+  "postcode": "SE1 9RA"
+ },
+ {
+  "osm_id": 4452607091,
+  "name": "Corner Cafe",
+  "amenity": "cafe",
+  "lat": 51.5078364,
+  "lng": -0.1003939,
+  "opening_hours": "Su-Mo 10:00-18:00; Tu-Sa 10:00-23:00",
+  "website": null,
+  "postcode": "SE1 9TG"
+ },
+ {
+  "osm_id": 4452607092,
+  "name": "Level 1 Members Bar",
+  "amenity": "bar",
+  "lat": 51.5069953,
+  "lng": -0.100133,
+  "opening_hours": "Mo-Su 10:00-18:00",
+  "website": "https://www.tate.org.uk/visit/tate-modern/level-1-members-bar",
+  "postcode": "SE1 9TG"
+ },
+ {
+  "osm_id": 4470034364,
+  "name": "Southwark Brewing",
+  "amenity": "pub",
+  "lat": 51.5005941,
+  "lng": -0.0771444,
+  "opening_hours": "Tu,Th,Fr 17:00-22:00; Sa 12:00-18:30; We,Su,Mo off",
+  "website": "https://www.southwarkbrewing.co.uk/",
+  "postcode": "SE1 2EZ"
+ },
+ {
+  "osm_id": 4470162948,
+  "name": "The Doodle Bar",
+  "amenity": "bar",
+  "lat": 51.5002049,
+  "lng": -0.0764518,
+  "opening_hours": "Th 12:00-23:00; Fr-Sa 12:00-00:00; Su 12:00-18:00",
+  "website": "https://www.thedoodlebar.com/",
+  "postcode": "SE1 2EZ"
+ },
+ {
+  "osm_id": 4475883290,
+  "name": "The Mayor of Scaredy Cat Town",
+  "amenity": "bar",
+  "lat": 51.5183907,
+  "lng": -0.0786823,
+  "opening_hours": null,
+  "website": "http://www.themayorofscaredycattown.com",
+  "postcode": "E1 7LS"
+ },
+ {
+  "osm_id": 4503830991,
+  "name": "The Otherist",
+  "amenity": "bar",
+  "lat": 51.5154865,
+  "lng": -0.0844664,
+  "opening_hours": null,
+  "website": "https://drakeandmorgan.co.uk/the-otherist",
+  "postcode": "EC2N 1AP"
+ },
+ {
+  "osm_id": 4542454920,
+  "name": "Patch",
+  "amenity": "bar",
+  "lat": 51.5133973,
+  "lng": -0.0783326,
+  "opening_hours": null,
+  "website": "https://www.patch-bar.co.uk/east/",
+  "postcode": "EC3A 3DH"
+ },
+ {
+  "osm_id": 4564372690,
+  "name": "La Chatica",
+  "amenity": "cafe",
+  "lat": 51.4933917,
+  "lng": -0.0987959,
+  "opening_hours": "Mo-Sa 08:00-20:00; Su 10:00-18:00",
+  "website": "http://www.lachatica.com",
+  "postcode": "SE17 1LB"
+ },
+ {
+  "osm_id": 4608992745,
+  "name": "Conductor",
+  "amenity": "bar",
+  "lat": 51.5162914,
+  "lng": -0.1038151,
+  "opening_hours": null,
+  "website": "https://www.theconductorbar.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 4620456890,
+  "name": "Discount Suit Company",
+  "amenity": "bar",
+  "lat": 51.5167766,
+  "lng": -0.0754483,
+  "opening_hours": "Mo-Th 17:00-00:00; Fr-Sa 14:00-01:00; Su 17:00-23:00",
+  "website": "https://discountsuitcompany.co.uk/",
+  "postcode": "E1 7LA"
+ },
+ {
+  "osm_id": 4637449094,
+  "name": "The Rabbit Hole",
+  "amenity": "bar",
+  "lat": 51.5218337,
+  "lng": -0.1123767,
+  "opening_hours": null,
+  "website": "https://www.therabbitshole.co.uk/",
+  "postcode": "EC1R 5DE"
+ },
+ {
+  "osm_id": 4638026918,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5278174,
+  "lng": -0.1334168,
+  "opening_hours": "Mo-Sa 06:00-21:00; Su 08:00-20:00",
+  "website": "https://www.starbucks.com/store-locator/store/1025615/euston-station-upstairs-balcon-euston-station-london-eng-nw-12-du-gb",
+  "postcode": null
+ },
+ {
+  "osm_id": 4683826098,
+  "name": "Old Spike",
+  "amenity": "cafe",
+  "lat": 51.5160359,
+  "lng": -0.1083957,
+  "opening_hours": "Mo-Fr 10:45-17:00",
+  "website": null,
+  "postcode": "EC4A 3BN"
+ },
+ {
+  "osm_id": 4683826104,
+  "name": "Coco Di Mama",
+  "amenity": "cafe",
+  "lat": 51.5156812,
+  "lng": -0.1088347,
+  "opening_hours": "Mo-Fr 06:30-17:00",
+  "website": null,
+  "postcode": "EC4A 3AP"
+ },
+ {
+  "osm_id": 4684785733,
+  "name": "The Editor's Tap",
+  "amenity": "bar",
+  "lat": 51.5147459,
+  "lng": -0.1094647,
+  "opening_hours": "Mo-Fr 10:00-23:00; Sa 11:00-18:00",
+  "website": "https://editorstap.pub/",
+  "postcode": "EC4A 1BR"
+ },
+ {
+  "osm_id": 4699715433,
+  "name": "Simmons Bars",
+  "amenity": "bar",
+  "lat": 51.5127936,
+  "lng": -0.1135446,
+  "opening_hours": null,
+  "website": "https://www.simmonsbar.co.uk/venues/temple/",
+  "postcode": "WC2R 3LL"
+ },
+ {
+  "osm_id": 4711767692,
+  "name": "KIN",
+  "amenity": "cafe",
+  "lat": 51.5193422,
+  "lng": -0.1403461,
+  "opening_hours": "Mo-Fr 08:30-16:30; Sa, Su 09:30-16:30",
+  "website": "https://www.kincafe.co.uk/",
+  "postcode": "W1W 6DT"
+ },
+ {
+  "osm_id": 4715903696,
+  "name": "Volont\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5185966,
+  "lng": -0.1380291,
+  "opening_hours": "Mo-Fr 08:00-19:30; Sa-Su 09:00-16:00",
+  "website": "https://www.cafevolonte.co.uk/",
+  "postcode": "W1T 3JJ"
+ },
+ {
+  "osm_id": 4729170623,
+  "name": "Urban Baristas",
+  "amenity": "cafe",
+  "lat": 51.5045572,
+  "lng": -0.0557968,
+  "opening_hours": "Mo-Fr 07:00-18:00, Sa,Su 08:00-18:00",
+  "website": "https://www.urbanbaristas.co.uk/",
+  "postcode": "E1W 3PA"
+ },
+ {
+  "osm_id": 4773897755,
+  "name": "Savage Garden LDN",
+  "amenity": "bar",
+  "lat": 51.5111126,
+  "lng": -0.0779717,
+  "opening_hours": "Mo-Sa 12:00-02:00; Su 12:00-01:00",
+  "website": "https://www.savagegarden.co.uk/",
+  "postcode": "EC3N 4AF"
+ },
+ {
+  "osm_id": 4775013257,
+  "name": "Low Line Louie",
+  "amenity": "cafe",
+  "lat": 51.5035086,
+  "lng": -0.0822593,
+  "opening_hours": "Mo-Tu 08:00-17:00; We-Fr 08:00-21:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 4779511343,
+  "name": "Nancy's",
+  "amenity": "bar",
+  "lat": 51.506173,
+  "lng": -0.0874204,
+  "opening_hours": "Th-Sa 16:00-26:00; Su,Tu,We 16:00-23:00",
+  "website": "https://www.nancys.co.uk/",
+  "postcode": "SE1 2SX"
+ },
+ {
+  "osm_id": 4784656730,
+  "name": "The Vault",
+  "amenity": "bar",
+  "lat": 51.5043533,
+  "lng": -0.0761775,
+  "opening_hours": "Mo-Su 11:00-23:30",
+  "website": "https://towerbridgevault.com/",
+  "postcode": "SE1 2UP"
+ },
+ {
+  "osm_id": 4784656731,
+  "name": "Caffe Paradiso",
+  "amenity": "cafe",
+  "lat": 51.50377,
+  "lng": -0.0748378,
+  "opening_hours": "Mo-Fr 07:00-19:30; Sa 08:00-19:00; Su 07:30-19:30",
+  "website": "https://ristoranteolivelli.co.uk/caffe-paradiso",
+  "postcode": "SE1 2NJ"
+ },
+ {
+  "osm_id": 4784656735,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5036514,
+  "lng": -0.074418,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa-Su 07:30-18:00",
+  "website": "https://www.thewatchhouse.com/",
+  "postcode": "SE1 2NJ"
+ },
+ {
+  "osm_id": 4792554221,
+  "name": "Lady Dinah's Cat Emporium",
+  "amenity": "cafe",
+  "lat": 51.5252782,
+  "lng": -0.070475,
+  "opening_hours": "Mo-Su 11:00-17:00",
+  "website": "https://ladydinahs.com/",
+  "postcode": "E2 6DG"
+ },
+ {
+  "osm_id": 4795980911,
+  "name": "Department of Coffee and Social Affairs",
+  "amenity": "cafe",
+  "lat": 51.5148466,
+  "lng": -0.0734926,
+  "opening_hours": "Mo-Fr 07:30-18:00",
+  "website": "https://departmentofcoffee.com",
+  "postcode": "E1 7QA"
+ },
+ {
+  "osm_id": 4802106555,
+  "name": "Crol & Co.",
+  "amenity": "cafe",
+  "lat": 51.4913212,
+  "lng": -0.0751241,
+  "opening_hours": "Mo-Fr 17:00+ closed; Sa-Su 17:30+ closed",
+  "website": null,
+  "postcode": "SE1 5TW"
+ },
+ {
+  "osm_id": 4803496604,
+  "name": "The Veg Box",
+  "amenity": "cafe",
+  "lat": 51.5222164,
+  "lng": -0.1580879,
+  "opening_hours": "Mo-Sa 08:30-22:00; Su 09:30-16:00",
+  "website": "https://thevegboxcafe.co.uk",
+  "postcode": null
+ },
+ {
+  "osm_id": 4804700428,
+  "name": "Caf\u00e9 338",
+  "amenity": "cafe",
+  "lat": 51.5264838,
+  "lng": -0.0632352,
+  "opening_hours": "Mo-Sa 06:00-17:00; Su 06:00-14:00",
+  "website": "https://cafe338.has.restaurant",
+  "postcode": "E2 0AG"
+ },
+ {
+  "osm_id": 4837173722,
+  "name": "Coffee Island",
+  "amenity": "cafe",
+  "lat": 51.5124189,
+  "lng": -0.127275,
+  "opening_hours": "Mo-Fr 07:30-20:30; Sa 09:00-20:30; Su 09:00-20:00",
+  "website": "https://www.coffeeisland.co.uk/",
+  "postcode": "WC2H 9EA"
+ },
+ {
+  "osm_id": 4839157847,
+  "name": "31 Below",
+  "amenity": "cafe",
+  "lat": 51.5201837,
+  "lng": -0.1516604,
+  "opening_hours": "Th-Sa 09:00-23:00; Su-We 09:00-22:00",
+  "website": "https://31below.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 4852330084,
+  "name": "Attendant",
+  "amenity": "cafe",
+  "lat": 51.5137585,
+  "lng": -0.1510238,
+  "opening_hours": "Mo-Sa 10:00-18:00",
+  "website": null,
+  "postcode": "W1K 5NR"
+ },
+ {
+  "osm_id": 4863526004,
+  "name": "Museum Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.4960029,
+  "lng": -0.1089384,
+  "opening_hours": "Mo-Su 10:00-17:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 4867275399,
+  "name": "Moriska",
+  "amenity": "cafe",
+  "lat": 51.5022771,
+  "lng": -0.0850517,
+  "opening_hours": "Mo-Fr 11:00-15:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 4893190364,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5087337,
+  "lng": -0.1341103,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa 07:00-20:00; Su 07:30-19:00",
+  "website": null,
+  "postcode": "SW1Y 4LR"
+ },
+ {
+  "osm_id": 4929337118,
+  "name": "Origin",
+  "amenity": "cafe",
+  "lat": 51.5291766,
+  "lng": -0.1266125,
+  "opening_hours": "Mo-Sa 08:00-16:30; Su 10:00-16:00",
+  "website": "https://www.origincoffee.co.uk",
+  "postcode": "NW1 2DB"
+ },
+ {
+  "osm_id": 4935127421,
+  "name": "Vertigo 42, Champagne Bar",
+  "amenity": "bar",
+  "lat": 51.5150814,
+  "lng": -0.083811,
+  "opening_hours": null,
+  "website": "http://www.vertigo42.co.uk",
+  "postcode": "EC2N 1HQ"
+ },
+ {
+  "osm_id": 4954373917,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.503347,
+  "lng": -0.091449,
+  "opening_hours": "Mo-Fr 06:30-18:00; Sa 07:30-18:30; Su 08:00-17:30",
+  "website": "https://www.caffenero.com/uk/stores/borough-high-st",
+  "postcode": null
+ },
+ {
+  "osm_id": 4959287907,
+  "name": "The Cut",
+  "amenity": "cafe",
+  "lat": 51.508036,
+  "lng": -0.1391335,
+  "opening_hours": "Mo-Fr 08:00-16:30; Sa 10:00-17:00",
+  "website": null,
+  "postcode": "SW1Y 6NH"
+ },
+ {
+  "osm_id": 4959842421,
+  "name": "Holy Shot",
+  "amenity": "cafe",
+  "lat": 51.525495,
+  "lng": -0.0705737,
+  "opening_hours": "Mo-Fr 07:30-18:30; Sa,Su 08:30-18:00",
+  "website": null,
+  "postcode": "E2 7DG"
+ },
+ {
+  "osm_id": 4969009412,
+  "name": "Platform",
+  "amenity": "bar",
+  "lat": 51.521985,
+  "lng": -0.0859199,
+  "opening_hours": "Mo-Th 09:00-23:00; Fr 09:00-00:00; Sa 11:00-00:00; Su 11:00-20:00; easter Su closed",
+  "website": "https://www.experienceplatform.co.uk/",
+  "postcode": "EC2A 2AH"
+ },
+ {
+  "osm_id": 4969009471,
+  "name": "Flight Club",
+  "amenity": "bar",
+  "lat": 51.5219828,
+  "lng": -0.0864063,
+  "opening_hours": "Mo-We 12:00-00:00; Th 12:00-00:30; Fr 12:00-01:00; Sa 11:00-01:00; Su 12:00-22:30",
+  "website": "https://flightclubdarts.com/",
+  "postcode": "EC2A 2AH"
+ },
+ {
+  "osm_id": 4986947821,
+  "name": "La Casetta Cafe",
+  "amenity": "cafe",
+  "lat": 51.5221032,
+  "lng": -0.1108982,
+  "opening_hours": "Mo-Su 10:00-22:00",
+  "website": null,
+  "postcode": "EC1R 5DU"
+ },
+ {
+  "osm_id": 4987188987,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5013084,
+  "lng": -0.1247688,
+  "opening_hours": "Mo-Fr 06:00-22:00; Sa 07:00-21:00; Su 08:30-20:00",
+  "website": null,
+  "postcode": "SW1A 2JR"
+ },
+ {
+  "osm_id": 5002433122,
+  "name": "Westland Coffee & Wine",
+  "amenity": "cafe",
+  "lat": 51.528276,
+  "lng": -0.0905991,
+  "opening_hours": "Mo-We 07:00-18:00; Th-Fr 07:00-23:00; Sa 09:00-18:00",
+  "website": "http://www.westlandcoffee.co.uk",
+  "postcode": "N1 7LP"
+ },
+ {
+  "osm_id": 5029665758,
+  "name": "Crick Cafe",
+  "amenity": "cafe",
+  "lat": 51.5318059,
+  "lng": -0.1280516,
+  "opening_hours": "We 10:00-22:00; Th 10:00-15:00; Fr, Sa 10:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 5064643683,
+  "name": "Soho Coffee",
+  "amenity": "cafe",
+  "lat": 51.5152731,
+  "lng": -0.1192076,
+  "opening_hours": "Mo-Fr 06:30-21:00; Sa 06:30-19:00; Su 08:00-18:00",
+  "website": null,
+  "postcode": "WC2B 6TD"
+ },
+ {
+  "osm_id": 5111050924,
+  "name": "Notes",
+  "amenity": "cafe",
+  "lat": 51.5140364,
+  "lng": -0.1493368,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa-Su 10:00-18:00",
+  "website": "http://notes-uk.co.uk/",
+  "postcode": "W1C 2JS"
+ },
+ {
+  "osm_id": 5121352970,
+  "name": "Sama",
+  "amenity": "bar",
+  "lat": 51.506658,
+  "lng": -0.1037409,
+  "opening_hours": "Mo, Tu 10:00-11:00; We, Th 10:00-00:00; Fr 10:00-01:30; Sa 16:00-01:30",
+  "website": "https://www.samabankside.co.uk/",
+  "postcode": "SE1 8BU"
+ },
+ {
+  "osm_id": 5141625722,
+  "name": "The Sir John Hawkshaw",
+  "amenity": "pub",
+  "lat": 51.510926,
+  "lng": -0.0899801,
+  "opening_hours": null,
+  "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/london/the-sir-john-hawkshaw-london",
+  "postcode": "EC4N 6AP"
+ },
+ {
+  "osm_id": 5147703991,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5154796,
+  "lng": -0.0901481,
+  "opening_hours": "Mo-We 06:30-19:00; Th-Fr 06:30-22:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/coleman-street",
+  "postcode": "EC2R 5EH"
+ },
+ {
+  "osm_id": 5180399561,
+  "name": "Mandira",
+  "amenity": "cafe",
+  "lat": 51.514514,
+  "lng": -0.1222638,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa 10:00-18:00; Su 10:00-17:00",
+  "website": "http://www.mandiralondon.com/",
+  "postcode": "WC2E 9NG"
+ },
+ {
+  "osm_id": 5192841322,
+  "name": "Ninth Ward",
+  "amenity": "pub",
+  "lat": 51.5224158,
+  "lng": -0.1074931,
+  "opening_hours": "Tu-We 16:00-26:00; Th-Fr 12:00-27:00; Sa 17:00-27:00",
+  "website": "https://ninthwardlondon.com",
+  "postcode": "EC1R 3BN"
+ },
+ {
+  "osm_id": 5196663660,
+  "name": "Traders",
+  "amenity": "bar",
+  "lat": 51.5071934,
+  "lng": -0.0712432,
+  "opening_hours": "Mo-We 16:00-21:00; Th-Sa 12:00-23:00; Su 12:00-21:00",
+  "website": "https://www.traderswine.co.uk/",
+  "postcode": "E1W 1AT"
+ },
+ {
+  "osm_id": 5207251548,
+  "name": "The Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5249636,
+  "lng": -0.1141568,
+  "opening_hours": "10:00-17:00",
+  "website": "https://www.postalmuseum.org/",
+  "postcode": null
+ },
+ {
+  "osm_id": 5211002735,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5057301,
+  "lng": -0.0833184,
+  "opening_hours": "Mo-Sa 06:30-20:30; Su 08:00-20:00",
+  "website": "https://www.costa.co.uk/stores/hays-galleria",
+  "postcode": "SE1 2HD"
+ },
+ {
+  "osm_id": 5213657021,
+  "name": "Nightjar",
+  "amenity": "bar",
+  "lat": 51.5264845,
+  "lng": -0.0877526,
+  "opening_hours": "Mo-Su 18:00-03:00",
+  "website": "https://barnightjar.com/",
+  "postcode": "EC1V 1JB"
+ },
+ {
+  "osm_id": 5214874722,
+  "name": "Tonight Josephine",
+  "amenity": "bar",
+  "lat": 51.5027974,
+  "lng": -0.1103687,
+  "opening_hours": "Mo-We, Su 17:00-00:00; Th 17:00-01:00; Fr, Sa 16:00-02:00",
+  "website": "https://www.tonightjosephine.co.uk/",
+  "postcode": "SE1 8UL"
+ },
+ {
+  "osm_id": 5238249940,
+  "name": "The Running Horse",
+  "amenity": "pub",
+  "lat": 51.5136121,
+  "lng": -0.0698082,
+  "opening_hours": "Mo-Th 11:00-23:00; Fr 11:00-00:00; Sa 12:00-00:00; Su 12:00-21:30",
+  "website": "https://therunninghorsealdgate.co.uk/",
+  "postcode": "E1 8FU"
+ },
+ {
+  "osm_id": 5271208185,
+  "name": "Green Cafe",
+  "amenity": "cafe",
+  "lat": 51.4946095,
+  "lng": -0.1479811,
+  "opening_hours": "Mo-Fr 07:00-15:30; Sa 08:30-14:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 5291878713,
+  "name": "Saint Espresso",
+  "amenity": "cafe",
+  "lat": 51.5174487,
+  "lng": -0.080068,
+  "opening_hours": "Mo-Fr 06:45-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 5300082195,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5072944,
+  "lng": -0.1071077,
+  "opening_hours": "Mo 07:00-17:00; Tu 07:00-23:00; We 07:00-19:00; Th-Fr 07:00-21:00; Sa 08:30-17:00; Su 10:00-17:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/southbank",
+  "postcode": "SE1 9PG"
+ },
+ {
+  "osm_id": 5305357622,
+  "name": "The Wren Coffee",
+  "amenity": "cafe",
+  "lat": 51.5120907,
+  "lng": -0.0969782,
+  "opening_hours": "Mo-We, Fr 07:00-16:30; Th 07:00-10:00, 11:00-12:45, 14:00-16:30",
+  "website": "http://www.thewrencoffee.com/",
+  "postcode": "EC4V 4BJ"
+ },
+ {
+  "osm_id": 5312104442,
+  "name": "Quaker Street Coffee & Bubble Tea",
+  "amenity": "cafe",
+  "lat": 51.5222531,
+  "lng": -0.0751363,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa, Su 08:00-19:00",
+  "website": "https://quakerstreet.co.uk/",
+  "postcode": "E1 6SZ"
+ },
+ {
+  "osm_id": 5335967421,
+  "name": "Bar Salsa",
+  "amenity": "bar",
+  "lat": 51.5110031,
+  "lng": -0.1143845,
+  "opening_hours": null,
+  "website": "https://www.bar-salsa.com/temple",
+  "postcode": null
+ },
+ {
+  "osm_id": 5396322682,
+  "name": "The Ring",
+  "amenity": "pub",
+  "lat": 51.5035696,
+  "lng": -0.1048294,
+  "opening_hours": null,
+  "website": "https://www.theringbarlondon.co.uk/",
+  "postcode": "SE1 8HA"
+ },
+ {
+  "osm_id": 5415379722,
+  "name": "Merchants Tavern",
+  "amenity": "bar",
+  "lat": 51.5250908,
+  "lng": -0.081028,
+  "opening_hours": null,
+  "website": "https://www.merchantstavern.co.uk/",
+  "postcode": "EC2A 3PG"
+ },
+ {
+  "osm_id": 5452221322,
+  "name": "TSUJIRI Matcha House",
+  "amenity": "cafe",
+  "lat": 51.5119807,
+  "lng": -0.1290026,
+  "opening_hours": "Su-Th 12:00-22:30; Fr-Sa 12:00-23:00",
+  "website": "http://tsujiri.co.uk",
+  "postcode": "WC2H 7PQ"
+ },
+ {
+  "osm_id": 5456244922,
+  "name": "Fortitude",
+  "amenity": "cafe",
+  "lat": 51.5228392,
+  "lng": -0.1242032,
+  "opening_hours": "Mo-Fr 07:30-15:00; Sa-Su 08:30-14:30",
+  "website": "https://www.fortitudebakehouse.com",
+  "postcode": "WC1N 1JA"
+ },
+ {
+  "osm_id": 5470033322,
+  "name": "Roasting Plant coffee",
+  "amenity": "cafe",
+  "lat": 51.5179065,
+  "lng": -0.1181596,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa,Su 07:30-15:30",
+  "website": null,
+  "postcode": "WC1V 6LF"
+ },
+ {
+  "osm_id": 5513714992,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5184907,
+  "lng": -0.1435527,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa 07:00-18:00",
+  "website": "https://www.caffenero.com/uk/stores/bbc-world-cafe",
+  "postcode": null
+ },
+ {
+  "osm_id": 5522505121,
+  "name": "The Marquise",
+  "amenity": "cafe",
+  "lat": 51.5128963,
+  "lng": -0.1184756,
+  "opening_hours": "Mo-Fr 08:30-16:00; Sa 09:00-16:00; Su off",
+  "website": "http://www.themarquise.co.uk/",
+  "postcode": "WC2B 4DA"
+ },
+ {
+  "osm_id": 5522707324,
+  "name": "Jacob the Angel",
+  "amenity": "cafe",
+  "lat": 51.5143804,
+  "lng": -0.1261664,
+  "opening_hours": "Mo-Fr 08:30-17:00; Sa-Su 09:00-17:00",
+  "website": "https://jacobtheangel.co.uk",
+  "postcode": "WC2H 9DP"
+ },
+ {
+  "osm_id": 5527019921,
+  "name": "Popina",
+  "amenity": "cafe",
+  "lat": 51.5130347,
+  "lng": -0.1506342,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa-Su 09:00-18:00",
+  "website": "https://www.popina.co.uk/",
+  "postcode": "W1K 5PF"
+ },
+ {
+  "osm_id": 5586551212,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5039536,
+  "lng": -0.0856095,
+  "opening_hours": "Mo-Sa 06:00-21:00; Su 06:30-21:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 5593327043,
+  "name": "BrewDog",
+  "amenity": "pub",
+  "lat": 51.5099031,
+  "lng": -0.0807577,
+  "opening_hours": "Mo-We 12:00-23:00; Th 12:00-01:00; Fr 12:00-00:00; Sa 11:00-00:00; Su 11:00-23:00",
+  "website": "https://drink.brewdog.com/uk/brewdog-tower-hill-outpost",
+  "postcode": "EC3R 5AR"
+ },
+ {
+  "osm_id": 5717663193,
+  "name": "London Cocktail Club",
+  "amenity": "bar",
+  "lat": 51.5221663,
+  "lng": -0.0842522,
+  "opening_hours": "Mo-We 17:00-01:00; Th 16:00-02:30; Fr 16:00-02:00; Sa 17:00-02:00; Su 16:00-23:00",
+  "website": "https://www.thecocktailclub.com/bars/old-street",
+  "postcode": "EC2A 2DU"
+ },
+ {
+  "osm_id": 5882192466,
+  "name": "Science Gallery Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5041545,
+  "lng": -0.0875151,
+  "opening_hours": "Mo-Fr 08:30-18:00; Sa 10:00-17:00",
+  "website": "https://london.sciencegallery.com/",
+  "postcode": "SE1 9GU"
+ },
+ {
+  "osm_id": 6029728185,
+  "name": "Kiss the Hippo",
+  "amenity": "cafe",
+  "lat": 51.5111248,
+  "lng": -0.1265115,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa 09:00-18:00; Su 10:00-18:00",
+  "website": null,
+  "postcode": "WC2N 4LA"
+ },
+ {
+  "osm_id": 6029728385,
+  "name": "WA caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5110405,
+  "lng": -0.1263336,
+  "opening_hours": "Mo-Su 10:30-19:00",
+  "website": "https://wacafe.co.uk/",
+  "postcode": "WC2N 4LH"
+ },
+ {
+  "osm_id": 6051467621,
+  "name": "Flow Coffee",
+  "amenity": "cafe",
+  "lat": 51.5119012,
+  "lng": -0.1035814,
+  "opening_hours": "Mo-Th 07:00-16:30; Fr 07:00-15:00; Sa,Su off",
+  "website": "https://flowcoffee.london/",
+  "postcode": "EC4V 4DY"
+ },
+ {
+  "osm_id": 6068941672,
+  "name": "Leaf & Bean",
+  "amenity": "cafe",
+  "lat": 51.5007507,
+  "lng": -0.0519998,
+  "opening_hours": "Mo-Fr 06:00-17:00; Sa 08:00-17:00; Su 08:00-15:00",
+  "website": null,
+  "postcode": "SE16 4LF"
+ },
+ {
+  "osm_id": 6082897373,
+  "name": "Trapeze Bar",
+  "amenity": "bar",
+  "lat": 51.5257616,
+  "lng": -0.0833109,
+  "opening_hours": null,
+  "website": "http://www.trapezebar.com",
+  "postcode": "EC2A 3HX"
+ },
+ {
+  "osm_id": 6087676263,
+  "name": "The Observatory",
+  "amenity": "cafe",
+  "lat": 51.5253574,
+  "lng": -0.1252105,
+  "opening_hours": "Mo-Sa 08:45-17:00",
+  "website": "https://www.theobservatory.org",
+  "postcode": "WC1N 1AB"
+ },
+ {
+  "osm_id": 6090852288,
+  "name": "Eatalia",
+  "amenity": "cafe",
+  "lat": 51.5008736,
+  "lng": -0.0820016,
+  "opening_hours": "Mo-Fr 07:00-16:00; Sa 08:30-17:30; Su 09:00-17:30",
+  "website": "https://www.eataliacafe.co.uk/",
+  "postcode": "SE1 3UB"
+ },
+ {
+  "osm_id": 6109165288,
+  "name": "Kiss The Hippo",
+  "amenity": "cafe",
+  "lat": 51.518593,
+  "lng": -0.1374686,
+  "opening_hours": "Mo-Fr 07:30-17:30; Sa 08:30-17:00; Su 09:30-17:00",
+  "website": "https://kissthehippo.com/",
+  "postcode": "W1T 3LY"
+ },
+ {
+  "osm_id": 6119354792,
+  "name": "The Gun",
+  "amenity": "pub",
+  "lat": 51.5189211,
+  "lng": -0.0761157,
+  "opening_hours": "Mo-Sa 12:00-23:30; Su 12:00-22:00",
+  "website": "https://www.urbanpubsandbars.com/venues/the-gun-london",
+  "postcode": "E1 6AG"
+ },
+ {
+  "osm_id": 6140478985,
+  "name": "Caf\u00e9 Babka",
+  "amenity": "cafe",
+  "lat": 51.5180051,
+  "lng": -0.1264709,
+  "opening_hours": "Mo-Fr 08:30-18:00; Sa-Su 10:30-18:00",
+  "website": null,
+  "postcode": "WC1B 3PA"
+ },
+ {
+  "osm_id": 6173783035,
+  "name": "Mariage Fr\u00e8res",
+  "amenity": "cafe",
+  "lat": 51.5118113,
+  "lng": -0.1243648,
+  "opening_hours": "Mo-Su 10:30-19:30; Mo-Su 12:00-19:00",
+  "website": "https://www.mariagefreres.com/en/store/restaurant-tea-salon-london-covent-garden-menu.html",
+  "postcode": "WC2E 8JS"
+ },
+ {
+  "osm_id": 6195245785,
+  "name": "Doppio",
+  "amenity": "cafe",
+  "lat": 51.5200575,
+  "lng": -0.0696473,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa-Su 10:00-17:00; PH 10:00-17:00 open",
+  "website": "https://doppiocoffee.co.uk/",
+  "postcode": "E1 5JL"
+ },
+ {
+  "osm_id": 6247140622,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.522052,
+  "lng": -0.0791889,
+  "opening_hours": "Mo-Tu 06:30-18:00; We 06:30-19:00; Th-Fr 06:30-20:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/principal-place",
+  "postcode": "EC2A 3BR"
+ },
+ {
+  "osm_id": 6249403598,
+  "name": "Nusa Kitchen",
+  "amenity": "cafe",
+  "lat": 51.5164514,
+  "lng": -0.1088236,
+  "opening_hours": "Mo-Fr 07:30-15:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6278380639,
+  "name": "Benugo St Pancras Espresso Bar",
+  "amenity": "cafe",
+  "lat": 51.5303644,
+  "lng": -0.125923,
+  "opening_hours": "Mo-Su 08:30-17:00",
+  "website": "https://www.benugo.com/sites/cafes/benugo-st-pancras-espresso-bar/",
+  "postcode": "NW1 2QL"
+ },
+ {
+  "osm_id": 6279366922,
+  "name": "Seacole Social Cafe",
+  "amenity": "cafe",
+  "lat": 51.5254692,
+  "lng": -0.1263917,
+  "opening_hours": "Mo-Fr 08:00-15:00; PH closed",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6292682449,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5187043,
+  "lng": -0.1503173,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa 08:00-18:00; Su 09:00-18:00",
+  "website": "https://watchhouse.com/blogs/locations/marylebone",
+  "postcode": "W1G 8UE"
+ },
+ {
+  "osm_id": 6322807785,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5244652,
+  "lng": -0.141496,
+  "opening_hours": "Mo-Fr 06:45-17:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/regents-place",
+  "postcode": "NW1 3BG"
+ },
+ {
+  "osm_id": 6324664363,
+  "name": "Hagen Marylebone",
+  "amenity": "cafe",
+  "lat": 51.520552,
+  "lng": -0.1520287,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa,Su 08:00-18:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6326633331,
+  "name": "Tasty Corner",
+  "amenity": "cafe",
+  "lat": 51.5184249,
+  "lng": -0.1544657,
+  "opening_hours": "Mo-Fr 06:00-17:00; Sa 07:00-17:00",
+  "website": null,
+  "postcode": "W1U 7HZ"
+ },
+ {
+  "osm_id": 6326689591,
+  "name": "Avobar",
+  "amenity": "cafe",
+  "lat": 51.5195527,
+  "lng": -0.1550259,
+  "opening_hours": "Mo-Fr 08:00-19:00; Sa-Su 09:00-19:00",
+  "website": "https://www.avobar.co.uk/london",
+  "postcode": "W1U 7RB"
+ },
+ {
+  "osm_id": 6328300466,
+  "name": "The Monocle Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5188135,
+  "lng": -0.1546429,
+  "opening_hours": "Mo-Fr 07:00-20:00; Sa 08:00-20:00; Su 08:00-19:00",
+  "website": "https://monocle.com/monocle-shops-and-cafes/",
+  "postcode": "W1U 7QA"
+ },
+ {
+  "osm_id": 6336543641,
+  "name": "Tasty Inn",
+  "amenity": "cafe",
+  "lat": 51.52047,
+  "lng": -0.1562335,
+  "opening_hours": "Mo-Sa 08:00-16:30",
+  "website": null,
+  "postcode": "W1U 4HG"
+ },
+ {
+  "osm_id": 6338252684,
+  "name": "106 Baker Street",
+  "amenity": "cafe",
+  "lat": 51.5208298,
+  "lng": -0.1567073,
+  "opening_hours": "Mo-Fr 07:00-17:00",
+  "website": "https://www.106bakerst.co.uk/",
+  "postcode": "W1U 6TW"
+ },
+ {
+  "osm_id": 6341182394,
+  "name": "Clean Hearts",
+  "amenity": "cafe",
+  "lat": 51.5147864,
+  "lng": -0.0677802,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa-Su 08:00-18:00",
+  "website": "https://www.cleanheartscafe.co.uk",
+  "postcode": "E1 1LP"
+ },
+ {
+  "osm_id": 6358222785,
+  "name": "The Pregnant Man",
+  "amenity": "pub",
+  "lat": 51.5165968,
+  "lng": -0.1122479,
+  "opening_hours": "Mo-We 12:00-23:00; Th-Fr 12:00-00:00",
+  "website": "https://thepregnantman.co.uk/",
+  "postcode": "WC2A 1JA"
+ },
+ {
+  "osm_id": 6372063578,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5198847,
+  "lng": -0.1338025,
+  "opening_hours": "Mo-Fr 06:30-20:30; Sa 07:00-20:30; Su 08:00-20:00",
+  "website": "https://www.caffenero.com/uk/stores/62-tottenham-court-road",
+  "postcode": "W1T 2ER"
+ },
+ {
+  "osm_id": 6372425550,
+  "name": "Red Bean Roastery",
+  "amenity": "cafe",
+  "lat": 51.514744,
+  "lng": -0.0708306,
+  "opening_hours": "Mo-Fr 06:30-16:30; Sa-Su 08:30-12:30",
+  "website": null,
+  "postcode": "E1 7AT"
+ },
+ {
+  "osm_id": 6384451253,
+  "name": "Omotesando Koffee",
+  "amenity": "cafe",
+  "lat": 51.5165946,
+  "lng": -0.1347909,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa-Su 09:00-18:00",
+  "website": "http://ooo-koffee.com/",
+  "postcode": "W1T 1PB"
+ },
+ {
+  "osm_id": 6429327326,
+  "name": "GAIL's",
+  "amenity": "cafe",
+  "lat": 51.502894,
+  "lng": -0.116304,
+  "opening_hours": "Mo-Sa 07:00-19:00; Su 08:00-19:00",
+  "website": "https://gails.com/pages/southbank",
+  "postcode": "SE1 7ND"
+ },
+ {
+  "osm_id": 6458147951,
+  "name": "Redemption Roasters",
+  "amenity": "cafe",
+  "lat": 51.5191203,
+  "lng": -0.0839226,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa,Su off",
+  "website": null,
+  "postcode": "EC2M 2QS"
+ },
+ {
+  "osm_id": 6495023720,
+  "name": "Host",
+  "amenity": "cafe",
+  "lat": 51.5127204,
+  "lng": -0.0934412,
+  "opening_hours": "Mo-Th 07:30-16:30; Fr 07:30-16:00",
+  "website": "http://www.moot.uk.net/host/",
+  "postcode": "EC4M 9BW"
+ },
+ {
+  "osm_id": 6515246385,
+  "name": "Afternoon Tea at The Montague on The Gardens",
+  "amenity": "cafe",
+  "lat": 51.5202376,
+  "lng": -0.1255157,
+  "opening_hours": "13:00-17:00",
+  "website": "https://montaguehotel.com/dining-and-drinks/afternoon-tea",
+  "postcode": null
+ },
+ {
+  "osm_id": 6530572164,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5140725,
+  "lng": -0.0756671,
+  "opening_hours": "Mo-Sa 06:00-19:30; Su 06:30-19:30",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/aldgate-station",
+  "postcode": "EC3N 1AH"
+ },
+ {
+  "osm_id": 6556288664,
+  "name": "Carhartt Coffee",
+  "amenity": "cafe",
+  "lat": 51.5335897,
+  "lng": -0.1248947,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa,Su,PH 10:00-16:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6575304044,
+  "name": "Coffee Geek and Friends",
+  "amenity": "cafe",
+  "lat": 51.4977118,
+  "lng": -0.1414533,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa 09:00-17:00; Su 09:00-16:00",
+  "website": "http://cgafcafe.co.uk/coffee",
+  "postcode": "SW1E 5JH"
+ },
+ {
+  "osm_id": 6591730288,
+  "name": "Quills",
+  "amenity": "cafe",
+  "lat": 51.5299993,
+  "lng": -0.1165161,
+  "opening_hours": "Mo-Sa 08:00-16:00; Su 08:15:30",
+  "website": "https://www.quillsbrunchbar.co.uk/",
+  "postcode": "WC1X 9BN"
+ },
+ {
+  "osm_id": 6689859781,
+  "name": "H's Cafe",
+  "amenity": "cafe",
+  "lat": 51.4989997,
+  "lng": -0.0535769,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa,Su 09:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6794830920,
+  "name": "TIRAFFE",
+  "amenity": "cafe",
+  "lat": 51.518022,
+  "lng": -0.120735,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa-Su 11:00-18:00",
+  "website": null,
+  "postcode": "WC1B 5HA"
+ },
+ {
+  "osm_id": 6802993456,
+  "name": "The Telegraph",
+  "amenity": "pub",
+  "lat": 51.5157141,
+  "lng": -0.0886215,
+  "opening_hours": null,
+  "website": "https://www.telegraphmoorgate.co.uk/",
+  "postcode": "EC2R 7AR"
+ },
+ {
+  "osm_id": 6821359585,
+  "name": "ila Desserts Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.4994185,
+  "lng": -0.1138443,
+  "opening_hours": "Mo-Sa 07:00-21:00; Su 08:00-21:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6885993201,
+  "name": "Birleys",
+  "amenity": "cafe",
+  "lat": 51.5108969,
+  "lng": -0.0800937,
+  "opening_hours": "Mo-Fr 07:00-16:00",
+  "website": null,
+  "postcode": "EC3R 7NQ"
+ },
+ {
+  "osm_id": 6897473422,
+  "name": "Long White Cloud",
+  "amenity": "cafe",
+  "lat": 51.5304807,
+  "lng": -0.073626,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 08:00-17:00",
+  "website": "https://longwhitecloudhoxton.com/",
+  "postcode": "E2 8JL"
+ },
+ {
+  "osm_id": 6957400319,
+  "name": "Kiosk",
+  "amenity": "cafe",
+  "lat": 51.5031662,
+  "lng": -0.1531525,
+  "opening_hours": "Mo-Su 09:00-17:00+",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 6976603085,
+  "name": "V69 Coffee",
+  "amenity": "cafe",
+  "lat": 51.5146048,
+  "lng": -0.0935979,
+  "opening_hours": "Mo-Fr 08:00-16:00",
+  "website": "http://v69coffee.com",
+  "postcode": "EC2V 7PG"
+ },
+ {
+  "osm_id": 6977910185,
+  "name": "Giddy Up Coffee",
+  "amenity": "cafe",
+  "lat": 51.5173587,
+  "lng": -0.0974004,
+  "opening_hours": "Mo-Fr 07:00-16:00",
+  "website": null,
+  "postcode": "EC1A 4HD"
+ },
+ {
+  "osm_id": 6996847269,
+  "name": "Helma",
+  "amenity": "cafe",
+  "lat": 51.5389169,
+  "lng": -0.0776302,
+  "opening_hours": "Mo off; Tu,We 08:00-16:00; Th-Sa 08:00-20:00; Su 09:00-16:00",
+  "website": "https://www.helmalondon.com/",
+  "postcode": "N1 5AA"
+ },
+ {
+  "osm_id": 7005850686,
+  "name": "Attendant",
+  "amenity": "cafe",
+  "lat": 51.5210932,
+  "lng": -0.1100128,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa-Su 10:00-16:00",
+  "website": null,
+  "postcode": "EC1N 7TJ"
+ },
+ {
+  "osm_id": 7019205487,
+  "name": "Copper Coffee",
+  "amenity": "cafe",
+  "lat": 51.5142953,
+  "lng": -0.0740862,
+  "opening_hours": "Mo-Th 08:00-18:00; Fr 08:00-22:00; Sa 09:00-22:00",
+  "website": null,
+  "postcode": "EC3N 1AL"
+ },
+ {
+  "osm_id": 7039548576,
+  "name": "White Swan",
+  "amenity": "pub",
+  "lat": 51.5136334,
+  "lng": -0.0717175,
+  "opening_hours": "Mo-Sa 11:00-24:00",
+  "website": "https://www.whiteswanaldgate.co.uk/",
+  "postcode": "E1 8DE"
+ },
+ {
+  "osm_id": 7070657738,
+  "name": "Quarantacinque",
+  "amenity": "cafe",
+  "lat": 51.5279266,
+  "lng": -0.051712,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa,Su 08:30-17:00",
+  "website": null,
+  "postcode": "E2 0HU"
+ },
+ {
+  "osm_id": 7075454919,
+  "name": "The Bus Cafe",
+  "amenity": "cafe",
+  "lat": 51.502843,
+  "lng": -0.1091082,
+  "opening_hours": "Mo-Fr 08:00-16:00",
+  "website": null,
+  "postcode": "SE1 8TE"
+ },
+ {
+  "osm_id": 7131596085,
+  "name": "Redemption Roasters",
+  "amenity": "cafe",
+  "lat": 51.5359141,
+  "lng": -0.1261695,
+  "opening_hours": "Mo-Fr 07:30-17:30; Sa-Su 09:00-18:00",
+  "website": "https://www.redemptionroasters.com",
+  "postcode": "N1C 4AQ"
+ },
+ {
+  "osm_id": 7138296487,
+  "name": "The Telephone Exchange",
+  "amenity": "pub",
+  "lat": 51.5050863,
+  "lng": -0.0879148,
+  "opening_hours": null,
+  "website": "https://www.telephoneexchange.co.uk",
+  "postcode": "SE1 9SG"
+ },
+ {
+  "osm_id": 7140993716,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5106969,
+  "lng": -0.1218811,
+  "opening_hours": "Mo-Sa 06:30-20:00; Su 07:00-18:30",
+  "website": null,
+  "postcode": "WC2E 7HG"
+ },
+ {
+  "osm_id": 7141974123,
+  "name": "Rise & Bloom",
+  "amenity": "cafe",
+  "lat": 51.5276919,
+  "lng": -0.0763326,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa,Su 08:00-18:00",
+  "website": null,
+  "postcode": "E2 7NS"
+ },
+ {
+  "osm_id": 7169296537,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.4937835,
+  "lng": -0.146182,
+  "opening_hours": "Mo-Su 07:00-15:00",
+  "website": "https://www.caffenero.com/uk/stores/victoria-platform-18",
+  "postcode": null
+ },
+ {
+  "osm_id": 7191053934,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5132137,
+  "lng": -0.0771634,
+  "opening_hours": "Mo-Fr 06:00-17:00; Sa 06:00-18:00; Su 07:00-17:00",
+  "website": null,
+  "postcode": "EC3N 1RE"
+ },
+ {
+  "osm_id": 7204531712,
+  "name": "Beans Love Greens",
+  "amenity": "cafe",
+  "lat": 51.5262784,
+  "lng": -0.0773111,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa,Su 09:00-16:00",
+  "website": null,
+  "postcode": "E2 7JP"
+ },
+ {
+  "osm_id": 7239517013,
+  "name": "Coffee Matters",
+  "amenity": "cafe",
+  "lat": 51.5255342,
+  "lng": -0.0704827,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa 07:30-18:00; Su 08:00-18:00",
+  "website": "https://coffeematterslondon.com/",
+  "postcode": "E2 7DG"
+ },
+ {
+  "osm_id": 7277575658,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5156712,
+  "lng": -0.1280967,
+  "opening_hours": "Mo-Fr 06:30-19:30; Sa 07:00-19:30; Su 08:30-19:00",
+  "website": "https://www.caffenero.com/uk/stores/central-st-giles",
+  "postcode": null
+ },
+ {
+  "osm_id": 7512396419,
+  "name": "A Portuguese Love Affair",
+  "amenity": "cafe",
+  "lat": 51.5310966,
+  "lng": -0.0666286,
+  "opening_hours": "We-Th 12:00-20:00; Fr 12:00-22:00; Sa 23:00-22:00; Su 11:00-18:00",
+  "website": "https://www.aportugueseloveaffair.co.uk/",
+  "postcode": "E2 7AX"
+ },
+ {
+  "osm_id": 7529834022,
+  "name": "Redemption Roasters",
+  "amenity": "cafe",
+  "lat": 51.522845,
+  "lng": -0.1189392,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 08:00-17:00",
+  "website": "https://www.redemptionroasters.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 7539722515,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.5112014,
+  "lng": -0.0905085,
+  "opening_hours": "Mo-Fr 06:30-14:00; Sa-Su closed",
+  "website": "https://www.caffenero.com/uk/stores/cannon-street-kiosk",
+  "postcode": "EC4N 6AP"
+ },
+ {
+  "osm_id": 7549942986,
+  "name": "Conduit Coffee House",
+  "amenity": "cafe",
+  "lat": 51.5221657,
+  "lng": -0.1188138,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa 08:00-18:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 7566420750,
+  "name": "Suba",
+  "amenity": "cafe",
+  "lat": 51.5184255,
+  "lng": -0.074203,
+  "opening_hours": "Mo-Fr 07:30-15:00; Sa-Su 08:30-15:00",
+  "website": "https://www.subabakery.com/",
+  "postcode": "E1 6LY"
+ },
+ {
+  "osm_id": 7590593053,
+  "name": "The Lady Ottoline",
+  "amenity": "pub",
+  "lat": 51.5220506,
+  "lng": -0.1150708,
+  "opening_hours": null,
+  "website": "https://www.theladyottoline.com/",
+  "postcode": "WC1N 2JF"
+ },
+ {
+  "osm_id": 7640434452,
+  "name": "Wallacespace",
+  "amenity": "cafe",
+  "lat": 51.5186051,
+  "lng": -0.0782129,
+  "opening_hours": "Mo-Fr 08:00-18:00",
+  "website": null,
+  "postcode": "E1 7LP"
+ },
+ {
+  "osm_id": 7668007685,
+  "name": "Maple",
+  "amenity": "cafe",
+  "lat": 51.5304619,
+  "lng": -0.0565097,
+  "opening_hours": "Mo-Su 07:30-17:00",
+  "website": "https://maplebrunch.co.uk/",
+  "postcode": "E2 9RA"
+ },
+ {
+  "osm_id": 7787383387,
+  "name": "Jin Bo Law",
+  "amenity": "bar",
+  "lat": 51.5141881,
+  "lng": -0.0759541,
+  "opening_hours": null,
+  "website": "https://jinbolaw.co.uk/",
+  "postcode": "EC3N 1AH"
+ },
+ {
+  "osm_id": 7987884098,
+  "name": "Balance",
+  "amenity": "cafe",
+  "lat": 51.5014071,
+  "lng": -0.1112257,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa,Su 08:00-18:00",
+  "website": "https://www.balancekitchen.co.uk/",
+  "postcode": "SE1 7RG"
+ },
+ {
+  "osm_id": 8082069829,
+  "name": "Toconoco",
+  "amenity": "cafe",
+  "lat": 51.5383822,
+  "lng": -0.07821,
+  "opening_hours": "Mo,We-Su 09:00-17:30; Tu off",
+  "website": "https://www.toconoco.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 8669391506,
+  "name": "21 Sid Tarot & Coffee",
+  "amenity": "cafe",
+  "lat": 51.5393301,
+  "lng": -0.0573429,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa 08:30-19:00; Su 10:00-17:00",
+  "website": null,
+  "postcode": "E8 3SD"
+ },
+ {
+  "osm_id": 8669391507,
+  "name": "Finch Cafe",
+  "amenity": "cafe",
+  "lat": 51.5396788,
+  "lng": -0.0575595,
+  "opening_hours": "Mo-We 09:30-16:00; Th-Fr 09:30-23:00; Sa 12:00-16:00,18:00-23:00; Su off",
+  "website": null,
+  "postcode": "E8 3SD"
+ },
+ {
+  "osm_id": 8679972580,
+  "name": "Central Street Cafe",
+  "amenity": "cafe",
+  "lat": 51.5264377,
+  "lng": -0.0963545,
+  "opening_hours": "Mo-Fr 09:00-15:00",
+  "website": "http://centralstreetcafe.org.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 8730658914,
+  "name": "Gazelle Dates",
+  "amenity": "cafe",
+  "lat": 51.5293637,
+  "lng": -0.1295784,
+  "opening_hours": "Mo-Fr 08:00-17:00",
+  "website": null,
+  "postcode": "NW1 1JB"
+ },
+ {
+  "osm_id": 8832692378,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5154365,
+  "lng": -0.0790879,
+  "opening_hours": "Mo-Th 07:30-17:00; Fr 07:30-16:00; Sa-Su,PH off",
+  "website": "https://watchhouse.com",
+  "postcode": "EC3A 8BA"
+ },
+ {
+  "osm_id": 8868010174,
+  "name": "Notes",
+  "amenity": "cafe",
+  "lat": 51.5150795,
+  "lng": -0.0874045,
+  "opening_hours": "Mo 07:00-15:30; Tu-Th 07:00-22:00; Fr 07:30-15:30; Sa-Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 8882649147,
+  "name": "NoNo",
+  "amenity": "cafe",
+  "lat": 51.4990158,
+  "lng": -0.0602717,
+  "opening_hours": "Sa,Su 08:30-16:00; Mo-Th 08:00-14:00; Fr 08:00-16:00",
+  "website": "https://nonocoffee.com/",
+  "postcode": "SE16 4NY"
+ },
+ {
+  "osm_id": 8894450827,
+  "name": "La Despensa",
+  "amenity": "cafe",
+  "lat": 51.5201701,
+  "lng": -0.070379,
+  "opening_hours": "Mo-Su 08:30-16:30",
+  "website": "https://www.ladespensa.io/",
+  "postcode": null
+ },
+ {
+  "osm_id": 8940798146,
+  "name": "Cafe Victoria",
+  "amenity": "cafe",
+  "lat": 51.4966646,
+  "lng": -0.1358078,
+  "opening_hours": "Mo-Fr 08:00-17:00",
+  "website": null,
+  "postcode": "SW1P 1RZ"
+ },
+ {
+  "osm_id": 9144876764,
+  "name": "Clerkenwell Kiosk",
+  "amenity": "cafe",
+  "lat": 51.5238535,
+  "lng": -0.1052158,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa,Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 9172365417,
+  "name": "Casa Jardim",
+  "amenity": "cafe",
+  "lat": 51.5267238,
+  "lng": -0.1292905,
+  "opening_hours": "Tu-Fr 08:00-16:00; Sa 09:00-15:00; Su off; Mo 09:30-16:00",
+  "website": null,
+  "postcode": "WC1H 0JJ"
+ },
+ {
+  "osm_id": 9174368873,
+  "name": "Lantana DL78",
+  "amenity": "cafe",
+  "lat": 51.5209033,
+  "lng": -0.1370431,
+  "opening_hours": "Mo-Fr 08:00-18:00",
+  "website": "https://lantanacafe.co.uk/lantana-dl78/",
+  "postcode": "W1T 4QS"
+ },
+ {
+  "osm_id": 9190363817,
+  "name": "Members Bar",
+  "amenity": "cafe",
+  "lat": 51.5077062,
+  "lng": -0.0994332,
+  "opening_hours": "Sa-Su 10:00-18:00",
+  "website": "https://www.tate.org.uk/visit/tate-modern/level-1-members-bar",
+  "postcode": null
+ },
+ {
+  "osm_id": 9240197317,
+  "name": "Sabretooth",
+  "amenity": "cafe",
+  "lat": 51.5347153,
+  "lng": -0.080981,
+  "opening_hours": "Mo-Sa 07:00-19:00; Su 07:00-18:00",
+  "website": null,
+  "postcode": "N1 5JX"
+ },
+ {
+  "osm_id": 9240477517,
+  "name": "Mona",
+  "amenity": "cafe",
+  "lat": 51.5322255,
+  "lng": -0.080307,
+  "opening_hours": "We-Fr 08:00-16:00; Sa 09:00-17:00; Su 09:00-16:00",
+  "website": "https://www.monaliciousfood.com",
+  "postcode": "N1 6RA"
+ },
+ {
+  "osm_id": 9306966309,
+  "name": "Tank & Paddle Minster Court",
+  "amenity": "pub",
+  "lat": 51.510923,
+  "lng": -0.081332,
+  "opening_hours": null,
+  "website": "https://www.tankandpaddle.co.uk/minster-court",
+  "postcode": "EC3R 7AA"
+ },
+ {
+  "osm_id": 9379765858,
+  "name": "GAIL's",
+  "amenity": "cafe",
+  "lat": 51.5374402,
+  "lng": -0.1246864,
+  "opening_hours": "Mo-Fr 06:45-19:00; Sa 07:00-19:00; Su 09:00-18:30",
+  "website": "https://gails.com/pages/kings-cross",
+  "postcode": "N1C 4DN"
+ },
+ {
+  "osm_id": 9392264261,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5305208,
+  "lng": -0.1235067,
+  "opening_hours": "05:45-22:30",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/kings-cross",
+  "postcode": "N1C 4DE"
+ },
+ {
+  "osm_id": 9422388661,
+  "name": "Little Louie",
+  "amenity": "cafe",
+  "lat": 51.4936726,
+  "lng": -0.0963537,
+  "opening_hours": "Mo-Tu 08:00-17:00; We-Fr 08:00-22:00; Sa 09:00-22:00; Su 09:00-17:00",
+  "website": "https://louielouie.london/",
+  "postcode": "SE17 1GQ"
+ },
+ {
+  "osm_id": 9691994217,
+  "name": "Potter & Reid",
+  "amenity": "cafe",
+  "lat": 51.5176146,
+  "lng": -0.0745621,
+  "opening_hours": "Sa-Su 09:00-17:00; Mo-Fr 07:30-16:00",
+  "website": "https://www.potterandreid.com/",
+  "postcode": "E1 7NE"
+ },
+ {
+  "osm_id": 9737757903,
+  "name": "Secret Frog Coffee Co.",
+  "amenity": "cafe",
+  "lat": 51.5146838,
+  "lng": -0.0780337,
+  "opening_hours": "Mo-Fr 07:00-17:30; Sa,Su off",
+  "website": "http://www.secretfrog.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 9741721217,
+  "name": "Hayward Gallery Cafe",
+  "amenity": "cafe",
+  "lat": 51.5063177,
+  "lng": -0.1154283,
+  "opening_hours": "Mo off; Tu-Fr,Su 10:00-18:00; Sa 10:00-20:00",
+  "website": "https://www.southbankcentre.co.uk/visit/cafes-restaurants-bars/hayward-gallery-cafe",
+  "postcode": "SE1 8XZ"
+ },
+ {
+  "osm_id": 9762808911,
+  "name": "The Anchor & Hope",
+  "amenity": "pub",
+  "lat": 51.5034633,
+  "lng": -0.1066199,
+  "opening_hours": "Mo-Tu 16:00-22:30; We-Sa 11:00-22:30; Su 12:00-18:00",
+  "website": "https://www.anchorandhopepub.co.uk",
+  "postcode": "SE1 8LP"
+ },
+ {
+  "osm_id": 9812080617,
+  "name": "Electric Shuffle",
+  "amenity": "bar",
+  "lat": 51.5037101,
+  "lng": -0.0833956,
+  "opening_hours": null,
+  "website": "https://electricshuffle.com/london/",
+  "postcode": null
+ },
+ {
+  "osm_id": 9813228579,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.4954092,
+  "lng": -0.1439542,
+  "opening_hours": "Mo-Su 05:30-23:00",
+  "website": "https://www.caffenero.com/uk/stores/victoria-east",
+  "postcode": null
+ },
+ {
+  "osm_id": 9951633784,
+  "name": "Found",
+  "amenity": "bar",
+  "lat": 51.5248127,
+  "lng": -0.0821611,
+  "opening_hours": "Tu-We 16:00-23:00; Th 16:00-00:00; Fr 16:00-01:00; Sa 18:00-01:00; Su 18:00-22:30",
+  "website": "http://www.foundthebar.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 9953411817,
+  "name": "Nkora Coffee - Cambridge Heath",
+  "amenity": "cafe",
+  "lat": 51.5326576,
+  "lng": -0.0569152,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 08:00-17:00",
+  "website": "http://nkora.co.uk",
+  "postcode": "E2 9DA"
+ },
+ {
+  "osm_id": 9955746717,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5137771,
+  "lng": -0.1456329,
+  "opening_hours": "Mo-Fr 07:30-15:30; Sa 09:00-18:00; Su 09:00-18:00",
+  "website": "http://WatchHouse.com",
+  "postcode": "W1S 1BR"
+ },
+ {
+  "osm_id": 9956702917,
+  "name": "Nkora",
+  "amenity": "cafe",
+  "lat": 51.5275904,
+  "lng": -0.0769289,
+  "opening_hours": "Mo-Fr 07:00-15:00; Sa-Su 08:00-15:00",
+  "website": "http://nkora.co.uk/",
+  "postcode": "E2 7NX"
+ },
+ {
+  "osm_id": 9961024707,
+  "name": "FCB Coffee",
+  "amenity": "cafe",
+  "lat": 51.5055052,
+  "lng": -0.0855368,
+  "opening_hours": "Mo-Fr 06:30-19:00; Sa,Su 07:00-19:00",
+  "website": "https://www.fcbcoffee.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 9961024708,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.5054254,
+  "lng": -0.0853142,
+  "opening_hours": "Mo-Sa 07:00-19:00; Su 07:30-20:00",
+  "website": "https://www.starbucks.com/store-locator/store/1020613/london-bridge-ssp-tooley-stree-54-tooley-street-london-bridge-eng-se-1-9-sp-gb",
+  "postcode": null
+ },
+ {
+  "osm_id": 9962758030,
+  "name": "BrewDog",
+  "amenity": "pub",
+  "lat": 51.5021808,
+  "lng": -0.1154758,
+  "opening_hours": null,
+  "website": "https://drink.brewdog.com/uk/brewdog-waterloo",
+  "postcode": null
+ },
+ {
+  "osm_id": 9966313529,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5137045,
+  "lng": -0.145102,
+  "opening_hours": "Mo-Fr 07:30-19:00; Sa 09:00-19:00; Su 10:00-18:00",
+  "website": "https://watchhouse.com/",
+  "postcode": "W1S 1BR"
+ },
+ {
+  "osm_id": 9981829360,
+  "name": "BFI Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5063202,
+  "lng": -0.1146766,
+  "opening_hours": "11:00-20:00",
+  "website": "https://www.benugo.com/sites/cafes/bfi-cafe/",
+  "postcode": null
+ },
+ {
+  "osm_id": 9990988898,
+  "name": "Rosslyn",
+  "amenity": "cafe",
+  "lat": 51.5176866,
+  "lng": -0.0889736,
+  "opening_hours": "Mo-Fr 06:30-17:00; Sa-Su off",
+  "website": "https://www.rosslyncoffee.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 10031773417,
+  "name": "Store Street Espresso",
+  "amenity": "cafe",
+  "lat": 51.5185348,
+  "lng": -0.079325,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa 09:00-17:00; Su 10:00-17:00",
+  "website": "https://www.storestespresso.co.uk/",
+  "postcode": "EC2M 4QD"
+ },
+ {
+  "osm_id": 10036260267,
+  "name": "Fuckoffee",
+  "amenity": "cafe",
+  "lat": 51.5272055,
+  "lng": -0.0589226,
+  "opening_hours": "Mo-Su 07:00-18:00",
+  "website": "https://www.fuckoffee.com/",
+  "postcode": "E2 0AN"
+ },
+ {
+  "osm_id": 10054383793,
+  "name": "Boom Battle Bar",
+  "amenity": "bar",
+  "lat": 51.5146714,
+  "lng": -0.068662,
+  "opening_hours": "Su-We 13:00-23:00; Th 13:00-24:00; Fr,Sa 12:00-24:00",
+  "website": "https://boombattlebar.com/",
+  "postcode": "E1 8QG"
+ },
+ {
+  "osm_id": 10073098880,
+  "name": "Chelsea Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.4903353,
+  "lng": -0.1293287,
+  "opening_hours": "Mo-Fr 09:00-15:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 10073490911,
+  "name": "Ottolenghi",
+  "amenity": "cafe",
+  "lat": 51.4928597,
+  "lng": -0.158525,
+  "opening_hours": "Mo-Sa 08:00-19:00; Su 09:00-17:00",
+  "website": "https://ottolenghi.co.uk/restaurants/chelsea",
+  "postcode": "SW1X 0BP"
+ },
+ {
+  "osm_id": 10087563070,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.4997643,
+  "lng": -0.0764345,
+  "opening_hours": "Mo-Fr 07:30-16:30; Sa-Su 08:30-17:30",
+  "website": "https://watchhouse.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 10135523820,
+  "name": "ARRO London",
+  "amenity": "cafe",
+  "lat": 51.5157005,
+  "lng": -0.1367833,
+  "opening_hours": "Mo-Fr 08:00-19:00; Sa 09:00-19:00; Su 10:00-19:00",
+  "website": "https://www.arrocoffee.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 10200371934,
+  "name": "Batch Baby",
+  "amenity": "cafe",
+  "lat": 51.5390592,
+  "lng": -0.0814102,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa 08:30-17:00; Su 09:00-16:00",
+  "website": "https://www.batchbaby.co.uk/",
+  "postcode": "N1 5SF"
+ },
+ {
+  "osm_id": 10225863757,
+  "name": "S.O.S Coffee",
+  "amenity": "cafe",
+  "lat": 51.4921393,
+  "lng": -0.0650043,
+  "opening_hours": "Mo-Fr 07:00-15:00; Sa 08:00-15:00; Su 08:30-15:00",
+  "website": null,
+  "postcode": "SE16 3RP"
+ },
+ {
+  "osm_id": 10237785509,
+  "name": "Origin",
+  "amenity": "cafe",
+  "lat": 51.5042354,
+  "lng": -0.1036099,
+  "opening_hours": "Mo-Fr 08:00-16:30; Sa,Su 09:00-17:00",
+  "website": "https://www.origincoffee.co.uk/pages/origin-coffee-scoresby-street",
+  "postcode": "SE1 0XN"
+ },
+ {
+  "osm_id": 10245706076,
+  "name": "Brick Lane Taproom",
+  "amenity": "pub",
+  "lat": 51.520961,
+  "lng": -0.0724088,
+  "opening_hours": "Th-Sa 12:00-23:00; We 16:00-23:00; Su 12:00-22:00",
+  "website": "https://www.bricklanetaproom.co.uk/",
+  "postcode": "E1 6QL"
+ },
+ {
+  "osm_id": 10284727897,
+  "name": "Paradox Coffee",
+  "amenity": "cafe",
+  "lat": 51.5375874,
+  "lng": -0.0587537,
+  "opening_hours": "Mo-Fr 08:30-15:30; Sa-Su 09:00-16:00",
+  "website": "https://www.welcometotheparadox.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 10601474130,
+  "name": "Grind",
+  "amenity": "cafe",
+  "lat": 51.5192614,
+  "lng": -0.0754962,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa-Su 09:00-18:00",
+  "website": null,
+  "postcode": "E1 6AA"
+ },
+ {
+  "osm_id": 10651215494,
+  "name": "ZeroToOne Coffee",
+  "amenity": "cafe",
+  "lat": 51.5181295,
+  "lng": -0.078028,
+  "opening_hours": "Mo-Fr 08:00-16:30; Sa-Su 09:00-17:00",
+  "website": "https://zerotoonecoffee.co.uk",
+  "postcode": "E1 7HP"
+ },
+ {
+  "osm_id": 10683478907,
+  "name": "Climpson & Sons Coffee Bar",
+  "amenity": "cafe",
+  "lat": 51.5197628,
+  "lng": -0.0749329,
+  "opening_hours": "Mo-Fr 08:30-17:00; Sa-Su 10:00-17:00",
+  "website": "https://climpsonandsons.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 10699079948,
+  "name": "Arcade Cafe",
+  "amenity": "cafe",
+  "lat": 51.512809,
+  "lng": -0.1170845,
+  "opening_hours": "Mo-Fr 08:30-16:30",
+  "website": "https://www.kingsvenues.com/Conferences-Meetings/Bush-House/Arcade",
+  "postcode": "WC2B 4BG"
+ },
+ {
+  "osm_id": 10822477031,
+  "name": "Cotti Coffee",
+  "amenity": "cafe",
+  "lat": 51.5184026,
+  "lng": -0.1122418,
+  "opening_hours": "Mo-Fr 07:30-19:00; Sa,Su off",
+  "website": null,
+  "postcode": "WC1V 6BX"
+ },
+ {
+  "osm_id": 10826849767,
+  "name": "Dark Arts Coffee",
+  "amenity": "cafe",
+  "lat": 51.52386,
+  "lng": -0.0778151,
+  "opening_hours": "Mo-Fr 08:00-15:00; Sa-Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 10983242428,
+  "name": "EL&N",
+  "amenity": "cafe",
+  "lat": 51.5139905,
+  "lng": -0.1393388,
+  "opening_hours": "Mo-Th 08:00-22:00; Fr-Su 08:00-23:00",
+  "website": null,
+  "postcode": "W1F 7JF"
+ },
+ {
+  "osm_id": 11052596824,
+  "name": "The Green Hut",
+  "amenity": "cafe",
+  "lat": 51.5067641,
+  "lng": -0.123,
+  "opening_hours": "Mo-Sa 07:00-14:00; Su Off",
+  "website": null,
+  "postcode": "WC2N 5AQ"
+ },
+ {
+  "osm_id": 11065191727,
+  "name": "Alchemy Coffee",
+  "amenity": "cafe",
+  "lat": 51.5236824,
+  "lng": -0.0841455,
+  "opening_hours": "Mo-Th 08:00-16:00; Fr 08:30-15:00; Sa-Su off",
+  "website": "https://alchemycoffee.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 11096912605,
+  "name": "Urban Barista",
+  "amenity": "cafe",
+  "lat": 51.5084583,
+  "lng": -0.0662066,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 08:00-17:00",
+  "website": "https://www.urbanbaristas.co.uk/#locations",
+  "postcode": "E1W 2AA"
+ },
+ {
+  "osm_id": 11101286705,
+  "name": "Hide Away Coffee House",
+  "amenity": "cafe",
+  "lat": 51.5113481,
+  "lng": -0.1352396,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa-Su 09:00-17:30",
+  "website": null,
+  "postcode": "W1D 7DP"
+ },
+ {
+  "osm_id": 11104549234,
+  "name": "Moko Made",
+  "amenity": "cafe",
+  "lat": 51.5337193,
+  "lng": -0.0772548,
+  "opening_hours": "Tu-We 08:30-17:00; Th 10:00-17:00; Fr 08:30-17:00; Sa-Su 10:00-17:00",
+  "website": null,
+  "postcode": "E2 8AN"
+ },
+ {
+  "osm_id": 11128539820,
+  "name": "Great Beyond Brewery",
+  "amenity": "pub",
+  "lat": 51.5293915,
+  "lng": -0.076803,
+  "opening_hours": null,
+  "website": "https://greatbeyond.beer/",
+  "postcode": null
+ },
+ {
+  "osm_id": 11141710133,
+  "name": "Java Whiskers Cat Caf\u00e9 Marylebone",
+  "amenity": "cafe",
+  "lat": 51.5195497,
+  "lng": -0.1426397,
+  "opening_hours": "Su-We 10:00-20:00; Th-Sa 10:00-21:00",
+  "website": "https://javawhiskers.co.uk/marylebone/",
+  "postcode": null
+ },
+ {
+  "osm_id": 11146695407,
+  "name": "CROL&CO",
+  "amenity": "pub",
+  "lat": 51.5004616,
+  "lng": -0.0808232,
+  "opening_hours": null,
+  "website": "https://www.crolandcocoffee.com/",
+  "postcode": "SE1 3LE"
+ },
+ {
+  "osm_id": 11160718504,
+  "name": "Dauns Cafe",
+  "amenity": "cafe",
+  "lat": 51.5169789,
+  "lng": -0.0738514,
+  "opening_hours": "Mo off; Tu-Fr 09:00-17:00; Sa 10:00-19:00; Su 10:00-16:00",
+  "website": "https://dauns.co.uk/",
+  "postcode": "E1 7TD"
+ },
+ {
+  "osm_id": 11163251905,
+  "name": "Baraki by Pyro",
+  "amenity": "bar",
+  "lat": 51.5046795,
+  "lng": -0.0948464,
+  "opening_hours": null,
+  "website": "https://pyrorestaurant.co.uk/baraki-bar",
+  "postcode": "SE1 1RU"
+ },
+ {
+  "osm_id": 11189198988,
+  "name": "Caff\u00e9 Presto",
+  "amenity": "cafe",
+  "lat": 51.5217626,
+  "lng": -0.1339864,
+  "opening_hours": "Mo-Fr 06:30-16:30",
+  "website": null,
+  "postcode": "WC1E 7HJ"
+ },
+ {
+  "osm_id": 11218596168,
+  "name": "Fuckoffee",
+  "amenity": "cafe",
+  "lat": 51.4993407,
+  "lng": -0.0811767,
+  "opening_hours": "Mo-Fr 07:00-19:00; Sa,Su 08:00-19:00",
+  "website": "https://www.fuckoffee.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 11222481638,
+  "name": "Rosetta",
+  "amenity": "cafe",
+  "lat": 51.5095401,
+  "lng": -0.126468,
+  "opening_hours": "Mo-Sa 10:30-19:30",
+  "website": "https://www.facebook.com/rosettafarmlondon",
+  "postcode": "WC2B 4DD"
+ },
+ {
+  "osm_id": 11222906487,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.5336152,
+  "lng": -0.1059954,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa 07:00-20:00; Su 07:30-20:00",
+  "website": null,
+  "postcode": "N1 0RP"
+ },
+ {
+  "osm_id": 11226664637,
+  "name": "Kanpai",
+  "amenity": "bar",
+  "lat": 51.5004974,
+  "lng": -0.0769909,
+  "opening_hours": "We,Th 17:00-22:00; Fr 17:00-22:30; Sa 12:00-22:30; Su 12:00-19:00",
+  "website": "https://kanpai.london/",
+  "postcode": "SE1 2EZ"
+ },
+ {
+  "osm_id": 11237179441,
+  "name": "The Hide Bar",
+  "amenity": "bar",
+  "lat": 51.5021907,
+  "lng": -0.082251,
+  "opening_hours": "Tu-Sa 17:00+",
+  "website": "https://www.thehidebar.com/",
+  "postcode": "SE1 3XF"
+ },
+ {
+  "osm_id": 11262484238,
+  "name": "High Grade Coffee",
+  "amenity": "cafe",
+  "lat": 51.521267,
+  "lng": -0.0719076,
+  "opening_hours": "Mo-Fr 08:00-16:20; Sa-Su 10:00-16:20",
+  "website": null,
+  "postcode": "E1 6QL"
+ },
+ {
+  "osm_id": 11264437669,
+  "name": "Hot Pepper Cafe",
+  "amenity": "cafe",
+  "lat": 51.526696,
+  "lng": -0.1380754,
+  "opening_hours": "Su-Fr 06:00-03:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 11304573103,
+  "name": "Hop Kingdom",
+  "amenity": "pub",
+  "lat": 51.5019458,
+  "lng": -0.0797555,
+  "opening_hours": "Mo-Th 16:00-23:00; Fr-Sa 12:00-23:00; Su 12:00-22:00",
+  "website": "https://hopking.org",
+  "postcode": "SE1 2EY"
+ },
+ {
+  "osm_id": 11345499803,
+  "name": "Katsute100",
+  "amenity": "cafe",
+  "lat": 51.5120931,
+  "lng": -0.1252213,
+  "opening_hours": "Mo-Sa 10:00-20:00; Su 12:00-18:00",
+  "website": null,
+  "postcode": "WC2E 9LZ"
+ },
+ {
+  "osm_id": 11359775069,
+  "name": "Mel's Cafe",
+  "amenity": "cafe",
+  "lat": 51.5330327,
+  "lng": -0.0766739,
+  "opening_hours": "Mo-Fr 07:00-16:00; Sa 08:00-15:30",
+  "website": null,
+  "postcode": "E2 8JD"
+ },
+ {
+  "osm_id": 11360979702,
+  "name": "Pret A Manger",
+  "amenity": "cafe",
+  "lat": 51.5036855,
+  "lng": -0.1164195,
+  "opening_hours": "Mo-Fr 06:30-17:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 11361621056,
+  "name": "The Caf\u00e9 at Foyles",
+  "amenity": "cafe",
+  "lat": 51.5142837,
+  "lng": -0.1300552,
+  "opening_hours": "Mo-Sa 09:00-20:00; Su 12:00-18:00",
+  "website": "https://www.foyles.co.uk/shops/shops-london-charing-cross-cafe",
+  "postcode": "WC2H 0DT"
+ },
+ {
+  "osm_id": 11389558841,
+  "name": "123V Bakery & Studio Gauthier",
+  "amenity": "cafe",
+  "lat": 51.5177434,
+  "lng": -0.1329152,
+  "opening_hours": "Mo-Fr 08:30-18:00; Sa-Su off",
+  "website": null,
+  "postcode": "W1T 1LN"
+ },
+ {
+  "osm_id": 11414857733,
+  "name": "Blend",
+  "amenity": "cafe",
+  "lat": 51.5142714,
+  "lng": -0.0826372,
+  "opening_hours": "Mo-Fr 07:00-16:00; Sa-Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 11530645097,
+  "name": "Nest Cellar",
+  "amenity": "bar",
+  "lat": 51.5271098,
+  "lng": -0.0797777,
+  "opening_hours": "Tu-Sa 17:30-23:00; Su-Mo off",
+  "website": "https://www.nestfood.co.uk/nest-cellar",
+  "postcode": null
+ },
+ {
+  "osm_id": 11547153689,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.5047729,
+  "lng": -0.0867085,
+  "opening_hours": "Mo-Fr 06:00-19:00; Sa-Su 07:30-18:30",
+  "website": "https://www.caffenero.com/uk/stores/london-bridge-shard",
+  "postcode": null
+ },
+ {
+  "osm_id": 11684923470,
+  "name": "Monmouth Coffee Company",
+  "amenity": "cafe",
+  "lat": 51.4958026,
+  "lng": -0.067331,
+  "opening_hours": "Fr-Sa 09:00-16:00",
+  "website": "https://www.monmouthcoffee.co.uk/shops/",
+  "postcode": "SE16 4RA"
+ },
+ {
+  "osm_id": 11734204635,
+  "name": "Oxford House caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5263535,
+  "lng": -0.0613019,
+  "opening_hours": "Mo-Fr 10:00-16:00",
+  "website": "https://www.oxfordhouse.org.uk/!#cafe-anchor",
+  "postcode": "E2 6HG"
+ },
+ {
+  "osm_id": 11782185931,
+  "name": "Urban Baristas",
+  "amenity": "cafe",
+  "lat": 51.5237714,
+  "lng": -0.0630198,
+  "opening_hours": "Mo off; Tu-Fr 07:15-15:15; Sa-Su 08:15-16:15",
+  "website": "https://www.urbanbaristas.co.uk/",
+  "postcode": "E2 6JG"
+ },
+ {
+  "osm_id": 11816995944,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5034335,
+  "lng": -0.1140856,
+  "opening_hours": "Mo,Tu 06:00-21:00; We-Fr 06:00-22:00; Sa 07:00-22:00; Su 07:30-20:00",
+  "website": "https://blacksheepcoffee.co.uk/blogs/locations/waterloo",
+  "postcode": "SE1 7BH"
+ },
+ {
+  "osm_id": 11869927808,
+  "name": "Big Belly Bar & Comedy Club",
+  "amenity": "bar",
+  "lat": 51.5077742,
+  "lng": -0.1069201,
+  "opening_hours": null,
+  "website": "https://www.osbonpharmacy.co.uk/",
+  "postcode": "SE1 9LQ"
+ },
+ {
+  "osm_id": 11939631569,
+  "name": "The Umbrella Workshop",
+  "amenity": "bar",
+  "lat": 51.5260883,
+  "lng": -0.0771568,
+  "opening_hours": "Tu-Su 12:00-22:00; Mo 12:00-18:00",
+  "website": "https://theumbrellaproject.co.uk/",
+  "postcode": "E2 7JD"
+ },
+ {
+  "osm_id": 11944450170,
+  "name": "Searcys at The Gherkin",
+  "amenity": "bar",
+  "lat": 51.5144865,
+  "lng": -0.0803865,
+  "opening_hours": null,
+  "website": "https://searcys.co.uk/venues/the-gherkin/",
+  "postcode": null
+ },
+ {
+  "osm_id": 11958124813,
+  "name": "All Is Joy",
+  "amenity": "cafe",
+  "lat": 51.5138575,
+  "lng": -0.1327623,
+  "opening_hours": "Mo-Su 08:00-18:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 11964292769,
+  "name": "WatchHouse",
+  "amenity": "cafe",
+  "lat": 51.5128489,
+  "lng": -0.1272884,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa,Su 08:00-18:00; PH 08:00-18:00",
+  "website": "https://www.watchhouse.com",
+  "postcode": "WC2H 9DL"
+ },
+ {
+  "osm_id": 12045999609,
+  "name": "Roasting Plant Coffee",
+  "amenity": "cafe",
+  "lat": 51.5108613,
+  "lng": -0.0855992,
+  "opening_hours": "Mo-Fr 09:00-19:00; Sa 08:00-19:30; Su 08:00-18:30",
+  "website": "https://roastingplant.co.uk/",
+  "postcode": "EC3V 0EJ"
+ },
+ {
+  "osm_id": 12071932562,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5037546,
+  "lng": -0.0857248,
+  "opening_hours": "Mo-Fr 06:00-19:30; Sa 06:30-19:30; Su 07:00-19:30",
+  "website": "https://www.caffenero.com/uk/stores/london-bridge-st-thomas",
+  "postcode": null
+ },
+ {
+  "osm_id": 12073086975,
+  "name": "Stullen",
+  "amenity": "cafe",
+  "lat": 51.4943563,
+  "lng": -0.1478447,
+  "opening_hours": "Mo-Fr 07:00-17:00;Sa-Su 08:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12173310046,
+  "name": "The 411 London",
+  "amenity": "bar",
+  "lat": 51.5315935,
+  "lng": -0.1065901,
+  "opening_hours": "Mo-Tu 12:00-23:00; We-Sa 12:00-00:30",
+  "website": "https://www.the411london.co.uk/",
+  "postcode": "EC1V 4AB"
+ },
+ {
+  "osm_id": 12231843057,
+  "name": "Wetherspoons - The Lion & The Unicorn",
+  "amenity": "pub",
+  "lat": 51.5028376,
+  "lng": -0.1150963,
+  "opening_hours": null,
+  "website": "https://www.jdwetherspoon.com/pubs/the-lion-the-unicorn-london/",
+  "postcode": "SE1 7BH"
+ },
+ {
+  "osm_id": 12241524301,
+  "name": "Prosecco Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5130327,
+  "lng": -0.1309985,
+  "opening_hours": "Mo-Fr 11:00-23:00; Sa-Su 11:00-00:00",
+  "website": "http://Proseccocafe.com",
+  "postcode": "W1D 5LD"
+ },
+ {
+  "osm_id": 12251307772,
+  "name": "Kova",
+  "amenity": "cafe",
+  "lat": 51.5138991,
+  "lng": -0.0684409,
+  "opening_hours": "Mo-Su 10:00-22:00",
+  "website": "https://www.kovapatisserie.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12252642901,
+  "name": "St. George London",
+  "amenity": "cafe",
+  "lat": 51.5098598,
+  "lng": -0.1270485,
+  "opening_hours": "Tu-Fr 08:00-18:00; Sa-Su 09:00-18:00",
+  "website": "https://stgeorgecoffee.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12279739003,
+  "name": "Scarfes Bar",
+  "amenity": "bar",
+  "lat": 51.5175698,
+  "lng": -0.1181331,
+  "opening_hours": null,
+  "website": "https://www.rosewoodhotels.com/en/london/dining/scarfes-bar",
+  "postcode": "WC1V 7EN"
+ },
+ {
+  "osm_id": 12285264301,
+  "name": "Bibi's Soho",
+  "amenity": "cafe",
+  "lat": 51.511485,
+  "lng": -0.135135,
+  "opening_hours": "Mo-Fr 10:00-15:00",
+  "website": "https://letsgotobibis.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12291905821,
+  "name": "The Hansom",
+  "amenity": "cafe",
+  "lat": 51.5300279,
+  "lng": -0.1261037,
+  "opening_hours": "Mo-Fr 09:00-22:00; Sa,Su 10:00-22:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12364521968,
+  "name": "Tattle Coffe House",
+  "amenity": "cafe",
+  "lat": 51.5137206,
+  "lng": -0.1012088,
+  "opening_hours": "Mo-Su 08:00-21:00",
+  "website": "https://lostpropertyhotel.com/tattle-coffee-shop-near-st-pauls/",
+  "postcode": "EC4M 7AA"
+ },
+ {
+  "osm_id": 12370029201,
+  "name": "Noxy",
+  "amenity": "cafe",
+  "lat": 51.52281,
+  "lng": -0.1261414,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa 07:30-18:00; Su 08:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12427775501,
+  "name": "The Arcanist's Tavern",
+  "amenity": "bar",
+  "lat": 51.5293436,
+  "lng": -0.0752184,
+  "opening_hours": null,
+  "website": "https://arcaniststavern.uk/",
+  "postcode": "E2 8FE"
+ },
+ {
+  "osm_id": 12529152052,
+  "name": "Goodman's Field",
+  "amenity": "pub",
+  "lat": 51.511524,
+  "lng": -0.0727234,
+  "opening_hours": null,
+  "website": "https://www.jdwetherspoon.com/pubs/all-pubs/england/london/goodmans-field-tower-hamlets",
+  "postcode": "E1 8AP"
+ },
+ {
+  "osm_id": 12534156761,
+  "name": "The Bolter",
+  "amenity": "pub",
+  "lat": 51.5117408,
+  "lng": -0.0926706,
+  "opening_hours": null,
+  "website": "https://thebolter.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12570863801,
+  "name": "Lift Coffee Shoreditch",
+  "amenity": "cafe",
+  "lat": 51.5262823,
+  "lng": -0.0795275,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa-Su 09:00-16:00",
+  "website": "https://www.liftcoffeelondon.com/",
+  "postcode": "EC2A 3AY"
+ },
+ {
+  "osm_id": 12596446001,
+  "name": "NO.79 Coffee & Mousse",
+  "amenity": "cafe",
+  "lat": 51.5141651,
+  "lng": -0.1329681,
+  "opening_hours": "Mo-Th 12:00-22:00; Fr-Sa 12:00-22:30; Su 12:00-21:00",
+  "website": null,
+  "postcode": "W1D 3SJ"
+ },
+ {
+  "osm_id": 12599228001,
+  "name": "Feeney's 5 Lloyds Avenue",
+  "amenity": "pub",
+  "lat": 51.5118019,
+  "lng": -0.0774811,
+  "opening_hours": "Mo-Sa 11:00-23:30",
+  "website": "https://www.feeneyspubs.com/feeneys-5-lloyds-avenue",
+  "postcode": "EC3N 3AE"
+ },
+ {
+  "osm_id": 12616057007,
+  "name": "BloomsYard",
+  "amenity": "cafe",
+  "lat": 51.5183697,
+  "lng": -0.0833728,
+  "opening_hours": "Mo-Tu 08:00-18:00; We-Th 08:00-20:00; Fr 08:00-16:00; Sa-Su off",
+  "website": "https://www.bloomsyard.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12633421801,
+  "name": "Qima Cafe Covent Garden",
+  "amenity": "cafe",
+  "lat": 51.511152,
+  "lng": -0.126231,
+  "opening_hours": "Mo-Fr 08:00-19:00; Sa 09:00-19:00; Su 09:00-17:00",
+  "website": "https://qimacafe.com/",
+  "postcode": "WC2N 4LE"
+ },
+ {
+  "osm_id": 12673771698,
+  "name": "Locke coffee club",
+  "amenity": "cafe",
+  "lat": 51.5105443,
+  "lng": -0.096902,
+  "opening_hours": "Mo-Su 07:00-18:00",
+  "website": "https://www.lockeliving.com/en/help/property-information/what-food-and-drink-options-are-there-onsite-at-locke-at-broken-wharf",
+  "postcode": null
+ },
+ {
+  "osm_id": 12690740601,
+  "name": "Tokyo Bagel",
+  "amenity": "cafe",
+  "lat": 51.5012293,
+  "lng": -0.1121564,
+  "opening_hours": "Mo-Su 09:00-17:00",
+  "website": "https://tokyobagel.co.uk/",
+  "postcode": "SE1 7AB"
+ },
+ {
+  "osm_id": 12694273701,
+  "name": "NQ64 Arcade Bar - Shoreditch",
+  "amenity": "bar",
+  "lat": 51.5260227,
+  "lng": -0.0854987,
+  "opening_hours": "Mo-Th 15:00-02:00; Fr 15:00-03:00; Sa 12:00-03:00; Su 12:00-02:00",
+  "website": "https://nq64.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12723541367,
+  "name": "Starbucks",
+  "amenity": "cafe",
+  "lat": 51.515831,
+  "lng": -0.130443,
+  "opening_hours": "Mo-Sa 07:00-21:00; Su 08:00-21:00; PH off",
+  "website": null,
+  "postcode": "W1D 3BG"
+ },
+ {
+  "osm_id": 12761894258,
+  "name": "Flying Horse Coffee",
+  "amenity": "cafe",
+  "lat": 51.5240006,
+  "lng": -0.0779029,
+  "opening_hours": "Mo-Fr 08:00-16:00; Sa-Su 09:00-16:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12778158730,
+  "name": "Cream Dream",
+  "amenity": "cafe",
+  "lat": 51.5100892,
+  "lng": -0.1236859,
+  "opening_hours": "Mo-We 08:00-20:00; Th-Fr 08:00-21:00; Sa 08:30-21:00; Su 08:30-20:00",
+  "website": null,
+  "postcode": "WC2E 9HA"
+ },
+ {
+  "osm_id": 12792258103,
+  "name": "GAIL's",
+  "amenity": "cafe",
+  "lat": 51.5112768,
+  "lng": -0.0982558,
+  "opening_hours": "Mo-Tu,Su 07:00-19:00; We-Sa 07:00-21:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12797270622,
+  "name": "Circe's Rooftop",
+  "amenity": "bar",
+  "lat": 51.5026643,
+  "lng": -0.1100617,
+  "opening_hours": "Mo-We 15:00-25:00; Th-Fr 15:00-26:00; Sa 12:00-26:00; Su 12:00-25:00",
+  "website": "https://www.circesrooftop.co.uk/",
+  "postcode": "SE1 8UL"
+ },
+ {
+  "osm_id": 12797840037,
+  "name": "Special Guests",
+  "amenity": "cafe",
+  "lat": 51.5191213,
+  "lng": -0.1528291,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa-Su 08:00-16:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 12814480101,
+  "name": "The Blue Maid",
+  "amenity": "pub",
+  "lat": 51.5025607,
+  "lng": -0.0919382,
+  "opening_hours": "Mo-We 12:00-23:00; Th-Sa 12:00-00:00; Su 12:00-22:00",
+  "website": "https://www.thebluemaid.com/",
+  "postcode": "SE1 1HR"
+ },
+ {
+  "osm_id": 12815047301,
+  "name": "WC Wine Bar",
+  "amenity": "bar",
+  "lat": 51.5234464,
+  "lng": -0.1194782,
+  "opening_hours": null,
+  "website": "https://www.wcbars.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12816615429,
+  "name": "Clays",
+  "amenity": "bar",
+  "lat": 51.5167337,
+  "lng": -0.0890871,
+  "opening_hours": "Mo 16:00-22:00; Tu-Fr 12:00-24:00; Sa 11:30-24:00; Su 12:00-22:00",
+  "website": "https://clays.bar/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12817536856,
+  "name": "TWG Tea",
+  "amenity": "cafe",
+  "lat": 51.5102905,
+  "lng": -0.1312082,
+  "opening_hours": "Mo-Su 10:00-21:00",
+  "website": null,
+  "postcode": "WC2H 7LT"
+ },
+ {
+  "osm_id": 12826360201,
+  "name": "Kill the Cat",
+  "amenity": "bar",
+  "lat": 51.5193907,
+  "lng": -0.076516,
+  "opening_hours": null,
+  "website": "https://www.killthecat.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12836989701,
+  "name": "Four Quarters",
+  "amenity": "bar",
+  "lat": 51.5041673,
+  "lng": -0.0951914,
+  "opening_hours": null,
+  "website": "https://fourquarters.bar/",
+  "postcode": null
+ },
+ {
+  "osm_id": 12852799706,
+  "name": "Arcana Coffee",
+  "amenity": "cafe",
+  "lat": 51.5180078,
+  "lng": -0.1229397,
+  "opening_hours": "Mo-Fr 08:00-15:00",
+  "website": "https://www.bloomsburylondon.com/tenants/arcana-coffee",
+  "postcode": "WC1A 2SN"
+ },
+ {
+  "osm_id": 12920922057,
+  "name": "Monmouth Coffee Company",
+  "amenity": "cafe",
+  "lat": 51.5143659,
+  "lng": -0.1267997,
+  "opening_hours": "Mo-Sa 08:00-18:30",
+  "website": "https://www.monmouthcoffee.co.uk/",
+  "postcode": "WC2H 9EU"
+ },
+ {
+  "osm_id": 12922953975,
+  "name": "Alcotraz",
+  "amenity": "bar",
+  "lat": 51.5300662,
+  "lng": -0.0745576,
+  "opening_hours": null,
+  "website": "https://www.alcotraz.co.uk/",
+  "postcode": "E2 8GY"
+ },
+ {
+  "osm_id": 12962155287,
+  "name": "Black Sheep Coffee",
+  "amenity": "cafe",
+  "lat": 51.5168859,
+  "lng": -0.0868006,
+  "opening_hours": "Mo 07:00-19:00; Tu-Th 06:30-19:00; Fr 07:00-18:00; Sa 08:00-17:00; Su 09:00-16:00",
+  "website": null,
+  "postcode": "EC2M 5TQ"
+ },
+ {
+  "osm_id": 13014431848,
+  "name": "Bridge Cafe",
+  "amenity": "cafe",
+  "lat": 51.4990205,
+  "lng": -0.1019746,
+  "opening_hours": "Mo-Su 09:00-20:30",
+  "website": null,
+  "postcode": "SE1 0AJ"
+ },
+ {
+  "osm_id": 13017615901,
+  "name": "Latitude on the Wheels",
+  "amenity": "cafe",
+  "lat": 51.5025118,
+  "lng": -0.109946,
+  "opening_hours": "Mo-Fr 07:00-14:00; Sa 09:00-14:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13062175201,
+  "name": "ScandiKitchen Cafe & Shop - Victoria",
+  "amenity": "cafe",
+  "lat": 51.4970987,
+  "lng": -0.1447364,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa-Su 08:00-18:00",
+  "website": "https://scandikitchen.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 13070421414,
+  "name": "Amelia",
+  "amenity": "cafe",
+  "lat": 51.5147943,
+  "lng": -0.1267405,
+  "opening_hours": "Mo-Th 08:30-18:30; Fr 08:30-17:00; Sa 09:00-17:30; Su 09:30-17:30",
+  "website": "https://www.amelia.london",
+  "postcode": "WC2H 9DA"
+ },
+ {
+  "osm_id": 13076101501,
+  "name": "London Night Cafe",
+  "amenity": "cafe",
+  "lat": 51.5159438,
+  "lng": -0.0759072,
+  "opening_hours": "Su-Mo, We-Th 18:00-03:00; Tu 22:00-03:00; Fr 18:00-05:00",
+  "website": "https://www.londonnightcafe.co.uk/",
+  "postcode": null
+ },
+ {
+  "osm_id": 13078288056,
+  "name": "Hermanos Colombian Coffee Roasters",
+  "amenity": "cafe",
+  "lat": 51.4962674,
+  "lng": -0.1434812,
+  "opening_hours": "Mo-Fr 06:00-19:00; Sa-Su 07:30-18:00",
+  "website": null,
+  "postcode": "SW1V 1JR"
+ },
+ {
+  "osm_id": 13084910787,
+  "name": "Common Breads",
+  "amenity": "cafe",
+  "lat": 51.4939564,
+  "lng": -0.1471035,
+  "opening_hours": "08:00-18:00",
+  "website": "https://www.commonbreads.com/",
+  "postcode": "SW1W 9SA"
+ },
+ {
+  "osm_id": 13101085518,
+  "name": "Nude Coffee Roasters",
+  "amenity": "cafe",
+  "lat": 51.5203666,
+  "lng": -0.0727763,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa-Su 09:00-18:00",
+  "website": "https://www.nudeespresso.com/",
+  "postcode": null
+ },
+ {
+  "osm_id": 13103481999,
+  "name": "Vaulty Towers",
+  "amenity": "bar",
+  "lat": 51.5011202,
+  "lng": -0.1119134,
+  "opening_hours": "Mo-We 12:00-23:00; Th 12:00-24:00; Fr-Sa 12:00-01:00; Su 12:00-22:00",
+  "website": "https://www.vaultytowers.london",
+  "postcode": "SE1 7RG"
+ },
+ {
+  "osm_id": 13149861707,
+  "name": "Monmouth Coffee Company",
+  "amenity": "cafe",
+  "lat": 51.4955975,
+  "lng": -0.0693293,
+  "opening_hours": "Mo-Fr 08:00-15:00; Sa 08:00-16:00",
+  "website": "https://www.monmouthcoffee.co.uk/",
+  "postcode": "SE16 3AF"
+ },
+ {
+  "osm_id": 13158359211,
+  "name": "King's cafe",
+  "amenity": "cafe",
+  "lat": 51.5310251,
+  "lng": -0.1309956,
+  "opening_hours": "Mo-Fr 07:00-16:00, Sa 07:00-14:00, Su closed",
+  "website": null,
+  "postcode": "NW1 1ES"
+ },
+ {
+  "osm_id": 13204570527,
+  "name": "WatchHouse Fitzrovia",
+  "amenity": "cafe",
+  "lat": 51.5178902,
+  "lng": -0.1390999,
+  "opening_hours": "Mo-Fr 08:00-17:30; Sa-Su 09:00-17:30",
+  "website": null,
+  "postcode": "W1T 3PT"
+ },
+ {
+  "osm_id": 13208980001,
+  "name": "Nagare Coffee",
+  "amenity": "cafe",
+  "lat": 51.5134434,
+  "lng": -0.1384517,
+  "opening_hours": "Mo-Fr 08:00-18:00; Sa-Su 09:00-18:00",
+  "website": "https://nagare.co.uk/",
+  "postcode": "W1F 7RD"
+ },
+ {
+  "osm_id": 13240802202,
+  "name": "Snoozzze Coffee",
+  "amenity": "cafe",
+  "lat": 51.5198854,
+  "lng": -0.1022364,
+  "opening_hours": "Mo-Th 08:00-17:00; Fr 08:00-16:00; Sa 08:30-17:00",
+  "website": "https://www.snoozzze.uk/",
+  "postcode": "EC1M 6BH"
+ },
+ {
+  "osm_id": 13272898386,
+  "name": "Nkora",
+  "amenity": "cafe",
+  "lat": 51.5113547,
+  "lng": -0.1413942,
+  "opening_hours": "Mo-Fr 09:00-18:00; Su 10:30-16:00; Sa 09:00-17:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13287373801,
+  "name": "Mandala Caf\u00e9",
+  "amenity": "cafe",
+  "lat": 51.5282172,
+  "lng": -0.0512273,
+  "opening_hours": "Mo-Th 08:30-19:00; Fr 08:30-16:00; Sa 11:00-15:15",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13290010041,
+  "name": "CellarDoor",
+  "amenity": "bar",
+  "lat": 51.5114702,
+  "lng": -0.1192686,
+  "opening_hours": "16:00-01:00",
+  "website": "https://cellardoor.london/",
+  "postcode": "WC2R 0HS"
+ },
+ {
+  "osm_id": 13340440399,
+  "name": "Corner Deli",
+  "amenity": "cafe",
+  "lat": 51.5294397,
+  "lng": -0.0693791,
+  "opening_hours": "Mo-We,Su 11:00-17:00; Th-Sa 11:00-19:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13357808701,
+  "name": "Little Fires",
+  "amenity": "bar",
+  "lat": 51.5251107,
+  "lng": -0.0715659,
+  "opening_hours": "Tu-Sa 17:00-00:00; Su 12:00-22:00",
+  "website": "https://littlefires.bar/",
+  "postcode": "E2 7DG"
+ },
+ {
+  "osm_id": 13418563678,
+  "name": "Nero Express",
+  "amenity": "cafe",
+  "lat": 51.5176257,
+  "lng": -0.0807325,
+  "opening_hours": "Mo-Fr 06:00-20:00; Sa,Su 06:30-19:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13546456301,
+  "name": "Forbes and Hamilton Coffee House",
+  "amenity": "cafe",
+  "lat": 51.5170957,
+  "lng": -0.0881642,
+  "opening_hours": "Mo-Th 07:00-17:30; Fr 07:00-16:30",
+  "website": "https://wildandwoodcoffee.co.uk/",
+  "postcode": "EC2M 5TE"
+ },
+ {
+  "osm_id": 13550924173,
+  "name": "Chatime",
+  "amenity": "cafe",
+  "lat": 51.5121641,
+  "lng": -0.1302912,
+  "opening_hours": "Mo-Su 12:00-20:00; Sa 11:00-23:00",
+  "website": "https://www.chatimeuk.com/",
+  "postcode": "W1D 5AP"
+ },
+ {
+  "osm_id": 13571511903,
+  "name": "Balans Soho Society Cafe",
+  "amenity": "cafe",
+  "lat": 51.5133235,
+  "lng": -0.131167,
+  "opening_hours": "08:00-23:00",
+  "website": "https://www.balans.co.uk/",
+  "postcode": "W1D 4UG"
+ },
+ {
+  "osm_id": 13571511986,
+  "name": "Tintico",
+  "amenity": "cafe",
+  "lat": 51.5144806,
+  "lng": -0.1313036,
+  "opening_hours": "Mo-Fr 08:00-17:00; Sa 10:00-17:00; Su 12:00-17:00",
+  "website": "https://www.tintico.co.uk",
+  "postcode": "W1D 3DY"
+ },
+ {
+  "osm_id": 13660736654,
+  "name": "Caf\u00e9 Hebe",
+  "amenity": "cafe",
+  "lat": 51.5373214,
+  "lng": -0.0764211,
+  "opening_hours": "Tu 08:00-17:00; We-Th 08:00-23:00; Fr 08:00-00:00; Sa 09:00-00:00; Su 09:00-16:30",
+  "website": "http://cafehebe.com",
+  "postcode": null
+ },
+ {
+  "osm_id": 13664659101,
+  "name": "Kaffeine",
+  "amenity": "cafe",
+  "lat": 51.5184524,
+  "lng": -0.1403439,
+  "opening_hours": "Mo-Fr 07:30-17:00; Sa 08:30-17:00; Su 09:00-17:00",
+  "website": "https://kaffeine.co.uk/",
+  "postcode": "W1W 7QJ"
+ },
+ {
+  "osm_id": 13667021401,
+  "name": "% ARABICA",
+  "amenity": "cafe",
+  "lat": 51.511704,
+  "lng": -0.1240254,
+  "opening_hours": "Mo-Fr 08:00-20:00; Sa-Su 10:00-20:00",
+  "website": "http://arabica.coffee",
+  "postcode": "WC2E 8HN"
+ },
+ {
+  "osm_id": 13694833518,
+  "name": "Tay\u0113r + Elementary",
+  "amenity": "bar",
+  "lat": 51.5250193,
+  "lng": -0.0915052,
+  "opening_hours": "Tu-We 15:00-00:00, Th-Sa 15:00-01:00",
+  "website": "https://tayer-elementary.com/",
+  "postcode": "EC1V 9BW"
+ },
+ {
+  "osm_id": 13698295100,
+  "name": "Mayvn Cafe",
+  "amenity": "cafe",
+  "lat": 51.5321222,
+  "lng": -0.107073,
+  "opening_hours": "Mo-Fr 07:30-16:00",
+  "website": "https://www.mayvn.co.uk/",
+  "postcode": "N1 9HF"
+ },
+ {
+  "osm_id": 13734805701,
+  "name": "White Mulberries",
+  "amenity": "cafe",
+  "lat": 51.5206122,
+  "lng": -0.1531086,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa-Su 08:00-18:00",
+  "website": "https://whitemulberries.com/pages/marylebone-village",
+  "postcode": "W1U 4HU"
+ },
+ {
+  "osm_id": 13742320776,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5183799,
+  "lng": -0.1117573,
+  "opening_hours": "Mo-Sa 06:00-20:00; Su 06:30-18:00",
+  "website": "https://www.costa.co.uk/stores/london-holborn-chancery-ln",
+  "postcode": null
+ },
+ {
+  "osm_id": 13759538301,
+  "name": "Molan Tea",
+  "amenity": "cafe",
+  "lat": 51.4926978,
+  "lng": -0.0971885,
+  "opening_hours": "Mo-Th 11:00-21:30; Fr 11:00-21:30; Sa 12:00-21:30; Su 12:00-21:00",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13809070001,
+  "name": "Noxy Brothers",
+  "amenity": "cafe",
+  "lat": 51.5194535,
+  "lng": -0.0762727,
+  "opening_hours": "Mo-Fr 07:45-18:00; Sa-Su 09:00-18:00",
+  "website": "https://noxybrothers.com/",
+  "postcode": "E1 6BG"
+ },
+ {
+  "osm_id": 13845219929,
+  "name": "Haggerston Perk",
+  "amenity": "cafe",
+  "lat": 51.5323491,
+  "lng": -0.0655559,
+  "opening_hours": "Mo-Fr 09:00-15:00; Sa-Su off",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13917963819,
+  "name": "Roastery Club",
+  "amenity": "cafe",
+  "lat": 51.5149961,
+  "lng": -0.071484,
+  "opening_hours": "Mo-Su 07:00-19:00",
+  "website": "https://roasteryclub.co.uk/",
+  "postcode": "E1 7RA"
+ },
+ {
+  "osm_id": 13917963820,
+  "name": "BabaBake Aldgate",
+  "amenity": "cafe",
+  "lat": 51.5153764,
+  "lng": -0.0707457,
+  "opening_hours": "Mo-Su 07:00-19:00",
+  "website": null,
+  "postcode": "E1 7PH"
+ },
+ {
+  "osm_id": 13927689501,
+  "name": "Fuwa Fuwa Cafe",
+  "amenity": "cafe",
+  "lat": 51.5126334,
+  "lng": -0.1320124,
+  "opening_hours": "Mo-Su 11:00-22:30",
+  "website": "https://www.fuwafuwa.co.uk/",
+  "postcode": "W1D 6AJ"
+ },
+ {
+  "osm_id": 13930553501,
+  "name": "TRAMPS BAR",
+  "amenity": "bar",
+  "lat": 51.5300853,
+  "lng": -0.0949641,
+  "opening_hours": "We-Fr 12:30-15:00, 17:00-23:30; Mo 17:00-23:30",
+  "website": "http://trampsltd.com/",
+  "postcode": "N1 7TB"
+ },
+ {
+  "osm_id": 13952071095,
+  "name": "Basis Cafe",
+  "amenity": "cafe",
+  "lat": 51.5383415,
+  "lng": -0.0584222,
+  "opening_hours": "Mo-Fr 07:00-16:00; Sa-Su 08:30-11:30",
+  "website": null,
+  "postcode": null
+ },
+ {
+  "osm_id": 13990674525,
+  "name": "Kiss the Hippo",
+  "amenity": "cafe",
+  "lat": 51.5186234,
+  "lng": -0.1317635,
+  "opening_hours": "Mo-Fr 07:30-18:30; Sa-Su 07:30-17:30",
+  "website": null,
+  "postcode": "WC1B 3HA"
+ },
+ {
+  "osm_id": 14014223818,
+  "name": "SHED",
+  "amenity": "cafe",
+  "lat": 51.538611,
+  "lng": -0.0765377,
+  "opening_hours": "Mo 08:30-19:00; Tu-Fr 08:30-21:00; Sa-Su 09:00-18:00",
+  "website": "https://shedlondon.shop",
+  "postcode": "E8 4DG"
+ },
+ {
+  "osm_id": 14014754401,
+  "name": "Suzette Garden",
+  "amenity": "cafe",
+  "lat": 51.4975556,
+  "lng": -0.1366989,
+  "opening_hours": "Mo-Fr 07:30-22:00; Sa 08:30-22:00; Su 08:30-16:30",
+  "website": "https://www.chezantoinette.co.uk/suzette/",
+  "postcode": "SW1E 6AB"
+ },
+ {
+  "osm_id": 14017320502,
+  "name": "Urban Baristas",
+  "amenity": "cafe",
+  "lat": 51.5229171,
+  "lng": -0.0842431,
+  "opening_hours": "Mo-Fr 07:00-18:00; Sa-Su 08:00-18:00",
+  "website": null,
+  "postcode": "EC2A 4JH"
+ },
+ {
+  "osm_id": 14018552605,
+  "name": "Bewliehill",
+  "amenity": "cafe",
+  "lat": 51.5167965,
+  "lng": -0.0804006,
+  "opening_hours": "Mo-Fr 08:00-20:00",
+  "website": null,
+  "postcode": "EC2M 4AH"
+ },
+ {
+  "osm_id": 14060813647,
+  "name": "Mardy's",
+  "amenity": "cafe",
+  "lat": 51.5137742,
+  "lng": -0.1446365,
+  "opening_hours": "Mo-Fr 07:30-18:00; Sa-Su 09:00-16:00",
+  "website": "https://mardys.uk",
+  "postcode": "W1S 1BR"
+ },
+ {
+  "osm_id": 14063894075,
+  "name": "Blank Street Coffee",
+  "amenity": "cafe",
+  "lat": 51.4940355,
+  "lng": -0.1002145,
+  "opening_hours": "Mo-Fr 06:30-20:00; Sa-Su 07:00-20:00",
+  "website": "https://www.blankstreet.com/en-GB/locations/london/216-elephant-and-castle",
+  "postcode": "SE1 6TE"
+ },
+ {
+  "osm_id": 14097867115,
+  "name": "Jubilee Cafe",
+  "amenity": "cafe",
+  "lat": 51.5002015,
+  "lng": -0.1255589,
+  "opening_hours": "Mo-We 09:00-17:45; Th 10:00-17:30; Fr,Sa 10:00-17:00",
+  "website": "https://www.parliament.uk/visiting/access/facilities/jubilee-cafe/",
+  "postcode": null
+ },
+ {
+  "osm_id": 14106027984,
+  "name": "The Brush",
+  "amenity": "cafe",
+  "lat": 51.5263002,
+  "lng": -0.0834889,
+  "opening_hours": "Mo-Su 07:00-22:00",
+  "website": "https://www.thebrushhoxton.co.uk/",
+  "postcode": "EC2A 3JL"
+ },
+ {
+  "osm_id": 14144708238,
+  "name": "Le Cafe Robuchon",
+  "amenity": "cafe",
+  "lat": 51.5064742,
+  "lng": -0.1437577,
+  "opening_hours": "Mo-Fr 07:00-17:00; Sa-Su 09:00-16:00",
+  "website": "https://robuchonlondon.co.uk/",
+  "postcode": "W1J 8JA"
+ },
+ {
+  "osm_id": 14178877182,
+  "name": "Flat White",
+  "amenity": "cafe",
+  "lat": 51.5135985,
+  "lng": -0.1348074,
+  "opening_hours": "Mo-Fr 08:30-17:00; Sa 09:00-18:00; Su 09:30-17:30",
+  "website": "https://www.flatwhitesoho.co.uk/",
+  "postcode": "W1F 0PT"
+ },
+ {
+  "osm_id": 14178896023,
+  "name": "Caff\u00e8 Nero",
+  "amenity": "cafe",
+  "lat": 51.5132388,
+  "lng": -0.1313755,
+  "opening_hours": "Mo 06:30-22:00, Tu,We 06:30-23:00, Th 06:30-24:00, Fr 06:30-02:00, Sa 07:30-02:00, Su 07:30-21:00",
+  "website": "https://www.caffenero.com/uk/stores/frith-st",
+  "postcode": "W1D 4SQ"
+ },
+ {
+  "osm_id": 14181043717,
+  "name": "The Market Porter",
+  "amenity": "pub",
+  "lat": 51.5053367,
+  "lng": -0.0913515,
+  "opening_hours": "Mo-Fr 06:00-09:00,11:00-23:00; Sa 12:00-23:00; Su 12:00-22:30",
+  "website": "https://www.themarketporter.co.uk/",
+  "postcode": "SE1 9AA"
+ },
+ {
+  "osm_id": 14181043726,
+  "name": "Monmouth Coffee Company",
+  "amenity": "cafe",
+  "lat": 51.5055045,
+  "lng": -0.0914259,
+  "opening_hours": "Mo-Sa 07:30-18:00",
+  "website": "https://www.monmouthcoffee.co.uk/",
+  "postcode": "SE1 9AB"
+ },
+ {
+  "osm_id": 14181043731,
+  "name": "MC & Sons",
+  "amenity": "pub",
+  "lat": 51.5037883,
+  "lng": -0.0998364,
+  "opening_hours": null,
+  "website": "https://www.mcandsonslondon.com/",
+  "postcode": "SE1 0LH"
+ },
+ {
+  "osm_id": 14181043735,
+  "name": "The Mad Hatter Hotel",
+  "amenity": "pub",
+  "lat": 51.5070445,
+  "lng": -0.104933,
+  "opening_hours": "Mo-Fr 07:00-23:00; Sa 08:00-23:00; Su 08:00-20:30",
+  "website": "https://www.madhatterhotel.co.uk/",
+  "postcode": "SE1 9NY"
+ },
+ {
+  "osm_id": 14181043737,
+  "name": "George Inn",
+  "amenity": "pub",
+  "lat": 51.5041902,
+  "lng": -0.0899937,
+  "opening_hours": "Mo-Th 11:00-23:00; Fr-Sa 11:00-00:00; Su 12:00-22:30",
+  "website": "https://www.greeneking-pubs.co.uk/pubs/greater-london/george-southwark/",
+  "postcode": "SE1 1NH"
+ },
+ {
+  "osm_id": 14181043751,
+  "name": "Bunch of Grapes",
+  "amenity": "pub",
+  "lat": 51.5050065,
+  "lng": -0.0891724,
+  "opening_hours": "Mo-We,Sa 09:00-23:00; Th-Fr 09:00-00:00; Su 12:00-23:00",
+  "website": "http://www.bunchofgrapesborough.com/",
+  "postcode": "SE1 9RS"
+ },
+ {
+  "osm_id": 14181043760,
+  "name": "The Bridge Tap",
+  "amenity": "pub",
+  "lat": 51.5043853,
+  "lng": -0.0907996,
+  "opening_hours": null,
+  "website": "https://www.crafted-social.co.uk/bridge-tap-borough-high-street",
+  "postcode": null
+ },
+ {
+  "osm_id": 14181043764,
+  "name": "Costa",
+  "amenity": "cafe",
+  "lat": 51.5045847,
+  "lng": -0.0908967,
+  "opening_hours": "Mo-Fr 06:00-20:00; Sa,Su 07:00-20:00",
+  "website": null,
+  "postcode": "SE1 1RQ"
+ },
+ {
+  "osm_id": 14181043765,
+  "name": "Southwark Tavern",
+  "amenity": "pub",
+  "lat": 51.5048869,
+  "lng": -0.0907902,
+  "opening_hours": null,
+  "website": "https://www.thesouthwarktavern.co.uk/",
+  "postcode": "SE1 1TU"
+ },
+ {
+  "osm_id": 14226401826,
+  "name": "Punch Tavern",
+  "amenity": "pub",
+  "lat": 51.5140437,
+  "lng": -0.1048665,
+  "opening_hours": null,
+  "website": "https://www.urbanpubsandbars.com/venues/punch-tavern",
+  "postcode": "EC4Y 1DE"
+ },
+ {
+  "osm_id": 14273549545,
+  "name": "The Service",
+  "amenity": "cafe",
+  "lat": 51.5125338,
+  "lng": -0.0792347,
+  "opening_hours": "Mo-Fr 07:00-16:30",
+  "website": null,
+  "postcode": null
+ }
+]

@@ -1,0 +1,96 @@
+{
+ "request": {
+  "headcount": 45,
+  "budget": 0,
+  "day": "We",
+  "avg_spend": 12
+ },
+ "results": [
+  {
+   "venue": "EXAMPLE Pub back room",
+   "id": "example-pub-backroom",
+   "score": 3.6,
+   "cap_fit": 0.9,
+   "est_spend": 540,
+   "est_fee": 0,
+   "label": "\u00a30 venue fee (likely)",
+   "reason": "waive if min_spend>=500 (est 540) -> met"
+  },
+  {
+   "venue": "EXAMPLE Small theatre",
+   "id": "example-small-theatre",
+   "score": 1.68,
+   "cap_fit": 0.54,
+   "est_spend": 540,
+   "est_fee": 600,
+   "label": "~\u00a3600 venue fee",
+   "reason": "cap if min_tickets>=80 (est 45) -> not met"
+  }
+ ],
+ "rules": [
+  {
+   "venue_id": "example-pub-backroom",
+   "kind": "waive",
+   "condition_type": "min_spend",
+   "threshold": 500,
+   "applies_days": [
+    "Mo",
+    "Tu",
+    "We",
+    "Th"
+   ],
+   "time_window": "18:00-23:00",
+   "fallback_fee": 250,
+   "source_url": null,
+   "confidence": 1.0,
+   "example": true
+  },
+  {
+   "venue_id": "example-pub-backroom",
+   "kind": "discount",
+   "condition_type": "min_headcount",
+   "threshold": 60,
+   "applies_days": [
+    "Fr"
+   ],
+   "time_window": "18:00-23:00",
+   "fallback_fee": 400,
+   "discount_pct": 50,
+   "source_url": null,
+   "confidence": 1.0,
+   "example": true
+  },
+  {
+   "venue_id": "example-cafe",
+   "kind": "per_head",
+   "condition_type": "min_headcount",
+   "threshold": 10,
+   "applies_days": [
+    "Sa",
+    "Su"
+   ],
+   "time_window": "17:00-22:00",
+   "fallback_fee": 0,
+   "per_head": 8,
+   "source_url": null,
+   "confidence": 1.0,
+   "example": true
+  },
+  {
+   "venue_id": "example-small-theatre",
+   "kind": "cap",
+   "condition_type": "min_tickets",
+   "threshold": 80,
+   "applies_days": [
+    "Tu",
+    "We"
+   ],
+   "time_window": "19:00-23:00",
+   "fallback_fee": 600,
+   "cap": 200,
+   "source_url": null,
+   "confidence": 1.0,
+   "example": true
+  }
+ ]
+}
