@@ -1,32 +1,13 @@
-# React + TypeScript + Vite
+# Open Venue DB – web app (Vite + React + TS + Tailwind v4 + shadcn/ui)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React port of `web/index.html`: Leaflet/OSM quiet-nights heatmap (react-leaflet + leaflet.heat), 300 m hover grid with price ranges, legend card, Supabase-backed search (`search_venues` RPC).
 
-Currently, two official plugins are available:
+- Time: segmented slot bar (Morning 06–12, Afternoon 12–17, Evening 17–21, Late 21–06) or a two-thumb custom hour range (overlap-weighted free score).
+- Weekday chips (today underlined), Quiet/Busy switch, venue-type chips with counts.
+- Price estimates (`venue_features.price_est_*`) shown when present; otherwise honest "price unknown" / "fee unknown".
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm i && npm run dev        # local
+npm run build               # single-file dist/index.html (+ data.json fallback)
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Only the public Supabase publishable key is used (read-only, RLS).
