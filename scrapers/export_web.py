@@ -37,14 +37,14 @@ for v in ev:
         if (close_ and nm) or (not lat and nm and v["postcode"] and v["postcode"]==o.get("postcode")): m=o;break
     if m: used.add(m["osm_id"]); lat,lng=lat or m["lat"],lng or m["lng"]
     if not lat: continue
-    out.append(dict(name=v["name"],type=(m and m["amenity"].replace("pub","pub")) or guess_type(v["name"]),lat=lat,lng=lng,
+    out.append(dict(id=v["id"],name=v["name"],type=(m and m["amenity"].replace("pub","pub")) or guess_type(v["name"]),lat=lat,lng=lng,
         free={k:round(1-p,2) for k,p in v["booked_freq"].items()},basis="events (sparse)",events=v["event_count"],
         capacity=None,fee_label=(rules.get(m["osm_id"],("fee unknown",))[0] if m else "fee unknown"),
-        url=v["event_ids"][0]))
+        url=v["event_ids"][0],address=v["address"],postcode=v["postcode"],osm_id=m["osm_id"] if m else None))
 for o in osm:
     if o["osm_id"] in used: continue
     r=rules.get(o["osm_id"])
-    out.append(dict(name=o["name"],type=o["amenity"],lat=o["lat"],lng=o["lng"],free=osm_grid(o),
+    out.append(dict(id=f"osm-{o['osm_id']}",osm_id=o["osm_id"],opening_hours=o.get("opening_hours"),name=o["name"],type=o["amenity"],lat=o["lat"],lng=o["lng"],free=osm_grid(o),
         basis="opening hours" if o.get("opening_hours") else "no data (0.5)",events=0,capacity=None,
         fee_label=r[0] if r else "fee unknown",url=o.get("website") or f"https://www.openstreetmap.org/node/{o['osm_id']}"))
 json.dump(out,open("web/data.json","w"))

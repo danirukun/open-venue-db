@@ -30,7 +30,7 @@ function render(){const k=day.value+"_"+SLOTS[slot.value];slotname.textContent=S
  heat.setLatLngs(vs.map(v=>[v.lat,v.lng,busy?1-v.free[k]:v.free[k]]));markers.clearLayers();
  if(map.getZoom()>=15)vs.forEach(v=>L.circleMarker([v.lat,v.lng],{radius:5,color:v.events?'#d33':'#36c'}).bindPopup(
   `<b>${v.name}</b><br>${v.type}${v.capacity?' · cap '+v.capacity:''}<br>Free ${k.replace('_',' ')}: <b>${v.free[k]}</b> (${v.basis})<br>${v.fee_label}<br><a href="${v.url}" target=_blank>source</a>`).addTo(markers));
- count.textContent=vs.length+" venues shown";}
+ count.textContent=vs.length+" venues shown"+(window.SRC?' (source: '+SRC+')':'');}
 const grid=L.layerGroup().addTo(map);
 function buildGrid(){grid.clearLayers();const dl=0.0027,dg=0.0043,cells={};
  data.forEach(v=>{const k=Math.floor(v.lat/dl)+"_"+Math.floor(v.lng/dg);(cells[k]=cells[k]||[]).push(v)});
@@ -40,6 +40,10 @@ function buildGrid(){grid.clearLayers();const dl=0.0027,dg=0.0043,cells={};
   const ms=vs.filter(v=>/inimum spend/.test(v.fee_label)).length;
   L.rectangle([[a*dl,b*dg],[(a+1)*dl,(b+1)*dg]],{weight:0.5,color:'#555',fillOpacity:0.02}).bindTooltip(
    `<b>${vs.length} venues</b><br>Venue fee / min spend: <b>${rng}</b><br>${ms} with "minimum spend applies" (amount unknown)<br>${Math.round(100*unk/vs.length)}% price unknown`,{sticky:true}).addTo(grid)})}
-fetch('data.json').then(r=>r.json()).then(d=>{data=d;buildGrid();render()});
+const SB='https://bwkxqyhycuwqpuieggbt.supabase.co',KEY='sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62';
+fetch(SB+'/rest/v1/venues?select=id,name,type,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url&limit=5000',{headers:{apikey:KEY}})
+ .then(r=>{if(!r.ok)throw r.status;return r.json()}).then(d=>{if(!d.length)throw 'empty';d.forEach(v=>v.url=v.url||'#');window.SRC='Supabase';return d})
+ .catch(e=>{console.warn('Supabase failed, using data.json',e);window.SRC='data.json';return fetch('data.json').then(r=>r.json())})
+ .then(d=>{data=d;buildGrid();render()});
 [day,slot,types].forEach(e=>e.addEventListener('input',render));document.querySelectorAll('[name=mode]').forEach(e=>e.onchange=render);map.on('zoomend',render);
 </script></body></html>

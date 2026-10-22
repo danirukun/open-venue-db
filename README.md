@@ -35,5 +35,18 @@ Only a small slice of listings (one snapshot, upcoming only), so most venues hav
 https://open-venue-db.vercel.app: Leaflet + OpenStreetMap tiles (© OpenStreetMap contributors, ODbL). Heat = likely free by weekday and slot. Hover a 300 m cell for venue count and price range ("price unknown" where there's no data).
 Track: https://gb-community-eng-hackathon-10-2026.teamdeel.workers.dev/hackathon#track-open-venue-db
 
-## Supabase / auth
-`supabase/schema.sql` is ready but not deployed. A new project in the org costs $10/month and needs owner approval. Auth plan: Supabase Discord OAuth; `profiles.role = 'editor'` can write, everyone can read.
+## Supabase (live)
+Project `bwkxqyhycuwqpuieggbt` (eu-west-2, London): https://bwkxqyhycuwqpuieggbt.supabase.co
+Publishable key (read-only through RLS): `sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62`
+- Extensions: postgis, pg_trgm, vector, unaccent. Migrations: `supabase/migrations_001.sql`, `migrations_002_fix_search.sql`. Seed: `supabase/seed.sql` (made by `scrapers/to_sql.py`).
+- Indexes: a tsvector generated column with GIN, a trigram index on name, and a GIST index on `geo`.
+- RLS: anyone can read; only `profiles.role in (editor, admin)` can insert, update or delete. Others propose changes through `edit_queue`. Organisers own their `venue_requests`.
+- Auth: enable the Discord provider in Supabase Auth (Dashboard → Auth → Providers → Discord, using the client ID and secret from a Discord application). An admin promotes trusted organisers to `editor`.
+- Search: `rpc/search_venues(q, lat, lng, radius_m, min_capacity, max_budget, weekday, slot, types, lim)`. Score = 2×text rank (ts_rank + trigram) + capacity fit + estimated fee vs budget (from `pricing_rules` via `est_fee`) + likely_free − distance penalty.
+```
+curl -X POST https://bwkxqyhycuwqpuieggbt.supabase.co/rest/v1/rpc/search_venues \
+ -H "apikey: sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62" -H "Content-Type: application/json" \
+ -d '{"lat":51.5255,"lng":-0.0785,"radius_m":1500,"min_capacity":45,"max_budget":0,"weekday":"Wed","slot":"evening"}'
+```
+- The map loads venues from Supabase REST and falls back to `data.json` if that fails.
+- Rows named `EXAMPLE …` and rules with `is_example=true` are illustrative data, not real venue terms.
