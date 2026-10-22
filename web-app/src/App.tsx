@@ -114,7 +114,7 @@ export default function App() {
   const [custom, setCustom] = useState(false), [range, setRange] = useState<[number, number]>([17, 21])
   const [busy, setBusy] = useState(false), [types, setTypes] = useState<string[]>(Object.keys(TYPES))
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState(""), [sc, setSc] = useState<[number, number]>([51.4927, -0.2240])
   const todayISO = (() => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}` })()
   const pickDate = (v: string) => { setDate(v); if (v) { const d = new Date(v + "T12:00:00"); setDay(["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]) } }
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
@@ -148,7 +148,7 @@ export default function App() {
   }
   async function search(at?: { lat: number; lng: number }) {
     const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.4927, lng: -0.2240 }
-    setStatus("Searching…")
+    setStatus("Searching…"); setSc([c.lat, c.lng])
     try {
       const base = { lat: c.lat, lng: c.lng, radius_m: +radius, min_capacity: +hc || null, max_budget: budget === "" ? null : +budget, weekday: day, slot: searchSlot, types, lim: 15 }
       const extra: Record<string, any> = {}; if (sortBy !== "match") extra.sort = sortBy; if (minT) extra.min_transit_score = minT; if (minS) extra.min_safety_score = minS
@@ -254,8 +254,8 @@ export default function App() {
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
-          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} /></Suspense>
-            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} breaks={breaks} here={here} />}
+          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} /></Suspense>
+            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
           <button onClick={locate} aria-label="Use my location" title="Use my location" className="absolute top-16 right-4 md:top-auto md:bottom-6 md:left-[7.5rem] md:right-auto z-[1000] size-9 grid place-items-center rounded-lg border border-ink/20 bg-white shadow-md hover:bg-fog"><LocateFixed className="size-4" /></button>
           <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
             {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}

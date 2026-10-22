@@ -13,7 +13,13 @@ function square(lng: number, lat: number, r = 6) {
   const dx = r / (111320 * Math.cos(lat * Math.PI / 180)), dy = r / 110540
   return [[[lng - dx, lat - dy], [lng + dx, lat - dy], [lng + dx, lat + dy], [lng - dx, lat + dy], [lng - dx, lat - dy]]]
 }
-export default function Map3D({ venues, score, center, fly, onCenter, breaks, here }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null }) {
+function ringGeo(r?: [number, number, number]): any {
+  if (!r) return { type: "FeatureCollection", features: [] }
+  const [lat, lng, m] = r, dl = m / 111320, dg = m / (111320 * Math.cos(lat * Math.PI / 180))
+  const ring = Array.from({ length: 65 }, (_, i) => { const a = (i / 64) * 2 * Math.PI; return [lng + dg * Math.cos(a), lat + dl * Math.sin(a)] })
+  return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } }
+}
+export default function Map3D({ venues, score, center, fly, onCenter, breaks, here, ring }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number] }) {
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
@@ -36,6 +42,9 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
       const ramp: any[] = ["interpolate", ["linear"], ["get", "s"]]; RAMP.forEach((c, i) => ramp.push(i / (RAMP.length - 1), c))
       map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-opacity": 0.35, "fill-extrusion-color": "#A8A8A2" } })
       map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]] as any } })
+      map.addSource("ring", { type: "geojson", data: ringGeo(ringRef.current) })
+      map.addLayer({ id: "ring-f", type: "fill", source: "ring", paint: { "fill-color": "#6B8F71", "fill-opacity": 0.06 } }, lbl)
+      map.addLayer({ id: "ring-l", type: "line", source: "ring", paint: { "line-color": "#43614A", "line-width": 2, "line-dasharray": [3, 3] } }, lbl)
       ready.current = true
       const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 8 })
       for (const id of ["cols", "cols0"]) {
@@ -48,6 +57,8 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
     return () => { map.remove(); m.current = null; ready.current = false }
   }, [])
   useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score])
+  const ringRef = useRef(ring); ringRef.current = ring
+  useEffect(() => { if (m.current && ready.current) (m.current.getSource("ring") as any)?.setData(ringGeo(ring)) }, [ring?.[0], ring?.[1], ring?.[2]])
   useEffect(() => { if (fly && m.current) go(m.current, fly.lng, fly.lat, 17) }, [fly])
   useEffect(() => { if (!here || !m.current) return; const el = document.createElement("div"); el.title = "You are here"; el.style.cssText = "width:16px;height:16px;border-radius:50%;background:#2F5BEA;border:3px solid #fff;box-shadow:0 0 0 2px #2F5BEA55"
     const mk = new maplibregl.Marker({ element: el }).setLngLat([here[1], here[0]]).addTo(m.current); return () => { mk.remove() } }, [here])

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { MapContainer, TileLayer, CircleMarker, Marker, Popup, Rectangle, Tooltip as LTooltip, ZoomControl, useMap, useMapEvents } from "react-leaflet"
+import { MapContainer, TileLayer, Circle, CircleMarker, Marker, Popup, Rectangle, Tooltip as LTooltip, ZoomControl, useMap, useMapEvents } from "react-leaflet"
 import L from "./leaflet-global"
 import "leaflet.heat"
 import type { Venue } from "./data"
@@ -21,7 +21,7 @@ function ZoomWatch({ onZoom, onMap }: { onZoom: (z:number)=>void; onMap: (m:L.Ma
 }
 const feeNum = (l?:string|null) => { const m = (l||"").match(/£(\d+)/); return m && /^~?£/.test(l||"") ? +m[1] : null }
 
-export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null }) {
+export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here, ring }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number] }) {
   const [zoom, setZoom] = useState(14), [mapRef, setMapRef] = useState<L.Map | null>(null)
   const points = useMemo(() => venues.map(v => [v.lat, v.lng, score(v)] as [number,number,number]), [venues, score])
   const cells = useMemo(() => {
@@ -67,6 +67,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap, breaks, 
             </div>
           </Popup>
         </Marker>) })}
+      {ring && <Circle center={[ring[0], ring[1]]} radius={ring[2]} interactive={false} pathOptions={{ color: P.accentInk, weight: 2, dashArray: "6 6", fillColor: P.accent, fillOpacity: 0.06 }} />}
       {here && <CircleMarker center={here} radius={8} pathOptions={{ color: "#fff", weight: 3, fillColor: "#2F5BEA", fillOpacity: 1 }}><LTooltip permanent direction="top">You are here</LTooltip></CircleMarker>}
     </MapContainer>
   )
