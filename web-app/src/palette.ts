@@ -12,7 +12,7 @@ function pick(): string {
   const q = new URLSearchParams(location.search).get("palette")?.toLowerCase()
   if (q && PALETTES[q]) { try { localStorage.setItem("ovdb-palette", q) } catch {} ; return q }
   try { const s = localStorage.getItem("ovdb-palette"); if (s && PALETTES[s]) return s } catch {}
-  return "a"
+  return "c"
 }
 export const PID = pick()
 export const P = PALETTES[PID]

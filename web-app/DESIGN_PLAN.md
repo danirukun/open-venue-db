@@ -19,21 +19,25 @@
 
 ## Revised plan
 
-### Palette (5)
-| Name | Hex | Role |
-|---|---|---|
-| Night ink | `#1C2541` | Text, the selected day, the sidebar heading |
-| Lamplight | `#F2B134` | The one bold colour: the time band and "likely free" heat peak |
-| Canal | `#2E6F6A` | Actions and links (AA on white: 5.6:1) |
-| Last orders | `#A23B5A` | Busy end of the heat scale, "busy" mode |
-| Fog | `#F3F4F1` | Sidebar background, quiet panels |
+### Palette (current: C "Sage", default; A/B via ?palette=a|b, defined in src/palette.ts as CSS vars)
+| Role | C Sage (default) | A Stone | B Slate |
+|---|---|---|---|
+| Ink (text, selected states) | `#262626` | `#1C1917` | `#0F172A` |
+| Background | `#FAFAF7` | `#F5F5F4` | `#F1F5F9` |
+| Lines | `#E7E7E1` | `#E7E5E4` | `#E2E8F0` |
+| Muted text | `#5C5C57` | `#57534E` | `#475569` |
+| Accent (time band) | `#6B8F71` | `#B7791F` | `#4F6D8F` |
+| Accent text | `#43614A` | `#7A4E0E` | `#334A66` |
+| Heat free / mid / busy | `#3D6E5E` / `#ECEBE4` / `#8E4F7E` | `#2C5F7C` / `#E9E4DA` / `#B4532A` | `#2F5B8A` / `#E2E8F0` / `#C0623A` |
 
-Heat scale: Last orders `#A23B5A` → `#E8D9B0` → Lamplight `#F2B134` → Canal `#2E6F6A`. Busy reads as wine-red, quiet as canal green, with a lamplit middle.
+Heat scales are two-hue diverging (green–purple or blue–orange) to stay colour-blind friendly.
 
 ### Type
-- **Bricolage Grotesque** (variable): display and headings. Quirky, slightly condensed at heavy weights, like a hand-painted pub sign without pastiche. Used large for the wordmark and for the question "When are you running it?".
-- **Public Sans** (variable): body, labels, numbers (tabular figures). Plain and highly legible at 12–14 px.
-- Scale (1.25): 12 / 14 / 16 / 20 / 25 / 31. Labels in sentence case, never tracked caps. No monospace.
+- **Geist** (variable) for everything, tabular figures. Headings semibold with tight tracking.
+- Scale: 12 / 14 / 16 / 20 / 31. Sentence case, no tracked caps, no monospace.
+
+### Selected states
+Selected day, slot, room-type and must-have chips are filled ink with light text; unselected types are dashed. Time band shows the chosen hours filled in the accent with start/end labels. Map key can be hidden/shown (persisted in localStorage).
 
 ### Layout
 ```
