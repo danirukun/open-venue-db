@@ -21,7 +21,7 @@ function ZoomWatch({ onZoom, onMap }: { onZoom: (z:number)=>void; onMap: (m:L.Ma
 }
 const feeNum = (l?:string|null) => { const m = (l||"").match(/£(\d+)/); return m && /^~?£/.test(l||"") ? +m[1] : null }
 
-export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here, ring }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number] }) {
+export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here, ring, crime }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; crime?: { gy: number; gx: number; n: number; score: number }[] | null }) {
   const [zoom, setZoom] = useState(14), [mapRef, setMapRef] = useState<L.Map | null>(null)
   const points = useMemo(() => venues.map(v => [v.lat, v.lng, score(v)] as [number,number,number]), [venues, score])
   const cells = useMemo(() => {
@@ -67,6 +67,8 @@ export default function MapView({ venues, all, score, slotLabel, onMap, breaks, 
             </div>
           </Popup>
         </Marker>) })}
+      {crime?.map(c => { const col = c.score >= 67 ? "#43614A" : c.score >= 34 ? "#9A7B3F" : "#8E4F7E"
+        return <Rectangle key={c.gy + "_" + c.gx} bounds={[[c.gy * 0.009, c.gx * 0.0144], [(c.gy + 1) * 0.009, (c.gx + 1) * 0.0144]]} interactive={false} pathOptions={{ stroke: false, fillColor: col, fillOpacity: 0.28 }} /> })}
       {ring && <Circle center={[ring[0], ring[1]]} radius={ring[2]} interactive={false} pathOptions={{ color: P.accentInk, weight: 2, dashArray: "6 6", fillColor: P.accent, fillOpacity: 0.06 }} />}
       {here && <CircleMarker center={here} radius={8} pathOptions={{ color: "#fff", weight: 3, fillColor: "#2F5BEA", fillOpacity: 1 }}><LTooltip permanent direction="top">You are here</LTooltip></CircleMarker>}
     </MapContainer>

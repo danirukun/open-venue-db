@@ -109,6 +109,7 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
 }
 
 const SAFETY_TIP = "Street crime in this ~1 km area vs other venue areas, police.uk Aug 2026"
+export type CrimeCell = { gy: number; gx: number; n: number; score: number }
 export function safetyBucket(x: number) { return x >= 67 ? { label: "Lower crime", Icon: ShieldCheck, color: "#43614A" } : x >= 34 ? { label: "Average", Icon: Shield, color: "#9A7B3F" } : { label: "Higher crime", Icon: ShieldAlert, color: "#8E4F7E" } }
 function SafetyTag({ score }: { score: number }) {
   const b = safetyBucket(score)
@@ -151,6 +152,16 @@ export default function App() {
       if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false })
       search({ lat: la, lng: ln })
     }, e => setLocMsg(e.code === 1 ? "Location permission was denied. Move the map to choose an area." : "Couldn't get your location. Move the map to choose an area."), { timeout: 8000, maximumAge: 60000 })
+  }
+  const [crimeOn, setCrimeOn] = useState(false), [crime, setCrime] = useState<CrimeCell[] | null>(null)
+  async function toggleCrime(v: boolean) {
+    setCrimeOn(v); if (!v || crime) return
+    try {
+      const pages = await Promise.all([0, 1000, 2000].map(o => fetch(`${SB}/rest/v1/crime_cells?select=gy,gx,crime_count&order=gy,gx&limit=1000&offset=${o}`, { headers: { apikey: KEY } }).then(r => r.ok ? r.json() : [])))
+      const rows: { gy: number; gx: number; crime_count: number }[] = pages.flat()
+      const sorted = rows.map(x => x.crime_count).sort((a, b) => a - b)
+      setCrime(rows.map(x => { const below = sorted.findIndex(c => c >= x.crime_count); return { gy: x.gy, gx: x.gx, n: x.crime_count, score: Math.round(100 * (1 - below / Math.max(1, sorted.length - 1))) } }))
+    } catch { setCrime([]) }
   }
   const [place, setPlace] = useState(""), [placeMsg, setPlaceMsg] = useState("")
   async function centreOn() {
@@ -283,7 +294,7 @@ export default function App() {
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
           {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} /></Suspense>
-            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
+            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} crime={crimeOn ? crime : null} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
           <button onClick={locate} aria-label="Use my location" title="Use my location" className="absolute top-16 right-4 md:top-auto md:bottom-6 md:left-[7.5rem] md:right-auto z-[1000] size-9 grid place-items-center rounded-lg border border-ink/20 bg-white shadow-md hover:bg-fog"><LocateFixed className="size-4" /></button>
           <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
             {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
@@ -318,9 +329,11 @@ export default function App() {
           <input type="date" aria-label="Specific date" min={todayISO} value={date} onChange={e => pickDate(e.target.value)} className="h-8 rounded-md border border-ink/15 bg-white px-2 text-sm text-ink" />
           <div className="flex items-center gap-4 text-sm">
             <label className="flex items-center gap-2 cursor-pointer"><Switch checked={custom} onCheckedChange={setCustom} />Pick hours</label>
+            <label className="flex items-center gap-2 cursor-pointer"><Switch checked={crimeOn} onCheckedChange={toggleCrime} />Show crime levels</label>
             <label className="flex items-center gap-2 cursor-pointer"><Switch checked={busy} onCheckedChange={setBusy} className="data-[checked]:bg-orders" />Show busy</label>
           </div>
         </div>
+        {crimeOn && <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">{[80, 50, 10].map(x => { const b = safetyBucket(x); return <span key={x} className="inline-flex items-center gap-1"><span className="size-2.5 rounded-sm" style={{ background: b.color, opacity: 0.6 }} />{b.label}</span> })}<span>~1 km squares{is3d ? " (2D view only)" : ""}. police.uk Aug 2026, OGL v3.0</span>{crime === null && <span>Loading…</span>}</p>}
         <TimeBand hrs={hrs} />
         {!custom ? (
           <ToggleGroup aria-label="Time of day" value={[slot]} onValueChange={v => v[0] && setSlot(v[0] as string)} className="w-full gap-1">
