@@ -1,5 +1,6 @@
-# Open Venue DB (London)
-Match event organisers and show runners with venues — pubs, bars, cafes (popups), small music/comedy venues and community spaces — while venue owners do almost no work. Availability is **inferred** from public event listings and opening hours.
+# Offpeak
+
+**Offpeak - open venue & events DB for London.** Match event organisers and show runners with venues — pubs, bars, cafes (popups), small music/comedy venues and community spaces — while venue owners do almost no work. Availability is **inferred** from public event listings and opening hours.
 
 ## Run
 ```

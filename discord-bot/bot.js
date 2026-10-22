@@ -1,4 +1,4 @@
-// Open Venue DB — Discord bot (kanichan). MIT.
+// Offpeak — Discord bot (kanichan). MIT.
 import { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder,
   ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } from 'discord.js';
 import { runAgent, llmConfig, filterResults } from './agent.js';

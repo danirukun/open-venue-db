@@ -1,4 +1,4 @@
-// Open Venue DB — WhatsApp Cloud API webhook for the venue agent. MIT. Zero deps (Node 20).
+// Offpeak — WhatsApp Cloud API webhook for the venue agent. MIT. Zero deps (Node 20).
 // Replies ONLY to the inbound sender, inside the 24h service window. No templates, no other outbound. Never contacts venues.
 import crypto from 'node:crypto';
 import { runAgent, llmConfig, filterResults } from './agent.js';
@@ -106,7 +106,7 @@ export async function handleMessage(m) {
   if (!out.results.length) return sendText(from, 'No matches yet — try a bigger area.');
   for (const [i, v] of out.results.slice(0, 3).entries()) {
     await graph({ messaging_product: 'whatsapp', recipient_type: 'individual', to: from, type: 'interactive', interactive: { type: 'button',
-      body: { text: venueText(v, i, p).slice(0, 1024) }, footer: { text: 'Open Venue DB · not a quote' },
+      body: { text: venueText(v, i, p).slice(0, 1024) }, footer: { text: 'Offpeak · not a quote' },
       action: { buttons: [ { type: 'reply', reply: { id: `sl|${out.requestId}|${v.id}`.slice(0, 256), title: 'Shortlist' } },
                            { type: 'reply', reply: { id: `od|${out.requestId}|${v.id}`.slice(0, 256), title: 'Draft outreach' } } ] } } });
   }
