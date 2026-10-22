@@ -7,7 +7,7 @@ import { capText, isEx, priceEst } from "./data"
 
 function Heat({ points }: { points: [number,number,number][] }) {
   const map = useMap()
-  const layer = useMemo(() => (L as any).heatLayer([], { radius: 30, blur: 24, maxZoom: 16, gradient: { 0.15: "#7C2D12", 0.5: "#FDE68A", 1: "#15803D" } }), [])
+  const layer = useMemo(() => (L as any).heatLayer([], { radius: 30, blur: 24, maxZoom: 16, gradient: { 0.1: "#A23B5A", 0.45: "#E8D9B0", 0.7: "#F2B134", 1: "#2E6F6A" } }), [])
   useEffect(() => { layer.addTo(map); return () => { map.removeLayer(layer) } }, [map, layer])
   useEffect(() => { layer.setLatLngs(points) }, [layer, points])
   return null
@@ -40,12 +40,12 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
       <ZoomWatch onZoom={setZoom} onMap={onMap} />
       <Heat points={points} />
       {cells.map(c => (
-        <Rectangle key={c.k} bounds={c.bounds} pathOptions={{ weight: 0.5, color: "#0F172A", fillOpacity: c.nums.length ? 0.02 : 0.06, fillColor: c.nums.length ? "#0F172A" : "#94a3b8", dashArray: c.nums.length ? undefined : "2 3" }}>
+        <Rectangle key={c.k} bounds={c.bounds} pathOptions={{ weight: 0.5, color: "#1C2541", fillOpacity: c.nums.length ? 0.02 : 0.06, fillColor: c.nums.length ? "#1C2541" : "#8A90A0", dashArray: c.nums.length ? undefined : "2 3" }}>
           <LTooltip sticky>
             <div className="p-1 text-[13px] leading-tight">
               <div className="font-bold mb-1">{c.n} venues in this area</div>
-              <div className="text-slate-600 mb-1">Venue fee / min spend: <b className="font-mono">{c.nums.length ? `£${Math.min(...c.nums)}–£${Math.max(...c.nums)}` : "price unknown"}</b></div>
-              {c.ests.length > 0 && <div className="text-slate-600 mb-1">Estimated hire: <b className="font-mono">£{Math.round(Math.min(...c.ests.map(e=>e.low)))}–£{Math.round(Math.max(...c.ests.map(e=>e.high)))}</b> <span className="text-slate-400">({c.ests.length} est.)</span></div>}
+              <div className="text-slate-600 mb-1">Stated fee or minimum spend: <b >{c.nums.length ? `£${Math.min(...c.nums)}–£${Math.max(...c.nums)}` : "price unknown"}</b></div>
+              {c.ests.length > 0 && <div className="text-slate-600 mb-1">Estimated hire: <b >£{Math.round(Math.min(...c.ests.map(e=>e.low)))}–£{Math.round(Math.max(...c.ests.map(e=>e.high)))}</b> <span className="text-slate-400">({c.ests.length} est.)</span></div>}
               {c.ms > 0 && <div className="text-slate-600">{c.ms} say "minimum spend applies" (amount unknown)</div>}
               <div className="text-slate-400 italic">{Math.round(100*c.unk/c.n)}% no stated price</div>
             </div>
@@ -53,15 +53,15 @@ export default function MapView({ venues, all, score, slotLabel, onMap }: { venu
         </Rectangle>
       ))}
       {zoom >= 15 && venues.map(v => { const f = score(v), pe = priceEst(v); return (
-        <CircleMarker key={v.id} center={[v.lat, v.lng]} radius={7} pathOptions={{ color: "#fff", weight: 2, fillOpacity: 1, fillColor: (v.events||0) > 0 ? "#ef4444" : "#3b82f6" }}>
+        <CircleMarker key={v.id} center={[v.lat, v.lng]} radius={7} pathOptions={{ color: (v.events||0) > 0 ? "#fff" : "#1C2541", weight: 2, fillOpacity: 1, fillColor: (v.events||0) > 0 ? "#1C2541" : "#fff" }}>
           <Popup>
             <div className="min-w-[220px]">
-              <div className="flex justify-between items-start gap-2"><b className="text-[15px] leading-tight">{v.name}{isEx(v.name) && <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">EXAMPLE DATA</span>}</b><span className="text-[10px] bg-slate-100 px-1 rounded">{v.type}</span></div>
+              <div className="flex justify-between items-start gap-2"><b className="text-[15px] leading-tight">{v.name}{isEx(v.name) && <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">Example data</span>}</b><span className="text-[10px] bg-slate-100 px-1 rounded">{v.type}</span></div>
               <div className="text-xs text-slate-500 my-1">{capText(v)}</div>
-              <div className="text-xs mb-2">Free {slotLabel}: <b className="text-teal-600">{f.toFixed(2)}</b><span className="text-[10px] text-slate-400 block">({v.basis||""})</span></div>
+              <div className="text-xs mb-2">Free {slotLabel}: <b className="text-canal">{f.toFixed(2)}</b><span className="text-[10px] text-slate-400 block">({v.basis||""})</span></div>
               <div className="bg-slate-50 text-slate-600 text-[11px] px-2 py-1 rounded-md mb-1">{/inimum spend/.test(v.fee_label||"") ? "Minimum spend applies (amount unknown)" : v.fee_label || "fee unknown"}</div>
               {pe && <div className="bg-amber-50 text-amber-800 text-[11px] px-2 py-1 rounded-md mb-2">Est. £{Math.round(pe.low)}–£{Math.round(pe.high)}{pe.unit === "gbp_per_head" ? "/head" : pe.unit ? ` ${pe.unit.replace(/_/g," ")}` : ""} {pe.conf ? `(${pe.conf} conf.` : "("}{pe.n != null ? `, ${pe.n} comparables)` : ")"}</div>}
-              <a href={v.url || "#"} target="_blank" className="text-teal-600 text-[11px] font-bold">View source ↗</a>
+              <a href={v.url || "#"} target="_blank" className="text-canal text-[11px] font-bold">Open source page</a>
             </div>
           </Popup>
         </CircleMarker>) })}
