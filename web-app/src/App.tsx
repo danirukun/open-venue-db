@@ -14,6 +14,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import MapView from "./MapView"
+import { lazy, Suspense } from "react"
+import type { Fly } from "./Map3D"
+const Map3D = lazy(() => import("./Map3D"))
 import { P } from "./palette"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
 
@@ -90,6 +93,7 @@ export default function App() {
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
   const [map, setMap] = useState<L.Map | null>(null)
+  const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
   const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
   const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
 
@@ -162,7 +166,7 @@ export default function App() {
                   <span aria-hidden className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-ink/10"><span className="absolute bottom-0 left-0 w-1 rounded-full" style={{ height: `${Math.max(p, 6)}%`, background: barC }} /></span>
                   <CardHeader className="px-2">
                     <div className="flex justify-between items-start gap-3">
-                      <CardTitle className="font-heading text-[17px] leading-snug"><button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => d.lat && map?.setView([d.lat, d.lng], 17)}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
+                      <CardTitle className="font-heading text-[17px] leading-snug"><button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => { if (!d.lat) return; if (is3d) setFly({ lat: d.lat, lng: d.lng, t: Date.now() }); else map?.setView([d.lat, d.lng], 17) }}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
                       <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
                         <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
                     </div>
@@ -190,7 +194,11 @@ export default function App() {
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Open Venue DB</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
-          <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />
+          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} /></Suspense>
+            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />}
+          <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
+            {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) setC3d([c.lat, c.lng]); setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
+          </div>
           <section aria-label="When" className="md:absolute md:top-4 md:left-4 md:right-4 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 z-[1000] hidden md:block">
             {WhenPanel()}
           </section>
