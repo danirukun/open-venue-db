@@ -114,6 +114,9 @@ export default function App() {
   const [custom, setCustom] = useState(false), [range, setRange] = useState<[number, number]>([17, 21])
   const [busy, setBusy] = useState(false), [types, setTypes] = useState<string[]>(Object.keys(TYPES))
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
+  const [date, setDate] = useState("")
+  const todayISO = (() => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}` })()
+  const pickDate = (v: string) => { setDate(v); if (v) { const d = new Date(v + "T12:00:00"); setDay(["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]) } }
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
   const [sortBy, setSortBy] = useState("match"), [minT, setMinT] = useState(0), [minS, setMinS] = useState(0)
   const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
@@ -160,6 +163,7 @@ export default function App() {
   useEffect(() => { if (data.length && results === null) search() }, [data, map])
 
   const slotObj = SLOTS.find(s => s.id === slot)!
+  const dayLabel = date ? new Date(date + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }).replace(",", "") : DAYNAME[day]
   const allTypes = Object.keys(TYPES)
   const nActive = (types.length !== allTypes.length ? 1 : 0) + musts.length + (budget !== "0" && budget !== "" ? 1 : 0) + (radius !== "2000" ? 1 : 0) + (hc !== "45" ? 1 : 0) + (minT ? 1 : 0) + (minS ? 1 : 0)
   const resetFilters = () => { setTypes(allTypes); setMusts([]); setBudget("0"); setRadius("2000"); setHc("45"); setMinT(0); setMinS(0); setSortBy("match") }
@@ -197,7 +201,7 @@ export default function App() {
                 {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
               </ToggleGroup>
             </fieldset>
-            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search()}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${DAYNAME[day]} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
+            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search()}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${dayLabel} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
             {nActive > 0 && <div className="flex justify-between items-center text-xs text-muted-foreground"><span>{nActive} filter{nActive > 1 ? "s" : ""} changed</span><button type="button" className={mini} onClick={resetFilters}>Reset filters</button></div>}
           </section>
 
@@ -235,7 +239,7 @@ export default function App() {
                     </div>
                     <div className="flex gap-4 text-sm">
                       <a href={v.source_url || "#"} target="_blank" rel="noreferrer" className="text-canal font-medium underline-offset-2 hover:underline rounded-sm">Open source page</a>
-                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${DAYNAME[day]} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
+                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
                     </div>
                   </CardContent>
                 </Card>
@@ -279,10 +283,11 @@ export default function App() {
     return (
       <div className="md:bg-white md:rounded-[14px] md:border md:border-ink/10 md:shadow-lg md:p-4 space-y-3 md:w-[620px] max-w-full">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          <ToggleGroup aria-label="Day of the week" value={[day]} onValueChange={v => v[0] && setDay(v[0] as string)} className="gap-0.5">
+          <ToggleGroup aria-label="Day of the week" value={[day]} onValueChange={v => { if (v[0]) { setDay(v[0] as string); setDate("") } }} className="gap-0.5">
             {DAYS.map(d => <ToggleGroupItem key={d} value={d} aria-label={DAYNAME[d] + (d === TODAY ? ", today" : "")} className="px-2.5 h-8 font-medium text-sm text-muted-foreground hover:bg-ink/10 hover:text-ink data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:font-semibold">
               {d}{d === TODAY && <span aria-hidden className="ml-0.5 size-1.5 rounded-full bg-lamp inline-block align-top" />}</ToggleGroupItem>)}
           </ToggleGroup>
+          <input type="date" aria-label="Specific date" min={todayISO} value={date} onChange={e => pickDate(e.target.value)} className="h-8 rounded-md border border-ink/15 bg-white px-2 text-sm text-ink" />
           <div className="flex items-center gap-4 text-sm">
             <label className="flex items-center gap-2 cursor-pointer"><Switch checked={custom} onCheckedChange={setCustom} />Pick hours</label>
             <label className="flex items-center gap-2 cursor-pointer"><Switch checked={busy} onCheckedChange={setBusy} className="data-[checked]:bg-orders" />Show busy</label>
