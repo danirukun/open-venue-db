@@ -1,49 +1,100 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Open Venue DB – quiet nights map</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Venue DB – Quiet midweek spaces in London</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-<style>html,body,#map{margin:0;height:100%;font-family:system-ui}#ctl{position:absolute;z-index:1000;top:10px;right:10px;background:#fff;padding:10px 12px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:13px;width:240px}
-#ctl label{display:inline-block;margin-right:6px}.lg{display:inline-block;width:14px;height:10px;margin-right:4px;vertical-align:middle}#legend{font-size:12px;margin-top:6px}#note{font-size:11px;color:#555;margin-top:6px}</style></head><body>
-<div id="map"></div><div id="ctl"><b>Open Venue DB</b><br>
-Day <select id="day"></select><br>Slot: <b id="slotname"></b><br><input id="slot" type="range" min="0" max="3" value="2" style="width:100%"><br>
-<div id="types"></div>
-<label><input type="radio" name="mode" value="quiet" checked> quiet</label><label><input type="radio" name="mode" value="busy"> busy</label>
-<div id="count"></div>
-<div id="legend"><b>Heat colour</b> (quiet mode)<div style="height:10px;background:linear-gradient(90deg,#00f,#0ff,#0f0,#ff0,#f00);margin:3px 0"></div>
-<div style="display:flex;justify-content:space-between;font-size:10px"><span>Usually busy / few venues</span><span>Very likely free</span></div>
-In busy mode the scale flips (red = usually busy).<br>
-<span class="lg" style="background:#d33;border-radius:50%"></span>event venue (Luma/Meetup)<br>
-<span class="lg" style="background:#36c;border-radius:50%"></span>OSM venue (cafe/pub/bar)<br>
-<span class="lg" style="border:1px solid #555"></span>300 m grid cell, hover for price range<br>
-Slots: morning 06–12, afternoon 12–17, evening 17–21, <b>late 21:00–06:00</b></div>
-<div id="note">Cafe/pub/bar scores come from OSM opening hours (closed = free). Event venues use sparse Luma/Meetup listings blended with a citywide prior. Indicative only.</div></div>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+html,body,#root{margin:0;height:100%;font-family:'Inter',system-ui,sans-serif;overflow:hidden;color:#0F172A}#map{height:100%;width:100%}
+.hatched{background-image:repeating-linear-gradient(45deg,#cbd5e1 0,#cbd5e1 2px,transparent 2px,transparent 4px)}input[type=range]{accent-color:#0EA5A4}
+.chip-on{background:#0EA5A4;color:#fff;border-color:#0EA5A4}.seg-on{background:#fff;box-shadow:0 1px 2px #0002;color:#0F172A}.mode-on{background:#0EA5A4;color:#fff}.type-off{opacity:.4}</style></head>
+<body><div id="root" class="flex h-full w-full">
+<aside class="w-[380px] h-full bg-white border-r border-slate-200 flex flex-col z-40">
+ <header class="p-5 border-b border-slate-100"><div class="flex items-center gap-2 mb-1"><iconify-icon icon="lucide:map-pin" class="text-teal-600 text-xl"></iconify-icon><h1 class="text-xl font-bold tracking-tight">Open Venue DB</h1></div>
+ <p class="text-xs text-slate-500">Open, community-maintained London venue database for organisers and show runners.</p></header>
+ <div class="flex-1 overflow-y-auto p-5 space-y-8">
+  <section><h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2"><iconify-icon icon="lucide:search"></iconify-icon>Find a venue</h2>
+   <div class="space-y-4">
+    <div><label class="text-[13px] font-medium block mb-1.5">Headcount &amp; budget (venue fee)</label><div class="grid grid-cols-2 gap-3">
+     <div class="relative"><iconify-icon icon="lucide:users" class="absolute left-3 top-2.5 text-slate-400"></iconify-icon><input id="hc" type="number" value="45" class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm"></div>
+     <div class="relative"><span class="absolute left-3 top-2 text-slate-400 font-medium">£</span><input id="budget" type="number" value="0" class="w-full pl-7 pr-3 py-2 border border-slate-200 rounded-lg text-sm"></div></div></div>
+    <div><label class="text-[13px] font-medium block mb-1.5">Must-haves</label><div id="musts" class="flex flex-wrap gap-2"></div>
+     <p class="text-[11px] text-slate-400 mt-1.5">Feature data (PA, projector…) isn't collected yet, so must-haves are saved with the request but don't filter results.</p></div>
+    <button id="go" class="w-full bg-slate-900 text-white font-semibold py-2.5 rounded-lg text-sm hover:bg-slate-800">Search venues near map centre</button>
+   </div></section>
+  <section class="space-y-4"><div class="flex justify-between items-end"><h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500">Ranked results</h2><span id="rcount" class="text-xs text-slate-400"></span></div>
+   <div id="results" class="space-y-3"><p class="text-xs text-slate-400">Run a search to rank venues by capacity fit, estimated fee vs budget and how likely they are to be free.</p></div></section>
+ </div>
+ <footer class="p-4 border-t border-slate-100 bg-slate-50"><p class="text-[11px] leading-relaxed text-slate-400 italic">Indicative only. Cafe/pub/bar free scores come from OSM opening hours; event venues from sparse Luma/Meetup listings. Capacity "~" = estimated from building footprint. Venues named EXAMPLE are illustrative demo data. Map data © OpenStreetMap contributors (ODbL). <span id="src"></span></p></footer>
+</aside>
+<main class="flex-1 relative"><div id="map"></div>
+ <div class="absolute top-5 left-1/2 -translate-x-1/2 z-[1000] flex flex-col items-center gap-3 w-max max-w-[90%]">
+  <div class="bg-white p-2 rounded-xl shadow-xl flex items-center gap-4 border border-slate-200">
+   <div id="days" class="flex bg-slate-100 p-1 rounded-lg"></div><div class="h-6 w-px bg-slate-200"></div>
+   <div class="flex flex-col min-w-[160px]"><div class="flex justify-between items-center mb-1"><span class="text-[10px] uppercase font-bold text-slate-400">Time slot</span><span id="slotname" class="text-[11px] font-semibold text-teal-600"></span></div><input id="slot" type="range" min="0" max="3" value="2" class="w-full h-1.5"></div>
+   <div class="h-6 w-px bg-slate-200"></div>
+   <div class="flex bg-slate-100 p-1 rounded-lg"><button data-m="quiet" class="mode px-4 py-1 text-xs font-bold rounded-md mode-on">Quiet</button><button data-m="busy" class="mode px-4 py-1 text-xs font-bold rounded-md text-slate-500">Busy</button></div>
+  </div><div id="types" class="flex flex-wrap justify-center gap-2"></div></div>
+ <div class="absolute bottom-8 right-14 z-[1000] bg-white p-5 rounded-2xl shadow-2xl border border-slate-100 w-72 space-y-4">
+  <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400">Map key</h4>
+  <div><div class="flex justify-between text-[11px] font-semibold mb-2"><span id="lgL" class="text-slate-500">Usually busy</span><span id="lgR" class="text-teal-600">Very likely free</span></div>
+   <div class="h-2.5 w-full rounded-full" style="background:linear-gradient(90deg,#7C2D12,#FDE68A,#15803D)"></div></div>
+  <div class="grid gap-2.5 text-xs text-slate-600">
+   <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow"></span>Event venue (Luma/Meetup)</div>
+   <div class="flex items-center gap-3"><span class="w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow"></span>Local venue (OSM cafe/pub/bar)</div>
+   <div class="flex items-center gap-3"><span class="w-4 h-4 border border-slate-400"></span>300 m grid cell (hover for prices)</div>
+   <div class="flex items-center gap-3"><span class="w-4 h-4 hatched border border-slate-300"></span>Cell with no known prices</div></div>
+  <div class="pt-3 border-t border-slate-100"><h5 class="text-[10px] font-bold text-slate-400 uppercase mb-2">Time slots</h5>
+   <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-slate-500"><div class="flex justify-between"><span>Morning</span><b>06–12</b></div><div class="flex justify-between"><span>Evening</span><b>17–21</b></div><div class="flex justify-between"><span>Afternoon</span><b>12–17</b></div><div class="flex justify-between"><span>Late</span><b>21–06</b></div></div>
+   <p class="text-[10px] text-slate-400 mt-1">Markers appear from zoom 15.</p></div></div>
+</main></div>
 <script>
-const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],SLOTS=["morning","afternoon","evening","late"],TYPES=["pub","bar","cafe","music","community","other"];
-const map=L.map('map').setView([51.524,-0.08],14);
+const SB='https://bwkxqyhycuwqpuieggbt.supabase.co',KEY='sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62',H={apikey:KEY,'Content-Type':'application/json'};
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],SLOTS=["morning","afternoon","evening","late"],SLBL=["Morning (06–12)","Afternoon (12–17)","Evening (17–21)","Late (21–06)"];
+const TYPES={pub:'#fbbf24',bar:'#fb7185',cafe:'#60a5fa',music:'#818cf8',community:'#2dd4bf',other:'#94a3b8'};
+const MUSTS=[["lucide:speaker","PA system"],["lucide:monitor","Projector"],["lucide:mic-2","Mics"],["lucide:accessibility","Step-free"],["lucide:glass-water","Bar"]];
+let st={day:'Wed',slot:2,mode:'quiet',types:new Set(Object.keys(TYPES)),musts:new Set()},data=[];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const map=L.map('map',{zoomControl:false}).setView([51.5245,-0.0805],15);L.control.zoom({position:'bottomright'}).addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
-DAYS.forEach((d,i)=>day.add(new Option(d,d,false,i==2)));
-TYPES.forEach(t=>types.insertAdjacentHTML('beforeend',`<label><input type="checkbox" value="${t}" checked> ${t}</label>`));
-let data=[],heat=L.heatLayer([],{radius:28,blur:22,maxZoom:16}).addTo(map),markers=L.layerGroup().addTo(map);
-function render(){const k=day.value+"_"+SLOTS[slot.value];slotname.textContent=SLOTS[slot.value];
- const on=[...types.querySelectorAll('input:checked')].map(x=>x.value),busy=document.querySelector('[name=mode]:checked').value=="busy";
- const vs=data.filter(v=>on.includes(v.type));
- heat.setLatLngs(vs.map(v=>[v.lat,v.lng,busy?1-v.free[k]:v.free[k]]));markers.clearLayers();
- if(map.getZoom()>=15)vs.forEach(v=>L.circleMarker([v.lat,v.lng],{radius:5,color:v.events?'#d33':'#36c'}).bindPopup(
-  `<b>${v.name}</b><br>${v.type}${v.capacity?' · cap '+v.capacity:''}<br>Free ${k.replace('_',' ')}: <b>${v.free[k]}</b> (${v.basis})<br>${v.fee_label}<br><a href="${v.url}" target=_blank>source</a>`).addTo(markers));
- count.textContent=vs.length+" venues shown"+(window.SRC?' (source: '+SRC+')':'');}
-const grid=L.layerGroup().addTo(map);
-function buildGrid(){grid.clearLayers();const dl=0.0027,dg=0.0043,cells={};
- data.forEach(v=>{const k=Math.floor(v.lat/dl)+"_"+Math.floor(v.lng/dg);(cells[k]=cells[k]||[]).push(v)});
- Object.entries(cells).forEach(([k,vs])=>{const [a,b]=k.split("_").map(Number);
-  const fees=vs.filter(v=>v.fee_min!=null),unk=vs.length-fees.length;
-  const rng=fees.length?`£${Math.min(...fees.map(v=>v.fee_min))}–£${Math.max(...fees.map(v=>v.fee_max))}`:"price unknown";
-  const ms=vs.filter(v=>/inimum spend/.test(v.fee_label)).length;
-  L.rectangle([[a*dl,b*dg],[(a+1)*dl,(b+1)*dg]],{weight:0.5,color:'#555',fillOpacity:0.02}).bindTooltip(
-   `<b>${vs.length} venues</b><br>Venue fee / min spend: <b>${rng}</b><br>${ms} with "minimum spend applies" (amount unknown)<br>${Math.round(100*unk/vs.length)}% price unknown`,{sticky:true}).addTo(grid)})}
-const SB='https://bwkxqyhycuwqpuieggbt.supabase.co',KEY='sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62';
-fetch(SB+'/rest/v1/venues?select=id,name,type,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url&limit=5000',{headers:{apikey:KEY}})
- .then(r=>{if(!r.ok)throw r.status;return r.json()}).then(d=>{if(!d.length)throw 'empty';d.forEach(v=>v.url=v.url||'#');window.SRC='Supabase';return d})
- .catch(e=>{console.warn('Supabase failed, using data.json',e);window.SRC='data.json';return fetch('data.json').then(r=>r.json())})
- .then(d=>{data=d;buildGrid();render()});
-[day,slot,types].forEach(e=>e.addEventListener('input',render));document.querySelectorAll('[name=mode]').forEach(e=>e.onchange=render);map.on('zoomend',render);
+const heat=L.heatLayer([],{radius:30,blur:24,maxZoom:16,gradient:{0.15:'#7C2D12',0.5:'#FDE68A',1:'#15803D'}}).addTo(map),grid=L.layerGroup().addTo(map),markers=L.layerGroup().addTo(map);
+days.innerHTML=DAYS.map(d=>`<button data-d="${d}" class="day px-3 py-1 text-xs font-medium rounded-md text-slate-500">${d}</button>`).join('');
+musts.innerHTML=MUSTS.map(([i,l])=>`<button data-k="${l}" class="must px-3 py-1.5 border border-slate-200 rounded-full text-xs flex items-center gap-1.5"><iconify-icon icon="${i}"></iconify-icon>${l}</button>`).join('');
+function capText(v){const f=v.f||{};if(f.capacity_standing||f.capacity_seated)return `${f.capacity_standing||'?'} standing / ${f.capacity_seated||'?'} seated (stated)`;
+ if(f.capacity_est_max_standing)return `~${f.capacity_est_min_standing}–${f.capacity_est_max_standing} standing, ~${f.capacity_est_min_seated}–${f.capacity_est_max_seated} seated (est., ${f.capacity_confidence} conf.)`;return 'capacity unknown'}
+function feeBadge(l){l=l||'fee unknown';if(/^£0/.test(l))return `<div class="bg-teal-50 text-teal-700 text-[11px] font-semibold px-2 py-1 rounded-md mb-3 flex items-center gap-1.5"><iconify-icon icon="lucide:check-circle"></iconify-icon>${esc(l)}</div>`;
+ if(/inimum spend/.test(l))l='Minimum spend applies (amount unknown)';return `<div class="bg-slate-50 text-slate-600 text-[11px] px-2 py-1 rounded-md mb-3">${esc(l)}</div>`}
+const isEx=n=>/^EXAMPLE/.test(n||''),exTag=n=>isEx(n)?'<span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">EXAMPLE DATA</span>':'';
+function render(){const k=DAYS.includes(st.day)&&st.day+'_'+SLOTS[st.slot],busy=st.mode=='busy';slotname.textContent=SLBL[st.slot];
+ document.querySelectorAll('.day').forEach(b=>b.classList.toggle('seg-on',b.dataset.d==st.day));document.querySelectorAll('.mode').forEach(b=>{const on=b.dataset.m==st.mode;b.classList.toggle('mode-on',on);b.classList.toggle('text-slate-500',!on)});
+ lgL.textContent=busy?'Usually free':'Usually busy';lgR.textContent=busy?'Very likely busy':'Very likely free';
+ const vs=data.filter(v=>st.types.has(TYPES[v.type]?v.type:'other'));const cnt={};data.forEach(v=>{const t=TYPES[v.type]?v.type:'other';cnt[t]=(cnt[t]||0)+1});
+ types.innerHTML=Object.entries(TYPES).map(([t,c])=>`<button data-t="${t}" class="typ bg-white/90 px-3 py-1.5 rounded-full shadow-sm border border-slate-200 text-xs font-medium flex items-center gap-1.5 ${st.types.has(t)?'':'type-off'}"><span class="w-2 h-2 rounded-full" style="background:${c}"></span>${t[0].toUpperCase()+t.slice(1)} <span class="text-slate-400 font-normal">${cnt[t]||0}</span></button>`).join('');
+ heat.setLatLngs(vs.map(v=>{const f=(v.free||{})[k]??0.5;return [v.lat,v.lng,busy?1-f:f]}));markers.clearLayers();
+ if(map.getZoom()>=15)vs.forEach(v=>{const f=(v.free||{})[k]??0.5;L.circleMarker([v.lat,v.lng],{radius:7,color:'#fff',weight:2,fillOpacity:1,fillColor:v.events>0?'#ef4444':'#3b82f6'}).bindPopup(
+  `<div class="min-w-[220px]"><div class="flex justify-between items-start gap-2"><b class="text-[15px] leading-tight">${esc(v.name)}${exTag(v.name)}</b><span class="text-[10px] bg-slate-100 px-1 rounded">${esc(v.type)}</span></div>
+   <div class="text-xs text-slate-500 my-1">${esc(capText(v))}</div><div class="text-xs mb-2">Free ${st.day} ${SLOTS[st.slot]}: <b class="text-teal-600">${f.toFixed(2)}</b><span class="text-[10px] text-slate-400 block">(${esc(v.basis||'')})</span></div>
+   ${feeBadge(v.fee_label)}<a href="${esc(v.url||'#')}" target="_blank" class="text-teal-600 text-[11px] font-bold">View source ↗</a></div>`).addTo(markers)})}
+function buildGrid(){grid.clearLayers();const dl=0.0027,dg=0.0043,cells={};data.forEach(v=>{const k=Math.floor(v.lat/dl)+'_'+Math.floor(v.lng/dg);(cells[k]=cells[k]||[]).push(v)});
+ Object.entries(cells).forEach(([k,vs])=>{const [a,b]=k.split('_').map(Number);const known=vs.filter(v=>/^£|~£/.test(v.fee_label||'')),ms=vs.filter(v=>/inimum spend/.test(v.fee_label||'')).length,unk=vs.length-known.length;
+  const nums=known.map(v=>+((v.fee_label.match(/£(\d+)/)||[])[1]||0));const rng=nums.length?`£${Math.min(...nums)}–£${Math.max(...nums)}`:'price unknown';
+  L.rectangle([[a*dl,b*dg],[(a+1)*dl,(b+1)*dg]],{weight:0.5,color:'#0F172A',fillOpacity:nums.length?0.02:0.06,fillColor:nums.length?'#0F172A':'#94a3b8',dashArray:nums.length?null:'2 3'}).bindTooltip(
+  `<div class="p-1 text-[13px] leading-tight"><div class="font-bold mb-1">${vs.length} venues in this area</div><div class="text-slate-600 mb-1">Venue fee / min spend: <b class="font-mono">${rng}</b></div>${ms?`<div class="text-slate-600">${ms} say "minimum spend applies" (amount unknown)</div>`:''}<div class="text-slate-400 italic">${Math.round(100*unk/vs.length)}% price unknown</div></div>`,{sticky:true}).addTo(grid)})}
+async function search(){const hc=+document.getElementById('hc').value||null,bud=document.getElementById('budget').value===''?null:+document.getElementById('budget').value,c=map.getCenter();
+ results.innerHTML='<p class="text-xs text-slate-400">Searching…</p>';
+ try{const r=await fetch(SB+'/rest/v1/rpc/search_venues',{method:'POST',headers:H,body:JSON.stringify({lat:c.lat,lng:c.lng,radius_m:2000,min_capacity:hc,max_budget:bud,weekday:DAYS.includes(st.day)?st.day:'Wed',slot:SLOTS[st.slot],types:[...st.types],lim:15})});
+  if(!r.ok)throw r.status;const rs=await r.json();rcount.textContent=`Showing ${rs.length} matches`;
+  results.innerHTML=rs.map(v=>{const p=Math.round(100*v.likely_free),cl=p>=70?'bg-green-100 text-green-700':p>=40?'bg-yellow-100 text-yellow-700':'bg-red-100 text-red-700';const d=data.find(x=>x.id==v.id)||{};
+   return `<div class="p-4 border ${isEx(v.name)?'border-purple-300 bg-purple-50/40':'border-slate-200 bg-white'} rounded-xl hover:border-teal-500 cursor-pointer" onclick="map.setView([${d.lat||c.lat},${d.lng||c.lng}],17)">
+   <div class="flex justify-between items-start mb-1 gap-2"><h3 class="font-semibold text-[15px]">${esc(v.name)}${exTag(v.name)}</h3><span class="${cl} text-[10px] px-1.5 py-0.5 rounded font-bold whitespace-nowrap">${p}% FREE</span></div>
+   <div class="text-xs text-slate-500 mb-3">${esc(v.type)} • ${esc(d.f?capText(d):(v.capacity?v.capacity+' cap':'capacity unknown'))} • ${(v.distance_m/1000).toFixed(1)} km</div>${feeBadge(v.fee_label)}
+   <div class="flex gap-2"><a href="${esc(v.source_url||'#')}" target="_blank" class="flex-1 text-center bg-slate-50 hover:bg-slate-100 py-1.5 rounded-lg text-xs font-medium">Source</a><button disabled title="Outreach is draft-only; drafts need approval" class="flex-1 bg-teal-600/60 text-white py-1.5 rounded-lg text-xs font-medium">Draft enquiry</button></div></div>`}).join('')||'<p class="text-xs text-slate-400">No matches. Try a bigger area or lower headcount.</p>'}
+ catch(e){results.innerHTML='<p class="text-xs text-red-500">Search unavailable (Supabase unreachable).</p>'}}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.d){st.day=b.dataset.d;render()}else if(b.dataset.m){st.mode=b.dataset.m;render()}
+ else if(b.dataset.t){st.types.has(b.dataset.t)?st.types.delete(b.dataset.t):st.types.add(b.dataset.t);render()}else if(b.dataset.k){b.classList.toggle('chip-on');st.musts.has(b.dataset.k)?st.musts.delete(b.dataset.k):st.musts.add(b.dataset.k)}else if(b.id=='go')search()});
+slot.oninput=()=>{st.slot=+slot.value;render()};map.on('zoomend',render);
+fetch(SB+'/rest/v1/venues?select=id,name,type,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url,f:venue_features(capacity_standing,capacity_seated,capacity_est_min_standing,capacity_est_max_standing,capacity_est_min_seated,capacity_est_max_seated,capacity_confidence)&limit=5000',{headers:{apikey:KEY}})
+ .then(r=>{if(!r.ok)throw r.status;return r.json()}).then(d=>{if(!d.length)throw 'empty';src.textContent='Data: Supabase (live).';return d})
+ .catch(e=>{src.textContent='Data: data.json fallback.';return fetch('data.json').then(r=>r.json())}).then(d=>{data=d.filter(v=>v.lat);buildGrid();render();search()});
 </script></body></html>

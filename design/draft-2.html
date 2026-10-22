@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Venue DB – Organizer Portal</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Public+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ink: #0F172A;
+      --cream: #FDFCF6;
+      --orange: #F97316;
+      --teal: #0EA5A4;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--cream);
+      font-family: 'Public Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    h1, h2, .font-display {
+      font-family: 'Archivo Black', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    #map {
+      height: calc(100vh - 80px);
+      width: 100%;
+      background: #eee;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 10px;
+    }
+
+    .hatched-bg {
+      background-image: repeating-linear-gradient(45deg, #CBD5E1 0, #CBD5E1 1px, transparent 0, transparent 50%);
+      background-size: 8px 8px;
+    }
+
+    .btn-chip {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-chip.active {
+      background-color: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    input[type="range"] {
+      accent-color: var(--orange);
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .leaflet-popup-content {
+      margin: 0 !important;
+      width: 240px !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="flex flex-col h-screen overflow-hidden">
+    <!-- Top Bar: Global Controls -->
+    <header class="h-[80px] bg-white border-b-2 border-slate-900 flex items-center px-6 gap-8 z-[1001] shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="bg-slate-900 text-white p-2 rounded-lg">
+          <iconify-icon icon="lucide:map-pin" class="text-2xl"></iconify-icon>
+        </div>
+        <div>
+          <h1 class="text-xl leading-none">Open Venue DB</h1>
+          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">London Community Engine</p>
+        </div>
+      </div>
+
+      <div class="h-10 w-[2px] bg-slate-100"></div>
+
+      <!-- Weekday Chips -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold uppercase text-slate-400 mr-2">Day:</span>
+        <div class="flex bg-slate-100 p-1 rounded-xl">
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase active">Mon</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Tue</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Wed</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Thu</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Fri</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Sat</button>
+          <button class="btn-chip px-3 py-1.5 rounded-lg text-xs font-bold uppercase">Sun</button>
+        </div>
+      </div>
+
+      <!-- Slot Slider -->
+      <div class="flex-1 flex items-center gap-4 max-w-md">
+        <span class="text-xs font-bold uppercase text-slate-400">Slot:</span>
+        <div class="flex-1 relative pt-4">
+          <input type="range" min="0" max="3" value="2" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none">
+          <div class="flex justify-between mt-2">
+            <span class="text-[9px] font-bold text-slate-400">MORNING</span>
+            <span class="text-[9px] font-bold text-slate-400">AFTERNOON</span>
+            <span class="text-[9px] font-bold text-slate-900 underline decoration-orange-500 decoration-2 underline-offset-4">EVENING</span>
+            <span class="text-[9px] font-bold text-slate-400">LATE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Mode Toggle -->
+      <div class="flex bg-slate-100 p-1 rounded-xl">
+        <button class="px-4 py-1.5 rounded-lg text-xs font-bold uppercase bg-white shadow-sm border border-slate-200">Quiet Mode</button>
+        <button class="px-4 py-1.5 rounded-lg text-xs font-bold uppercase text-slate-500">Busy Mode</button>
+      </div>
+    </header>
+
+    <main class="flex-1 flex relative">
+      <!-- Map Area -->
+      <div class="flex-1 relative overflow-hidden">
+        <div id="map" class="z-0"></div>
+        
+        <!-- Legend Card (Top Left) -->
+        <div class="absolute top-6 left-6 z-[1000] w-64 bg-white border-2 border-slate-900 rounded-2xl p-4 shadow-xl">
+          <h3 class="font-display text-sm mb-3">Live Availability</h3>
+          
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-tight">
+                <span>Busy / High Demand</span>
+                <span>Likely Free</span>
+              </div>
+              <div class="h-3 w-full rounded-full bg-gradient-to-r from-orange-700 via-orange-400 via-yellow-200 to-green-600"></div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full bg-red-600"></span>
+                <span class="text-xs text-slate-600">Event Venue (Luma/Meetup)</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                <span class="text-xs text-slate-600">OSM Venue (Pub/Cafe)</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 border border-slate-400"></span>
+                <span class="text-xs text-slate-600">300m Grid (Hover for prices)</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 hatched-bg border border-slate-200"></span>
+                <span class="text-xs text-slate-600">Price Unknown / Unsurveyed</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100">
+              <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2">Slot Schedule</p>
+              <div class="grid grid-cols-2 gap-y-1 text-[10px] font-medium">
+                <span class="text-slate-500">MORNING</span><span class="text-right">06:00–12:00</span>
+                <span class="text-slate-500">AFTERNOON</span><span class="text-right">12:00–17:00</span>
+                <span class="text-slate-500 font-bold text-slate-900">EVENING</span><span class="text-right font-bold text-slate-900">17:00–21:00</span>
+                <span class="text-slate-500">LATE</span><span class="text-right">21:00–06:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Drawer: Finder & Results -->
+      <aside class="w-[400px] h-full bg-white border-l-2 border-slate-900 z-[1001] flex flex-col">
+        <!-- Find a Venue Panel -->
+        <div class="p-6 border-b-2 border-slate-900 bg-orange-50">
+          <h2 class="text-lg mb-4 flex items-center gap-2">
+            <iconify-icon icon="lucide:search" class="text-orange-500"></iconify-icon>
+            Find a Venue
+          </h2>
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Headcount</label>
+                <input type="number" placeholder="e.g. 50" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg focus:border-slate-900 transition-colors text-sm">
+              </div>
+              <div>
+                <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Budget (£)</label>
+                <input type="number" placeholder="0 = Free" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg focus:border-slate-900 transition-colors text-sm">
+              </div>
+            </div>
+            
+            <div>
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Area</label>
+              <input type="text" value="Shoreditch, Hackney" class="w-full px-3 py-2 border-2 border-slate-200 rounded-lg focus:border-slate-900 transition-colors text-sm font-semibold">
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Must-Haves</label>
+              <div class="flex flex-wrap gap-2">
+                <button class="px-2 py-1 bg-white border border-slate-300 rounded text-[10px] font-bold hover:bg-slate-900 hover:text-white transition-colors">PA SYSTEM</button>
+                <button class="px-2 py-1 bg-white border border-slate-300 rounded text-[10px] font-bold hover:bg-slate-900 hover:text-white transition-colors">PROJECTOR</button>
+                <button class="px-2 py-1 bg-white border border-slate-300 rounded text-[10px] font-bold">STEP-FREE</button>
+                <button class="px-2 py-1 bg-white border border-slate-300 rounded text-[10px] font-bold">STAGE</button>
+                <button class="px-2 py-1 bg-white border border-slate-300 rounded text-[10px] font-bold">BAR</button>
+              </div>
+            </div>
+
+            <button id="cta-search-btn" class="w-full py-3 bg-slate-900 text-white font-display text-sm rounded-xl hover:bg-orange-500 transition-colors shadow-lg shadow-slate-200">
+              Search Match Ranking
+            </button>
+          </div>
+        </div>
+
+        <!-- Results List -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xs font-bold uppercase text-slate-400">Ranked Matches (42)</h3>
+            <div class="flex gap-2">
+              <iconify-icon icon="lucide:sliders-horizontal" class="cursor-pointer hover:text-orange-500"></iconify-icon>
+            </div>
+          </div>
+
+          <!-- Venue Card 1 -->
+          <div class="group p-4 border-2 border-slate-100 rounded-2xl hover:border-slate-900 transition-all cursor-pointer relative">
+            <div class="absolute top-4 right-4 text-xs font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-lg">92% MATCH</div>
+            <div class="flex items-center gap-2 mb-1">
+              <iconify-icon icon="lucide:music" class="text-slate-400"></iconify-icon>
+              <span class="text-[10px] font-bold uppercase text-slate-400">Music Venue · 0.4 miles</span>
+            </div>
+            <h4 class="font-display text-base leading-tight mb-2">Strongroom Bar</h4>
+            <div class="grid grid-cols-2 gap-y-2 mb-4">
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Capacity</p>
+                <p class="text-xs font-semibold">Up to 80 pax</p>
+              </div>
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Est. Fee</p>
+                <p class="text-xs font-bold text-orange-600">£0 (Likely)</p>
+              </div>
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Quiet Score</p>
+                <p class="text-xs font-semibold">0.82 (High)</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button id="card-1-contact" class="flex-1 py-2 bg-slate-900 text-white text-[10px] font-bold uppercase rounded-lg hover:bg-orange-500">Contact</button>
+              <button id="card-1-shortlist" class="px-3 py-2 border-2 border-slate-100 rounded-lg hover:border-slate-900">
+                <iconify-icon icon="lucide:star"></iconify-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Venue Card 2 -->
+          <div class="group p-4 border-2 border-slate-100 rounded-2xl hover:border-slate-900 transition-all cursor-pointer relative">
+            <div class="absolute top-4 right-4 text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg">78% MATCH</div>
+            <div class="flex items-center gap-2 mb-1">
+              <iconify-icon icon="lucide:beer" class="text-slate-400"></iconify-icon>
+              <span class="text-[10px] font-bold uppercase text-slate-400">Pub · 0.2 miles</span>
+            </div>
+            <h4 class="font-display text-base leading-tight mb-2">Old Blue Last</h4>
+            <div class="grid grid-cols-2 gap-y-2 mb-4">
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Capacity</p>
+                <p class="text-xs font-semibold">120 pax</p>
+              </div>
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Est. Fee</p>
+                <p class="text-xs font-bold text-slate-900">Min. Spend</p>
+              </div>
+              <div>
+                <p class="text-[9px] font-bold text-slate-400 uppercase">Quiet Score</p>
+                <p class="text-xs font-semibold">0.41 (Med)</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button id="card-2-contact" class="flex-1 py-2 bg-slate-900 text-white text-[10px] font-bold uppercase rounded-lg hover:bg-orange-500">Contact</button>
+              <button id="card-2-shortlist" class="px-3 py-2 border-2 border-slate-100 rounded-lg hover:border-slate-900">
+                <iconify-icon icon="lucide:star"></iconify-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Disclaimer -->
+          <p class="text-[10px] text-slate-400 leading-relaxed italic border-t pt-4">
+            Indicative only. Scores derived from OSM opening hours and historical event volume. Always verify directly with venue before booking.
+          </p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    // Initialize map focused on Shoreditch
+    const map = L.map('map', { zoomControl: false }).setView([51.524, -0.08], 15);
+    
+    // Move zoom control to bottom right of map container
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    // Minimal style map tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Simulated heatmap data
+    const heatPoints = [
+      [51.524, -0.08, 0.9], [51.525, -0.081, 0.4], [51.523, -0.079, 1],
+      [51.526, -0.082, 0.2], [51.522, -0.078, 0.7]
+    ];
+    const heat = L.heatLayer(heatPoints, {
+       radius: 25, blur: 15, maxZoom: 16, 
+       gradient: {0.4: '#F97316', 0.65: '#FDE68A', 1: '#15803D'}
+    }).addTo(map);
+
+    // Add mock markers with popups matching the brief
+    const venues = [
+      { 
+        name: "Strongroom Bar", 
+        type: "bar", 
+        lat: 51.524, 
+        lng: -0.08, 
+        cap: 80, 
+        free: 0.82, 
+        basis: 'opening hours', 
+        fee: '£0 venue fee (likely)', 
+        isEvent: false 
+      },
+      { 
+        name: "Old Blue Last", 
+        type: "pub", 
+        lat: 51.525, 
+        lng: -0.081, 
+        cap: 120, 
+        free: 0.41, 
+        basis: 'event history', 
+        fee: 'Min. spend applies', 
+        isEvent: true 
+      }
+    ];
+
+    venues.forEach(v => {
+      L.circleMarker([v.lat, v.lng], {
+        radius: 8,
+        fillColor: v.isEvent ? '#dc2626' : '#2563eb',
+        color: '#fff',
+        weight: 2,
+        fillOpacity: 0.9
+      })
+      .addTo(map)
+      .bindPopup(`
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-2">
+            <h4 class="font-display text-sm leading-tight">${v.name}</h4>
+            <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${v.isEvent ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'}">
+              ${v.type}
+            </span>
+          </div>
+          <p class="text-[10px] text-slate-500 mb-2">Capacity: <span class="font-bold">${v.cap} pax</span></p>
+          <div class="bg-slate-50 p-2 rounded-lg mb-3">
+            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Free Wed Evening</p>
+            <p class="text-xs font-bold">${v.free} <span class="font-normal text-slate-400 text-[9px]">(${v.basis})</span></p>
+          </div>
+          <div class="bg-teal-50 text-teal-700 text-[10px] font-bold px-2 py-1.5 rounded mb-3">
+            <iconify-icon icon="lucide:check-circle" class="align-middle mr-1"></iconify-icon>
+            ${v.fee}
+          </div>
+          <a href="#" id="popup-link-${v.name.replace(/\s/g, '-')}" class="text-[10px] font-bold text-blue-600 uppercase flex items-center gap-1 hover:underline">
+            View details & source <iconify-icon icon="lucide:external-link"></iconify-icon>
+          </a>
+        </div>
+      `);
+    });
+
+    // 300m Grid Simulation with Tooltips
+    const dl = 0.0027, dg = 0.0043;
+    const gridBounds = [[51.515, -0.095], [51.535, -0.065]];
+    
+    for(let lat = gridBounds[0][0]; lat < gridBounds[1][0]; lat += dl) {
+      for(let lng = gridBounds[0][1]; lng < gridBounds[1][1]; lng += dg) {
+        const isUnknown = Math.random() > 0.8;
+        L.rectangle([[lat, lng], [lat + dl, lng + dg]], {
+          weight: 0.5,
+          color: '#0F172A',
+          fillColor: isUnknown ? '#CBD5E1' : '#0F172A',
+          fillOpacity: isUnknown ? 0.3 : 0.02,
+          className: isUnknown ? 'hatched-bg' : ''
+        }).bindTooltip(`
+          <div class="p-1 text-[11px] leading-snug">
+            <p class="font-bold">Shoreditch Sector A4</p>
+            <p class="text-slate-500">12 venues identified</p>
+            <div class="mt-1 pt-1 border-t border-slate-200">
+              <p>Fees: <span class="font-bold">£0–£250</span></p>
+              <p class="text-[10px] opacity-70">${isUnknown ? '80%' : '40%'} price unknown</p>
+            </div>
+          </div>
+        `, { sticky: true }).addTo(map);
+      }
+    }
+  </script>
+</body>
+</html>

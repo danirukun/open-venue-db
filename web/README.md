@@ -50,3 +50,15 @@ curl -X POST https://bwkxqyhycuwqpuieggbt.supabase.co/rest/v1/rpc/search_venues 
 ```
 - The map loads venues from Supabase REST and falls back to `data.json` if that fails.
 - Rows named `EXAMPLE …` and rules with `is_example=true` are illustrative data, not real venue terms.
+
+## Capacity inference
+1. **Stated capacity:** regex on the venue's own site (`standing N`, `seated N`, `up to N guests`, `capacity N`). Found for 31 venues.
+2. **Otherwise, the OSM building footprint** (Overpass, within 20 m) that contains the venue point, or the nearest one under 15 m away. Area is in m² (EPSG:27700), ground floor only.
+   - Usable share: cafe 55%, pub/bar 50%, other 60%.
+   - Standing = usable / 0.5 m², seated = usable / 1.2 m². The range runs from 60% to 100% of that.
+   - Footprints over 600 m² are probably shared buildings, so they're capped and marked `low`.
+3. Stored as `venue_features.capacity_est_*`, with `capacity_method` and `capacity_confidence` (high = stated, med = footprint contains point, low = nearest or capped). `search_venues` uses stated capacity first, then the estimate. The map shows estimates with "~".
+4. No vision-model pass yet: no image-model API is set up in this project.
+
+## Outreach (draft-only)
+`scrapers/outreach.py` takes a venue request, runs `search_venues`, and writes personalised drafts to `outreach_drafts` with `status='pending_approval'`. Each draft has an opt-out line and a `{CLAIM_LINK}` placeholder. Contacts are the venue's own published website only. **Nothing is sent automatically.** A human approves each draft.

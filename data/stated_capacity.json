@@ -1,0 +1,198 @@
+[
+ {
+  "id": "osm-265664308",
+  "name": "Dickens Inn",
+  "standing": 175,
+  "seated": 150,
+  "source_url": "https://www.dickensinn.co.uk"
+ },
+ {
+  "id": "osm-296614817",
+  "name": "Balls Brothers",
+  "standing": 180,
+  "seated": null,
+  "source_url": "https://ballsbrothersminstercourt.co.uk/events"
+ },
+ {
+  "id": "osm-1497452177",
+  "name": "Cloth Cornhill",
+  "standing": 30,
+  "seated": null,
+  "source_url": "https://www.clothrestaurants.com/cloth-restaurants-cloth-cornhill-london-reservations"
+ },
+ {
+  "id": "osm-1754142781",
+  "name": "Humble Grape",
+  "standing": 200,
+  "seated": 120,
+  "source_url": "https://www.humblegrape.co.uk/fleet-street"
+ },
+ {
+  "id": "osm-1769294100",
+  "name": "The Oyster Shed",
+  "standing": 400,
+  "seated": 200,
+  "source_url": "https://www.oystershed.co.uk"
+ },
+ {
+  "id": "osm-2749842102",
+  "name": "Baranis",
+  "standing": 120,
+  "seated": null,
+  "source_url": "https://www.baranis.co.uk"
+ },
+ {
+  "id": "osm-2935383885",
+  "name": "Davy\u2019s at Plantation Place",
+  "standing": 150,
+  "seated": 100,
+  "source_url": "https://www.davy.co.uk/plantationplace"
+ },
+ {
+  "id": "osm-3320744028",
+  "name": "Balls Brothers",
+  "standing": 220,
+  "seated": 106,
+  "source_url": "https://ballsbrothersaustinfriars.co.uk/private-hire"
+ },
+ {
+  "id": "osm-3799624401",
+  "name": "Bounce Farringdon",
+  "standing": 24,
+  "seated": null,
+  "source_url": "https://www.bouncepingpong.com/farringdon"
+ },
+ {
+  "id": "osm-3801496832",
+  "name": "Nine Lives",
+  "standing": 11,
+  "seated": null,
+  "source_url": "https://www.ninelivesbar.com"
+ },
+ {
+  "id": "osm-4360076798",
+  "name": "Simmons",
+  "standing": 400,
+  "seated": null,
+  "source_url": "https://www.simmonsbar.co.uk/venues/bank"
+ },
+ {
+  "id": "osm-4699715433",
+  "name": "Simmons Bars",
+  "standing": 400,
+  "seated": null,
+  "source_url": "https://www.simmonsbar.co.uk/venues/temple"
+ },
+ {
+  "id": "osm-4784656730",
+  "name": "The Vault",
+  "standing": 14,
+  "seated": null,
+  "source_url": "https://towerbridgevault.com"
+ },
+ {
+  "id": "osm-5121352970",
+  "name": "Sama",
+  "standing": 300,
+  "seated": null,
+  "source_url": "https://www.samabankside.co.uk/private-hire"
+ },
+ {
+  "id": "osm-5213657021",
+  "name": "Nightjar",
+  "standing": 20,
+  "seated": null,
+  "source_url": "https://barnightjar.com"
+ },
+ {
+  "id": "osm-5238249940",
+  "name": "The Running Horse",
+  "standing": 200,
+  "seated": null,
+  "source_url": "https://therunninghorsealdgate.co.uk"
+ },
+ {
+  "id": "osm-5882192466",
+  "name": "Science Gallery Caf\u00e9",
+  "standing": 350,
+  "seated": null,
+  "source_url": "https://london.sciencegallery.com/hire"
+ },
+ {
+  "id": "osm-7039548576",
+  "name": "White Swan",
+  "standing": 25,
+  "seated": null,
+  "source_url": "https://www.whiteswanaldgate.co.uk"
+ },
+ {
+  "id": "osm-9812080617",
+  "name": "Electric Shuffle",
+  "standing": 350,
+  "seated": null,
+  "source_url": "https://electricshuffle.com/london/events"
+ },
+ {
+  "id": "osm-9962758030",
+  "name": "BrewDog",
+  "standing": 1700,
+  "seated": null,
+  "source_url": "https://drink.brewdog.com/uk/brewdog-waterloo"
+ },
+ {
+  "id": "osm-11163251905",
+  "name": "Baraki by Pyro",
+  "standing": 600,
+  "seated": 96,
+  "source_url": "https://pyrorestaurant.co.uk/baraki-bar/events"
+ },
+ {
+  "id": "osm-11944450170",
+  "name": "Searcys at The Gherkin",
+  "standing": 150,
+  "seated": null,
+  "source_url": "https://searcys.co.uk/venues/the-gherkin/private-hire"
+ },
+ {
+  "id": "osm-12815047301",
+  "name": "WC Wine Bar",
+  "standing": 70,
+  "seated": null,
+  "source_url": "https://www.wcbars.co.uk/private-hire"
+ },
+ {
+  "id": "osm-13070421414",
+  "name": "Amelia",
+  "standing": 100,
+  "seated": null,
+  "source_url": "https://www.amelia.london/private-hire"
+ },
+ {
+  "id": "osm-13103481999",
+  "name": "Vaulty Towers",
+  "standing": 40,
+  "seated": null,
+  "source_url": "https://www.vaultytowers.london"
+ },
+ {
+  "id": "osm-13357808701",
+  "name": "Little Fires",
+  "standing": 100,
+  "seated": null,
+  "source_url": "https://littlefires.bar/private-hire"
+ },
+ {
+  "id": "osm-14014754401",
+  "name": "Suzette Garden",
+  "standing": 40,
+  "seated": null,
+  "source_url": "https://www.chezantoinette.co.uk/suzette/events"
+ },
+ {
+  "id": "osm-14226401826",
+  "name": "Punch Tavern",
+  "standing": 60,
+  "seated": 40,
+  "source_url": "https://www.urbanpubsandbars.com/venues/punch-tavern"
+ }
+]
