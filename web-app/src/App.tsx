@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type L from "leaflet"
-import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, LocateFixed, SlidersHorizontal, Info } from "lucide-react"
+import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, LocateFixed, SlidersHorizontal, Info, ShieldAlert, Shield, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -108,6 +108,12 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
   )
 }
 
+const SAFETY_TIP = "Street crime in this ~1 km area vs other venue areas, police.uk Aug 2026"
+export function safetyBucket(x: number) { return x >= 67 ? { label: "Lower crime", Icon: ShieldCheck, color: "#43614A" } : x >= 34 ? { label: "Average", Icon: Shield, color: "#9A7B3F" } : { label: "Higher crime", Icon: ShieldAlert, color: "#8E4F7E" } }
+function SafetyTag({ score }: { score: number }) {
+  const b = safetyBucket(score)
+  return <Tooltip><TooltipTrigger render={<span />} className="inline-flex items-center gap-1 font-medium align-middle" style={{ color: b.color }}><b.Icon className="size-3.5" />{b.label}</TooltipTrigger><TooltipContent className="max-w-60">{SAFETY_TIP}</TooltipContent></Tooltip>
+}
 export default function App() {
   const [data, setData] = useState<Venue[]>([]), [src, setSrc] = useState("")
   const [day, setDay] = useState<string>("Wed"), [slot, setSlot] = useState<string>("evening")
@@ -208,9 +214,9 @@ export default function App() {
           <section aria-labelledby="res" aria-live="polite" className="space-y-2">
             <div className="flex justify-between items-baseline"><h2 id="res" className="font-heading text-xl font-semibold">Best matches</h2><span className="text-xs text-muted-foreground">{status.replace("Showing ", "").replace(" matches", " rooms")}</span></div>
             {results?.some(r => "transit_score" in r || "safety_score" in r) && <div className="flex flex-wrap gap-2 text-sm">
-              <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value="match">Best match</option><option value="transit">Near transit</option>{results?.some(r => r.safety_score != null) && <option value="safety">Safest</option>}</select>
+              <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value="match">Best match</option><option value="transit">Near transit</option>{results?.some(r => r.safety_score != null) && <option value="safety">Lower crime first</option>}</select>
               <select aria-label="Minimum transit score" value={minT} onChange={e => setMinT(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any transit</option><option value={50}>Transit 50+</option><option value={70}>Transit 70+</option></select>
-              {results?.some(r => r.safety_score != null) && <select aria-label="Minimum safety score" value={minS} onChange={e => setMinS(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any safety</option><option value={50}>Safety 50+</option><option value={70}>Safety 70+</option></select>}
+              {results?.some(r => r.safety_score != null) && <select aria-label="Crime level" title={SAFETY_TIP} value={minS} onChange={e => setMinS(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any crime level</option><option value={34}>Average or better</option><option value={67}>Lower crime only</option></select>}
               <Button size="sm" variant="outline" onClick={() => search()}>Apply</Button>
             </div>}
             {results === null && <p className="text-sm text-muted-foreground">Ranked by fit for your headcount, likely fee against your budget, and how likely the room is free.</p>}
@@ -230,7 +236,7 @@ export default function App() {
                       <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
                         <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
                     </div>
-                    <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.{(v.nearest_station_name || v.safety_score != null) && <span className="block mt-0.5">{v.nearest_station_name ? `${v.nearest_station_m != null ? `${Math.max(1, Math.round(v.nearest_station_m / 80))} min walk to ` : "Near "}${v.nearest_station_name}` : ""}{v.nearest_station_name && v.safety_score != null ? ", " : ""}{v.safety_score != null ? `safety ${Math.round(v.safety_score)}/100` : ""}</span>}</CardDescription>
+                    <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.{(v.nearest_station_name || v.safety_score != null) && <span className="block mt-0.5">{v.nearest_station_name ? `${v.nearest_station_m != null ? `${Math.max(1, Math.round(v.nearest_station_m / 80))} min walk to ` : "Near "}${v.nearest_station_name}` : ""}{v.nearest_station_name && v.safety_score != null ? ", " : ""}{v.safety_score != null ? <SafetyTag score={v.safety_score} /> : ""}</span>}</CardDescription>
                   </CardHeader>
                   <CardContent className="px-2 space-y-2.5">
                     <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label} />
