@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import MapView from "./MapView"
+import Enquiry, { type EnqCtx } from "./Enquiry"
 import { lazy, Suspense } from "react"
 import type { Fly } from "./Map3D"
 const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
@@ -23,7 +24,7 @@ import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEs
 
 const MUSTS = [[Speaker, "PA system"], [Monitor, "Projector"], [Mic2, "Mics"], [Accessibility, "Step-free"], [GlassWater, "Bar"]] as const
 const TODAY = DAYS[(new Date().getDay() + 6) % 7]
-const BASE = "id,name,type,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url"
+const BASE = "id,name,type,address,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url"
 const CAP = "capacity_standing,capacity_seated,capacity_est_min_standing,capacity_est_max_standing,capacity_est_min_seated,capacity_est_max_seated,capacity_confidence"
 const PRICE = "price_est_low,price_est_mid,price_est_high,price_est_unit,price_confidence,price_n_comparables"
 
@@ -106,7 +107,7 @@ export default function App() {
   const [busy, setBusy] = useState(false), [types, setTypes] = useState<string[]>(Object.keys(TYPES))
   const [hc, setHc] = useState("45"), [budget, setBudget] = useState("0"), [radius, setRadius] = useState("2000"), [kind, setKind] = useState("meetup")
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
-  const [map, setMap] = useState<L.Map | null>(null)
+  const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
   const c3dLive = useRef<[number, number]>([51.5245, -0.0805])
   const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
@@ -136,10 +137,11 @@ export default function App() {
   const slotObj = SLOTS.find(s => s.id === slot)!
   return (
     <TooltipProvider>
+    {enq && <Enquiry ctx={enq} onClose={() => setEnq(null)} />}
     <div className="flex flex-col md:flex-row md:h-full w-full text-ink bg-fog">
       <aside className="order-2 md:order-1 md:w-[400px] md:h-full bg-fog md:border-r border-ink/10 flex flex-col z-40">
         <header className="hidden md:block px-6 pt-6 pb-4">
-          <h1 className="font-heading text-[31px] leading-none font-semibold tracking-[-0.02em]">Open Venue DB</h1>
+          <h1 className="font-heading text-[31px] leading-none font-semibold tracking-[-0.02em]">Offpeak</h1>
           <p className="mt-2 text-sm text-muted-foreground max-w-[34ch]">Quiet London rooms for meetups, comedy and gigs. Open data, kept up to date by organisers.</p>
         </header>
         <div className="flex-1 md:overflow-y-auto px-5 md:px-6 pb-6 space-y-7">
@@ -194,7 +196,7 @@ export default function App() {
                     </div>
                     <div className="flex gap-4 text-sm">
                       <a href={v.source_url || "#"} target="_blank" rel="noreferrer" className="text-canal font-medium underline-offset-2 hover:underline rounded-sm">Open source page</a>
-                      <Tooltip><TooltipTrigger render={<span tabIndex={0} className="rounded-sm" />}><span className="text-muted-foreground">Draft an enquiry</span></TooltipTrigger><TooltipContent>Coming soon. Every enquiry will need your approval before it's sent.</TooltipContent></Tooltip>
+                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${DAYNAME[day]} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
                     </div>
                   </CardContent>
                 </Card>
@@ -207,7 +209,7 @@ export default function App() {
       </aside>
 
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
-        <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Open Venue DB</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
+        <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
           {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} /></Suspense>
             : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />}
