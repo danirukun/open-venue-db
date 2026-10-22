@@ -14,7 +14,7 @@ function circle(lng: number, lat: number, r = 9, n = 14) {
   return [pts]
 }
 
-export default function Map3D({ venues, score, center, fly }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly }) {
+export default function Map3D({ venues, score, center, fly, onCenter }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void }) {
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
@@ -24,6 +24,7 @@ export default function Map3D({ venues, score, center, fly }: { venues: Venue[];
   useEffect(() => {
     const map = new maplibregl.Map({ container: el.current!, style: "https://tiles.openfreemap.org/styles/positron", center: [center[1], center[0]], zoom: 13.5, pitch: 0, bearing: 0, attributionControl: { compact: true } })
     m.current = map
+    map.on("moveend", () => { const c = map.getCenter(); onCenter?.([c.lat, c.lng]) })
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "bottom-right")
     map.on("load", () => {
       const d = data()

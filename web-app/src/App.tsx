@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type L from "leaflet"
 import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, SlidersHorizontal, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -29,7 +29,16 @@ const PRICE = "price_est_low,price_est_mid,price_est_high,price_est_unit,price_c
 async function loadVenues(): Promise<[Venue[], string]> {
   const tries = [`${BASE},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP})`]
   for (const sel of tries) {
-    try { const r = await fetch(`${SB}/rest/v1/venues?select=${sel}&limit=5000`, { headers: { apikey: KEY } }); if (r.ok) { const d = await r.json(); if (d.length) return [d, "Supabase (live)"] } } catch {}
+    try {
+      const url = `${SB}/rest/v1/venues?select=${sel}&order=id`, PG = 1000
+      const get = (a: number, cnt = false) => fetch(url, { headers: { apikey: KEY, "Range-Unit": "items", Range: `${a}-${a + PG - 1}`, ...(cnt ? { Prefer: "count=exact" } : {}) } })
+      const r = await get(0, true); if (!r.ok) continue
+      const first: Venue[] = await r.json(); if (!first.length) continue
+      const total = Math.min(+(r.headers.get("content-range")?.split("/")[1] || 0) || first.length, 40000)
+      const offs: number[] = []; for (let a = PG; a < total; a += PG) offs.push(a)
+      const rest = await Promise.all(offs.map(a => get(a).then(x => x.ok ? x.json() : [])))
+      return [first.concat(...rest), "Supabase (live)"]
+    } catch {}
   }
   const d = await (await fetch("data.json")).json(); return [d, "data.json fallback"]
 }
@@ -94,6 +103,7 @@ export default function App() {
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
   const [map, setMap] = useState<L.Map | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
+  const c3dLive = useRef<[number, number]>([51.5245, -0.0805])
   const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
   const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
 
@@ -106,7 +116,7 @@ export default function App() {
   const nEst = useMemo(() => data.filter(priceEst).length, [data])
 
   async function search() {
-    const c = map?.getCenter() ?? { lat: 51.5245, lng: -0.0805 }
+    const c = (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.5245, lng: -0.0805 }
     setStatus("Searching…")
     try {
       const r = await fetch(`${SB}/rest/v1/rpc/search_venues`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" },
@@ -194,10 +204,10 @@ export default function App() {
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Open Venue DB</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
-          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} /></Suspense>
+          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} /></Suspense>
             : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} />}
           <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
-            {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) setC3d([c.lat, c.lng]); setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
+            {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
           </div>
           <section aria-label="When" className="md:absolute md:top-4 md:left-4 md:right-4 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 z-[1000] hidden md:block">
             {WhenPanel()}
