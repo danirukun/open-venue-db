@@ -19,11 +19,11 @@ function ringGeo(r?: [number, number, number]): any {
   const ring = Array.from({ length: 65 }, (_, i) => { const a = (i / 64) * 2 * Math.PI; return [lng + dg * Math.cos(a), lat + dl * Math.sin(a)] })
   return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } }
 }
-export default function Map3D({ venues, score, center, fly, onCenter, breaks, here, ring }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number] }) {
+export default function Map3D({ venues, score, center, fly, onCenter, breaks, here, ring, pins }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; pins?: Venue[] | null }) {
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
-    const cols = { type: "FeatureCollection", features: venues.map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: v.id, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
+    const cols = { type: "FeatureCollection", features: (pins ?? venues).filter(v => v.lat != null).map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: v.id, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
     return { pts, cols } as any
   }
   useEffect(() => {
@@ -56,7 +56,13 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
     })
     return () => { map.remove(); m.current = null; ready.current = false }
   }, [])
-  useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score])
+  useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score, pins])
+  useEffect(() => { const map = m.current; if (!map || !pins?.length) return; const ps = pins.filter(v => v.lat != null); if (!ps.length) return
+    const mks = ps.map((v, i) => { const e = document.createElement("div"); e.textContent = String(i + 1); e.style.cssText = "width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 12px/1 sans-serif;background:#262626;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px #0005"
+      return new maplibregl.Marker({ element: e }).setLngLat([v.lng, v.lat]).addTo(map) })
+    const b = new maplibregl.LngLatBounds(); ps.forEach(v => b.extend([v.lng, v.lat]))
+    const fit = () => map.fitBounds(b, { padding: 80, maxZoom: 16, pitch: 55, bearing: -17, duration: reduced() ? 0 : 1500 }); if (ready.current) fit(); else map.once("load", fit)
+    return () => mks.forEach(k => k.remove()) }, [pins])
   const ringRef = useRef(ring); ringRef.current = ring
   useEffect(() => { if (m.current && ready.current) (m.current.getSource("ring") as any)?.setData(ringGeo(ring)) }, [ring?.[0], ring?.[1], ring?.[2]])
   useEffect(() => { if (fly && m.current) go(m.current, fly.lng, fly.lat, 17) }, [fly])

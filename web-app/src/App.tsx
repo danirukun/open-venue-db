@@ -182,7 +182,8 @@ export default function App() {
       search({ lat: la, lng: ln })
     } catch { setPlaceMsg("Place search is unavailable right now. Move the map instead.") }
   }
-  async function search(at?: { lat: number; lng: number }) {
+  const [pins, setPins] = useState<Venue[] | null>(null)
+  async function search(at?: { lat: number; lng: number }, fromButton = false) {
     const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.4927, lng: -0.2240 }
     setStatus("Searching…"); setSc([c.lat, c.lng])
     try {
@@ -192,7 +193,7 @@ export default function App() {
       let r = await call({ ...base, ...extra })
       if (!r.ok && Object.keys(extra).length) r = await call(base)
       if (!r.ok) throw r.status
-      const rs = await r.json(); setResults(rs); setStatus(`Showing ${rs.length} matches`)
+      const rs = await r.json(); setResults(rs); if (fromButton) setPins(Array.isArray(rs) && rs.length ? rs.map((x: any) => data.find(d => d.id == x.id) || x) : null); setStatus(`Showing ${rs.length} matches`)
     } catch { setResults([]); setStatus("Search unavailable (Supabase unreachable).") }
   }
   useEffect(() => { loadVenues().then(([d, s]) => { setData(d.filter(v => v.lat)); setSrc(s) }) }, [])
@@ -240,7 +241,7 @@ export default function App() {
                 {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
               </ToggleGroup>
             </fieldset>
-            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search()}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${dayLabel} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
+            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search(undefined, true)}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${dayLabel} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
             {nActive > 0 && <div className="flex justify-between items-center text-xs text-muted-foreground"><span>{nActive} filter{nActive > 1 ? "s" : ""} changed</span><button type="button" className={mini} onClick={resetFilters}>Reset filters</button></div>}
           </section>
 
@@ -255,7 +256,7 @@ export default function App() {
             {results === null && <p className="text-sm text-muted-foreground">Ranked by fit for your headcount, likely fee against your budget, and how likely the room is free.</p>}
             {results?.length === 0 && status.startsWith("Showing") && <p className="text-sm text-muted-foreground">No rooms match. Try a wider radius, lower the headcount or move the map, then search again.</p>}
             <ol className="divide-y divide-ink/10 border-y border-ink/10">
-            {results?.map(v => {
+            {results?.map((v, ri) => {
               const p = Math.round(100 * v.likely_free), d = data.find(x => x.id == v.id) || ({} as Venue), pe = priceEst(d.id ? d : v)
               const barC = p >= 70 ? P.free : p >= 40 ? P.accent : P.busy
               const dist = (v.distance_m / 1000).toFixed(1)
@@ -265,7 +266,7 @@ export default function App() {
                   <span aria-hidden className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-ink/10"><span className="absolute bottom-0 left-0 w-1 rounded-full" style={{ height: `${Math.max(p, 6)}%`, background: barC }} /></span>
                   <CardHeader className="px-2">
                     <div className="flex justify-between items-start gap-3">
-                      <CardTitle className="font-heading text-[17px] leading-snug"><button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => { if (!d.lat) return; if (is3d) setFly({ lat: d.lat, lng: d.lng, t: Date.now() }); else map?.setView([d.lat, d.lng], 17) }}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
+                      <CardTitle className="font-heading text-[17px] leading-snug">{pins && <span className="inline-grid place-items-center size-5 mr-1.5 rounded-full bg-ink text-fog text-[11px] font-semibold align-[2px] tabular-nums">{ri + 1}</span>}<button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => { if (!d.lat) return; if (is3d) setFly({ lat: d.lat, lng: d.lng, t: Date.now() }); else map?.setView([d.lat, d.lng], 17) }}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
                       <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
                         <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
                     </div>
@@ -293,8 +294,9 @@ export default function App() {
       <main className="order-1 md:order-2 flex-1 relative flex flex-col">
         <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
         <div className="relative h-[52vh] md:h-full md:flex-1">
-          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} /></Suspense>
-            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} crime={crimeOn ? crime : null} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
+          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} pins={pins} ring={[sc[0], sc[1], +radius]} /></Suspense>
+            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} crime={crimeOn ? crime : null} pins={pins} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
+          {pins && <div className="absolute top-4 left-1/2 -translate-x-1/2 md:top-auto md:bottom-6 z-[1000] flex items-center gap-2 rounded-full border border-ink/20 bg-white shadow-md pl-3 pr-1 py-1 text-sm"><span className="tabular-nums">Showing {pins.length} match{pins.length === 1 ? "" : "es"}</span><button onClick={() => setPins(null)} className="rounded-full px-2.5 py-1 font-semibold hover:bg-ink/10">Show all venues</button></div>}
           <button onClick={locate} aria-label="Use my location" title="Use my location" className="absolute top-16 right-4 md:top-auto md:bottom-6 md:left-[7.5rem] md:right-auto z-[1000] size-9 grid place-items-center rounded-lg border border-ink/20 bg-white shadow-md hover:bg-fog"><LocateFixed className="size-4" /></button>
           <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
             {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}

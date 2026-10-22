@@ -21,8 +21,10 @@ function ZoomWatch({ onZoom, onMap }: { onZoom: (z:number)=>void; onMap: (m:L.Ma
 }
 const feeNum = (l?:string|null) => { const m = (l||"").match(/£(\d+)/); return m && /^~?£/.test(l||"") ? +m[1] : null }
 
-export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here, ring, crime }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; crime?: { gy: number; gx: number; n: number; score: number }[] | null }) {
+export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here, ring, crime, pins }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; pins?: Venue[] | null; crime?: { gy: number; gx: number; n: number; score: number }[] | null }) {
   const [zoom, setZoom] = useState(14), [mapRef, setMapRef] = useState<L.Map | null>(null)
+  useEffect(() => { if (!mapRef || !pins?.length) return; const pts = pins.filter(v => v.lat != null).map(v => [v.lat, v.lng] as [number, number]); if (!pts.length) return
+    mapRef.fitBounds(L.latLngBounds(pts), { padding: [60, 60], maxZoom: 16, animate: !matchMedia("(prefers-reduced-motion: reduce)").matches }) }, [mapRef, pins])
   const points = useMemo(() => venues.map(v => [v.lat, v.lng, score(v)] as [number,number,number]), [venues, score])
   const cells = useMemo(() => {
     const dl = 0.0027, dg = 0.0043, c: Record<string, Venue[]> = {}
@@ -54,8 +56,8 @@ export default function MapView({ venues, all, score, slotLabel, onMap, breaks, 
           </LTooltip>
         </Rectangle>
       ))}
-      {zoom >= 15 && venues.filter(v => mapRef?.getBounds().pad(0.2).contains([v.lat, v.lng])).map(v => { const f = score(v), pe = priceEst(v); return (
-        <Marker key={v.id} position={[v.lat, v.lng]} icon={icon(v, breaks)}>
+      {(pins ? pins.filter(v => v.lat != null) : zoom >= 15 ? venues.filter(v => mapRef?.getBounds().pad(0.2).contains([v.lat, v.lng])) : []).map((v, i) => { const f = score(v), pe = priceEst(v); return (
+        <Marker key={v.id} position={[v.lat, v.lng]} icon={pins ? numIcon(i + 1) : icon(v, breaks)} zIndexOffset={pins ? 1000 : 0}>
           <Popup>
             <div className="min-w-[220px]">
               <div className="flex justify-between items-start gap-2"><b className="text-[15px] leading-tight">{v.name}{isEx(v.name) && <span className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold ml-1">Example data</span>}</b><span className="text-[10px] bg-slate-100 px-1 rounded">{v.type}</span></div>
@@ -75,6 +77,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap, breaks, 
   )
 }
 
+function numIcon(n: number) { return L.divIcon({ className: "", iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -14], html: `<div style="width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:600 13px/1 inherit;background:${P.ink};color:#fff;border:2px solid #fff;box-shadow:0 1px 4px #0005">${n}</div>` }) }
 const iconCache = new Map<string, L.DivIcon>()
 function icon(v: Venue, br: number[]) {
   const c = priceClass(priceMid(v), br), d = DOT_SIZES[Math.max(c, 0)] - (c < 0 ? 4 : 0), ev = (v.events || 0) > 0, t = typeOf(v)
