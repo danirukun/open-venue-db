@@ -1,6 +1,7 @@
 // Open Venue DB — Discord bot (kanichan). MIT.
 import { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder,
   ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } from 'discord.js';
+import { runAgent, llmConfig } from './agent.js';
 
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
 const SB_URL = process.env.SUPABASE_URL || 'https://bwkxqyhycuwqpuieggbt.supabase.co';
@@ -71,6 +72,8 @@ const commands = [
     .addStringOption(o => o.setName('area').setDescription('Postcode or area'))
     .addIntegerOption(o => o.setName('capacity').setDescription('Min capacity').setMinValue(1))
     .addStringOption(o => o.setName('weekday').setDescription('Weekday').addChoices(...DAYS.map(d => ({ name: d, value: d })))),
+  new SlashCommandBuilder().setName('venue-ask').setDescription('Describe your event in plain English')
+    .addStringOption(o => o.setName('text').setDescription('e.g. comedy night, 80 seated, Tuesday, needs PA, East London').setRequired(true)),
 ].map(c => c.toJSON());
 
 const pending = new Map(); // interaction-scoped draft requests awaiting must-haves
@@ -80,13 +83,61 @@ async function runSearch(p) {
     max_budget: p.max_budget ?? null, weekday: p.weekday || 'Wed', slot: p.slot || 'evening', types: p.types ?? null, lim: 3 });
 }
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const exec = (userId) => ({
+  geocode,
+  search: async a => { const g = await geocode(a.area); return runSearch({ q: a.q, lat: g.lat, lng: g.lng, min_capacity: a.min_capacity, max_budget: a.max_budget, weekday: a.weekday, radius_m: 5000 }); },
+  createAndSearch: async p => {
+    const g = await geocode(p.area); const radius_m = 3000;
+    const requestId = await rpc('create_venue_request', { p_discord_user_id: userId, p_event_type: p.event_type, p_headcount: p.headcount, p_budget: p.budget,
+      p_date_from: p.date, p_flexible_days: p.date ? null : [p.weekday], p_slot: p.slot, p_lat: g.lat, p_lng: g.lng, p_area: g.label, p_must_have: p.must_haves, p_radius_m: radius_m });
+    const base = { lat: g.lat, lng: g.lng, radius_m, min_capacity: p.headcount, max_budget: p.budget, weekday: p.weekday, slot: p.slot };
+    let results = await runSearch({ ...base, types: TYPES[p.event_type] }); if (!results?.length) results = await runSearch(base);
+    return { requestId, results: results || [], geo: g };
+  },
+  shortlist: (rid, vid) => rpc('shortlist_venue', { p_request_id: rid, p_discord_user_id: userId, p_venue_id: vid }),
+  draft: (rid, vid) => rpc('create_outreach_draft', { p_request_id: rid, p_discord_user_id: userId, p_venue_id: vid }),
+});
+const convo = new Map(); // key: thread/channel(+user) -> agent state
+function agentPayload(out, userId) {
+  if (out.followup || !out.results) return { content: out.text || 'Tell me headcount, area and day.' };
+  const p = out.parsed || {};
+  const head = `📍 <@${userId}> VenueRequest: **${p.headcount}** · **${p.event_type}** · £${p.budget} · ${p.date || p.weekday} ${p.slot} · near ${out.geo?.label || p.area}` +
+    (p.must_haves?.length ? ` · needs ${p.must_haves.join(', ')}` : '') + (out.requestId ? `\nRequest \`${String(out.requestId).slice(0,8)}\`` : '') +
+    ` · estimates only · [map](${MAP_URL})` + (out.text ? `\n${out.text}` : '');
+  if (!out.results.length) return { content: head + '\nNo matches yet — try a bigger area.' };
+  return { content: head, embeds: out.results.slice(0,3).map(embedFor), components: out.requestId ? buttons(out.requestId, out.results.slice(0,3)) : [] };
+}
+async function ask(key, userId, text) {
+  const st = convo.get(key) || {}; st.user = userId; st.ts = Date.now(); convo.set(key, st);
+  const out = await runAgent(st, text, exec(userId));
+  if (!out.followup) st.done = true;
+  console.log(new Date().toISOString(), 'agent', out.via, JSON.stringify(out.parsed || {}), out.followup ? 'FOLLOWUP' : '');
+  return agentPayload(out, userId);
+}
+setInterval(() => { for (const [k, v] of convo) if (Date.now() - v.ts > 30 * 60e3) convo.delete(k); }, 60e3);
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+client.on('messageCreate', async (m) => {
+  if (m.author.bot) return;
+  const mentioned = m.mentions.users.has(client.user.id);
+  const key = m.channel.isThread() ? m.channel.id : `${m.channel.id}:${m.author.id}`;
+  const st = convo.get(key);
+  const awaiting = st && !st.done && st.user === m.author.id;
+  if (!mentioned && !awaiting) return;
+  const text = m.content.replace(/<@!?\d+>/g, '').trim(); if (!text) return m.reply('Describe your event, e.g. "40-person meetup Wed in Shoreditch, free, need a projector".');
+  try {
+    await m.channel.sendTyping().catch(() => {});
+    if (mentioned && st?.done) convo.delete(key); // new request
+    const payload = await ask(key, m.author.id, text);
+    await m.reply(payload);
+  } catch (e) { console.error(e); m.reply('Something went wrong, try /venue-request.').catch(() => {}); }
+});
 client.once('clientReady', async () => {
   console.log(new Date().toISOString(), `online as ${client.user.tag}; guilds: ${client.guilds.cache.map(g => g.name).join(', ') || '(none)'}`);
   const rest = new REST().setToken(TOKEN);
   await rest.put(Routes.applicationCommands(client.user.id), { body: commands });
   for (const g of client.guilds.cache.values()) await rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: [] }).catch(() => {});
-  console.log('commands registered (global)');
+  console.log('commands registered (global); agent:', llmConfig()?.via || 'rule-parser (no LLM key)');
 });
 client.on('guildCreate', g => console.log(new Date().toISOString(), 'joined guild', g.name));
 
@@ -99,6 +150,13 @@ client.on('interactionCreate', async (it) => {
         weekday: it.options.getString('weekday') || 'Wed', radius_m: 5000 });
       if (!res?.length) return it.editReply(`No venues found near ${g.label}. Try a bigger area or fewer filters.`);
       return it.editReply({ content: `Top ${res.length} near **${g.label}** · [map](${MAP_URL})`, embeds: res.map(embedFor) });
+    }
+    if (it.isChatInputCommand() && it.commandName === 'venue-ask') {
+      await it.deferReply();
+      const key = `${it.channelId}:${it.user.id}`; convo.delete(key);
+      const payload = await ask(key, it.user.id, it.options.getString('text'));
+      if (convo.get(key) && !convo.get(key).done) payload.content += '\n_(reply in this channel — no @ needed)_';
+      return it.editReply(payload);
     }
     if (it.isChatInputCommand() && it.commandName === 'venue-request') {
       const o = it.options; const date = o.getString('date');
