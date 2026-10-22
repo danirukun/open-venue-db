@@ -62,3 +62,13 @@ curl -X POST https://bwkxqyhycuwqpuieggbt.supabase.co/rest/v1/rpc/search_venues 
 
 ## Outreach (draft-only)
 `scrapers/outreach.py` takes a venue request, runs `search_venues`, and writes personalised drafts to `outreach_drafts` with `status='pending_approval'`. Each draft has an opt-out line and a `{CLAIM_LINK}` placeholder. Contacts are the venue's own published website only. **Nothing is sent automatically.** A human approves each draft.
+
+## Price estimates (never quotes)
+- **Observations** (`price_observations`): £ amounts near "per head", "minimum spend", "private hire" and similar wording on venues' **own websites** (`scrapers/price_obs.py`). There are 24 observations from 12 venues, all per-head group or menu spend. No hire fees or minimum-spend amounts were found.
+- **Listing sites:** Tagvenue `/uk/search/` is disallowed by its robots.txt, venues.london serves a captcha, and the HireSpace London page returned 404. All three were skipped.
+- **Model** (`scrapers/price_model.py`): kNN over one robust median per venue, k=8. Weight = exp(−km/1.5) × type similarity × capacity similarity. The output is the weighted 25th/50th/75th percentile → `price_est_low/mid/high` (GBP per head).
+- **Confidence:** high = the venue's own observation, med = ≥5 comparables within 1.5 km, low otherwise.
+- **Midweek discount:** not applied. There are only 6 midweek and 4 weekend observations, which isn't enough evidence.
+- **Excluded:** EXAMPLE rules are never used for training.
+- **Leave-one-out median absolute error:** £13.50 per head (n=12; the median observation is £23). That's weak, so treat estimates as indicative.
+- **`search_venues` returns** `price_est_low, price_est_mid, price_est_high, price_est_unit, price_n_comparables, price_confidence, price_label`. When no pricing rule applies, it compares `price_est_mid × headcount` with the budget (small weight).
