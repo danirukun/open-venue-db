@@ -16,6 +16,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import MapView from "./MapView"
 import { lazy, Suspense } from "react"
 import type { Fly } from "./Map3D"
+const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 const Map3D = lazy(() => import("./Map3D"))
 import { P } from "./palette"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
@@ -73,7 +74,7 @@ function TimeBand({ hrs }: { hrs: [number, number] }) {
   )
 }
 
-function Legend({ busy, slotLabel, nEst }: { busy: boolean; slotLabel: string; nEst: number }) {
+function Legend({ busy, slotLabel, nEst, is3d }: { busy: boolean; slotLabel: string; nEst: number; is3d?: boolean }) {
   return (
     <div className="space-y-3 text-sm">
       
@@ -82,6 +83,10 @@ function Legend({ busy, slotLabel, nEst }: { busy: boolean; slotLabel: string; n
         <div className="flex justify-between text-xs mt-1 text-muted-foreground"><span>{busy ? "Usually free" : "Usually busy"}</span><span className="font-semibold text-ink">{busy ? "Very likely busy" : "Very likely free"}</span></div>
         <p className="text-xs text-muted-foreground mt-1">Colour shows {busy ? "how busy" : "how likely free"} rooms are on {slotLabel}.</p>
       </div>
+      {is3d && <div>
+        <div className="h-3 w-full rounded-sm" style={{ background: `linear-gradient(90deg,${(busy ? [...RAMP].reverse() : RAMP).join(",")})` }} />
+        <p className="text-xs text-muted-foreground mt-1">Columns: colour = {busy ? "how busy" : "how likely free"}, height = capacity (taller = bigger room). <span className="inline-block size-2.5 align-middle rounded-sm opacity-50" style={{ background: P.muted }} /> Grey, short = capacity unknown.</p>
+      </div>}
       <ul className="grid gap-1.5 text-xs">
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-ink ring-2 ring-white" />Room seen in Luma or Meetup listings</li>
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-white border-2 border-ink" />Café, pub or bar from OpenStreetMap</li>
@@ -216,7 +221,7 @@ export default function App() {
             {showKey && <div id="map-key" className="w-72 max-w-full max-h-[40vh] md:max-h-none overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
               <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
                 <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-7 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10 hover:text-ink active:bg-ink/15"><X className="size-4" /></button></div>
-              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} /></div>}
+              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} is3d={is3d} /></div>}
             <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key"
               className={`h-9 px-3 inline-flex items-center gap-2 rounded-lg border text-sm font-medium shadow-md transition-colors ${showKey ? "bg-ink text-fog border-ink hover:bg-ink/90" : "bg-white text-ink border-ink/20 hover:bg-fog"}`}>
               <Layers className="size-4" />{showKey ? "Hide map key" : "Show map key"}</button>
