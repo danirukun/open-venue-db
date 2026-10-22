@@ -118,8 +118,8 @@ export default function App() {
   const [sortBy, setSortBy] = useState("match"), [minT, setMinT] = useState(0), [minS, setMinS] = useState(0)
   const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
   const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
-  const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.5245, -0.0805])
-  const c3dLive = useRef<[number, number]>([51.5245, -0.0805])
+  const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.4927, -0.2240])
+  const c3dLive = useRef<[number, number]>([51.4927, -0.2240])
   const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
   const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
 
@@ -144,7 +144,7 @@ export default function App() {
     }, e => setLocMsg(e.code === 1 ? "Location permission was denied. Move the map to choose an area." : "Couldn't get your location. Move the map to choose an area."), { timeout: 8000, maximumAge: 60000 })
   }
   async function search(at?: { lat: number; lng: number }) {
-    const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.5245, lng: -0.0805 }
+    const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.4927, lng: -0.2240 }
     setStatus("Searching…")
     try {
       const base = { lat: c.lat, lng: c.lng, radius_m: +radius, min_capacity: +hc || null, max_budget: budget === "" ? null : +budget, weekday: day, slot: searchSlot, types, lim: 15 }

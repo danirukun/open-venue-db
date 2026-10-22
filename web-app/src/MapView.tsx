@@ -22,7 +22,7 @@ function ZoomWatch({ onZoom, onMap }: { onZoom: (z:number)=>void; onMap: (m:L.Ma
 const feeNum = (l?:string|null) => { const m = (l||"").match(/£(\d+)/); return m && /^~?£/.test(l||"") ? +m[1] : null }
 
 export default function MapView({ venues, all, score, slotLabel, onMap, breaks, here }: { venues: Venue[]; all: Venue[]; score: (v:Venue)=>number; slotLabel: string; onMap:(m:L.Map)=>void; breaks: number[]; here?: [number, number] | null }) {
-  const [zoom, setZoom] = useState(15), [mapRef, setMapRef] = useState<L.Map | null>(null)
+  const [zoom, setZoom] = useState(14), [mapRef, setMapRef] = useState<L.Map | null>(null)
   const points = useMemo(() => venues.map(v => [v.lat, v.lng, score(v)] as [number,number,number]), [venues, score])
   const cells = useMemo(() => {
     const dl = 0.0027, dg = 0.0043, c: Record<string, Venue[]> = {}
@@ -36,7 +36,7 @@ export default function MapView({ venues, all, score, slotLabel, onMap, breaks, 
     })
   }, [all])
   return (
-    <MapContainer center={[51.5245, -0.0805]} zoom={15} zoomControl={false} className="h-full w-full">
+    <MapContainer center={[51.4927, -0.2240]} zoom={14} zoomControl={false} className="h-full w-full">
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" maxZoom={19} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
       <ZoomControl position="bottomright" />
       <ZoomWatch onZoom={setZoom} onMap={m => { setMapRef(m); onMap(m) }} />

@@ -43,7 +43,7 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
         pop.setLngLat(e.lngLat).setHTML(`<div style="font:13px/1.35 inherit"><b>${String(p.name).replace(/</g, "&lt;")}</b><br>${p.cap}<br>${p.price}<br>Likely free: ${Math.round(p.s * 100)}%</div>`).addTo(map) })
       map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; pop.remove() })
       map.on("click", id, e => { const p = e.features?.[0]?.properties as any; if (p) go(map, p.lng, p.lat, 17) }) }
-      go(map, center[1], center[0], 15.2)
+      go(map, center[1], center[0], 14.5)
     })
     return () => { map.remove(); m.current = null; ready.current = false }
   }, [])
