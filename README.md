@@ -73,3 +73,6 @@ curl -X POST https://bwkxqyhycuwqpuieggbt.supabase.co/rest/v1/rpc/search_venues 
 - **Excluded:** EXAMPLE rules are never used for training.
 - **Leave-one-out median absolute error:** £13.50 per head (n=12; the median observation is £23). That's weak, so treat estimates as indicative.
 - **`search_venues` returns** `price_est_low, price_est_mid, price_est_high, price_est_unit, price_n_comparables, price_confidence, price_label`. When no pricing rule applies, it compares `price_est_mid × headcount` with the budget (small weight).
+
+## Transit data
+Stations (488 tube/DLR/Overground/Elizabeth line/tram/rail) from the TfL Unified API StopPoint endpoint (Powered by TfL Open Data; contains OS data © Crown copyright and database rights 2016, Geomni UK Map data © and database rights 2019), fetched 22 Oct 2026. The OSM Overpass fetch failed (502 / timeout). `venues.transit_score` = 100 at <=200 m to the nearest station, falling linearly to 0 at 1500 m, +10 if >=2 stations are within 800 m (capped at 100). Scripts: `scrapers/enrich/`, migrations 008–009.
