@@ -23,7 +23,7 @@ const TOOLS = [
   { name: 'geocode', description: 'Resolve a London area or postcode to lat/lng', parameters: { type: 'object', properties: { area: { type: 'string' } }, required: ['area'] } },
   { name: 'create_venue_request', description: 'Save the structured VenueRequest and search for top 3 venues. Call once key fields are known.',
     parameters: { type: 'object', properties: {
-      event_type: { type: 'string', enum: ['meetup','show','popup'] }, date: { type: 'string', description: 'YYYY-MM-DD if specific' },
+      event_type: { type: 'string', enum: ['meetup','show','popup','screening'] }, date: { type: 'string', description: 'YYYY-MM-DD if specific' },
       weekday: { type: 'string', enum: DAYS }, slot: { type: 'string', enum: ['morning','afternoon','evening','late'] },
       headcount: { type: 'integer' }, budget: { type: 'number', description: 'max venue fee GBP, 0 if free/none' },
       must_haves: { type: 'array', items: { type: 'string', enum: MUST } }, area: { type: 'string' },
@@ -37,7 +37,7 @@ const TOOLS = [
 ].map(f => ({ type: 'function', function: f }));
 
 const SYSTEM = `You are kanichan, the Offpeak assistant for London community organisers and show runners.
-Turn free-text requests into a VenueRequest. event_type: meetup (talks, hack nights), show (gig, comedy, theatre), popup (1-2 day pop-up, often cafes).
+Turn free-text requests into a VenueRequest. event_type: meetup (talks, hack nights), show (gig, comedy, theatre), popup (1-2 day pop-up, often cafes), screening (film screening, movie night, premiere: matches cinemas).
 Always use the ask_followup tool (never plain text) to ask questions. Required before create_venue_request: headcount AND (area OR date/weekday). If missing, call ask_followup ONCE with a single combined question; if still missing after that, assume area Shoreditch / weekday Wed.
 Default slot evening (afternoon for popups), budget 0 if "free"/"no budget", budget null-equivalent 0 if unstated. Today is ${new Date().toISOString().slice(0,10)}.
 Never contact venues; outreach is drafts awaiting approval. After results, you may mention the estimated total (price_est_mid x headcount, given as est_total_gbp) vs the budget, always saying it is an estimate, not a quote. Keep replies to 1-2 sentences; venue cards are shown separately.`;
@@ -104,7 +104,7 @@ async function execTool(name, a, state, exec, out) {
 function normalise(a) {
   let weekday = DAYS.includes(a.weekday) ? a.weekday : null; const date = /^\d{4}-\d{2}-\d{2}$/.test(a.date || '') ? a.date : null;
   if (date) weekday = DAYS[(new Date(date + 'T12:00:00Z').getUTCDay() + 6) % 7];
-  return { event_type: ['meetup','show','popup'].includes(a.event_type) ? a.event_type : 'meetup', date, weekday: weekday || 'Wed',
+  return { event_type: ['meetup','show','popup','screening'].includes(a.event_type) ? a.event_type : 'meetup', date, weekday: weekday || 'Wed',
     slot: a.slot || (a.event_type === 'popup' ? 'afternoon' : 'evening'), deal_type: DEALS.includes(a.deal_type) ? a.deal_type : null, headcount: Math.max(1, parseInt(a.headcount) || 30), budget: Math.max(0, Number(a.budget) || 0),
     must_haves: (a.must_haves || []).filter(m => MUST.includes(m)), area: ZONES[(a.area || '').toLowerCase().trim()] || a.area || null };
 }
@@ -112,7 +112,7 @@ function normalise(a) {
 // ---- no-key fallback: deterministic parser ----
 export function ruleParse(t) {
   const s = t.toLowerCase(); const p = {};
-  p.event_type = /\b(gig|comedy|stand-?up|show|concert|band|theatre|open mic|dj)\b/.test(s) ? 'show' : /\b(pop-?up|popup|market|stall|residency)\b/.test(s) ? 'popup' : 'meetup';
+  p.event_type = /\b(screening|screen|film|films|movie|movies|cinema|premiere)\b/.test(s) ? 'screening' : /\b(gig|comedy|stand-?up|show|concert|band|theatre|open mic|dj)\b/.test(s) ? 'show' : /\b(pop-?up|popup|market|stall|residency)\b/.test(s) ? 'popup' : 'meetup';
   const hc = s.match(/(\d{1,5})\s*(?:-|to)?\s*(?:\d{1,5}\s*)?(?:people|ppl|pax|guests|attendees|seated|standing|person|capacity|heads)/) || s.match(/(?:for|capacity|cap)\s*(?:of\s*)?~?(\d{1,5})\b/);
   if (hc) p.headcount = +hc[1];
   if (/\b(free|no budget|zero budget|£0|0 budget)\b/.test(s)) p.budget = 0;

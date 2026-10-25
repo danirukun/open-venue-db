@@ -55,7 +55,7 @@ function FeeBadge({ label }: { label?: string | null }) {
   return <Badge variant="outline" className="font-normal text-muted-foreground">{l}</Badge>
 }
 const ExBadge = ({ name }: { name: string }) => isEx(name) ? <Badge variant="outline" className="ml-1.5 align-middle border-orders text-orders text-[11px]">Example data</Badge> : null
-const KINDS = [["meetup","Meetup or talk"],["comedy","Comedy night"],["gig","Gig or show"],["popup","Pop-up"],["workshop","Workshop"]]
+const KINDS = [["meetup","Meetup or talk"],["comedy","Comedy night"],["gig","Gig or show"],["popup","Pop-up"],["screening","Film screening"],["workshop","Workshop"]]
 const RADII = [["500","Within 500 m"],["1000","Within 1 km"],["2000","Within 2 km"],["5000","Within 5 km"]]
 const DAYNAME: Record<string,string> = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday", Sat:"Saturday", Sun:"Sunday" }
 
@@ -279,7 +279,7 @@ export default function App() {
                     </div>
                     <div className="flex gap-4 text-sm">
                       <a href={v.source_url || "#"} target="_blank" rel="noreferrer" className="text-canal font-medium underline-offset-2 hover:underline rounded-sm">Open source page</a>
-                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
+                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
                     </div>
                   </CardContent>
                 </Card>

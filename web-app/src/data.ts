@@ -7,7 +7,7 @@ export const SLOTS = [
   { id: "evening", label: "Evening", hours: "17–21", from: 17, to: 21 },
   { id: "late", label: "Late", hours: "21–06", from: 21, to: 30 },
 ] as const
-export const TYPES: Record<string,string> = { pub:"#fbbf24", bar:"#fb7185", cafe:"#60a5fa", music:"#818cf8", community:"#2dd4bf", other:"#94a3b8" }
+export const TYPES: Record<string,string> = { pub:"#fbbf24", bar:"#fb7185", cafe:"#60a5fa", music:"#818cf8", community:"#2dd4bf", cinema:"#c084fc", other:"#94a3b8" }
 export type Feat = Record<string, any>
 export type Venue = { id:number|string; name:string; type:string; lat:number; lng:number; free?:Record<string,number>; basis?:string; events?:number; fee_label?:string|null; url?:string; f?:Feat|null; [k:string]:any }
 export const typeOf = (v:{type:string}) => TYPES[v.type] ? v.type : "other"
@@ -52,4 +52,4 @@ export function priceBreaks(vs: any[]): number[] {
 }
 export const priceClass = (m: number | null, br: number[]) => m == null ? -1 : br.filter(b => m >= b).length
 export const PRICE_RAMP = ["#C9DCC4", "#8FB08A", "#4E8A80", "#4A5A8F", "#7A4A7E"]
-export const TYPE_EMOJI: Record<string, string> = { pub: "🍺", bar: "🍸", cafe: "☕", music: "🎵", community: "🏛", other: "📍" }
+export const TYPE_EMOJI: Record<string, string> = { pub: "🍺", bar: "🍸", cafe: "☕", music: "🎵", community: "🏛", cinema: "🎬", other: "📍" }

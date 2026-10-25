@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 const REFINE = "https://open-venue-db-whatsapp.vercel.app/api/refine-draft"
-export type EnqCtx = { venue: string; address?: string; email?: string; cap?: string; fee?: string; kind: string; people: string; when: string; budget: string; musts: string[] }
+export type EnqCtx = { venue: string; address?: string; email?: string; cap?: string; fee?: string; kind: string; vtype?: string; people: string; when: string; budget: string; musts: string[] }
 
 export function draft(c: EnqCtx, name: string) {
   const subject = `Venue enquiry: ${c.kind.toLowerCase()} for ${c.people || "?"} people, ${c.when}`
@@ -12,6 +12,7 @@ export function draft(c: EnqCtx, name: string) {
     `Hello ${c.venue} team,`, "",
     `I organise community events in London and I'm looking for a space for a ${c.kind.toLowerCase()} for about ${c.people || "?"} people on ${c.when}.`,
     c.address ? `Would your space at ${c.address} be available then?` : "Would your space be available then?",
+    /screening|film/i.test(c.kind) || c.vtype === "cinema" ? (c.vtype === "cinema" ? "It would be a film screening, so we'd be looking to hire one of your screens for a private or community showing. We can supply the film (DCP or digital file) and sort the screening licence, or work with your team on it." : "It would be a film screening, so we'd need a screen or blank wall, a projector and sound. We can sort the screening licence.") : "",
     c.musts.length ? `Ideally we'd need: ${c.musts.join(", ").toLowerCase()}.` : "",
     +c.budget > 0 ? `Our budget for room hire is around £${c.budget}.` : "We have little or no budget for room hire, but our guests would buy drinks and food.",
     c.fee && !/unknown/i.test(c.fee) ? `I saw a note that "${c.fee}". Could you confirm the terms?` : "Could you let me know your hire fee or any minimum spend?",

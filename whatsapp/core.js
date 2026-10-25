@@ -12,7 +12,7 @@ export const DRY_RUN = DRY;
 const SB_URL = process.env.SUPABASE_URL || 'https://bwkxqyhycuwqpuieggbt.supabase.co';
 const SB_KEY = process.env.SUPABASE_KEY || 'sb_publishable_Uvss-chcbx2MEckOcsQwXg_QsSnbE62';
 const MAP_URL = 'https://open-venue-db.vercel.app';
-const TYPES = { meetup: null, show: ['pub','bar','event_venue','theatre','music_venue','arts_centre','nightclub'], popup: ['cafe','pub','bar'] };
+const TYPES = { meetup: null, show: ['pub','bar','music','event_venue','theatre','music_venue','arts_centre','nightclub'], popup: ['cafe','pub','bar'], screening: ['cinema','community','music'] };
 const log = (...a) => console.log(new Date().toISOString(), ...a);
 
 async function rpc(fn, args) {

@@ -12,7 +12,7 @@ if (!TOKEN) { console.error('DISCORD_BOT_TOKEN missing'); process.exit(1); }
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const SLOTS = ['morning','afternoon','evening','late'];
 const MUST = ['PA','projector','mics','bar','step-free','box office','wifi','stage','food'];
-const TYPES = { meetup: null, show: ['pub','bar','event_venue','theatre','music_venue','arts_centre','nightclub'], popup: ['cafe','pub','bar'] };
+const TYPES = { meetup: null, show: ['pub','bar','music','event_venue','theatre','music_venue','arts_centre','nightclub'], popup: ['cafe','pub','bar'], screening: ['cinema','community','music'] };
 
 async function rpc(fn, args) {
   const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, { method: 'POST',
@@ -64,7 +64,7 @@ function buttons(reqId, list) {
 const commands = [
   new SlashCommandBuilder().setName('venue-request').setDescription('Post a VenueRequest and get matched venues')
     .addStringOption(o => o.setName('event_type').setDescription('What kind of event').setRequired(true)
-      .addChoices({ name: 'Meetup / talk', value: 'meetup' }, { name: 'Show / gig / comedy', value: 'show' }, { name: 'Pop-up (1–2 days)', value: 'popup' }))
+      .addChoices({ name: 'Meetup / talk', value: 'meetup' }, { name: 'Show / gig / comedy', value: 'show' }, { name: 'Pop-up (1–2 days)', value: 'popup' }, { name: 'Film screening (cinemas)', value: 'screening' }))
     .addIntegerOption(o => o.setName('headcount').setDescription('Expected people').setRequired(true).setMinValue(1).setMaxValue(20000))
     .addNumberOption(o => o.setName('budget').setDescription('Max venue fee in £ (0 = free/bar-minimum only)').setRequired(true).setMinValue(0))
     .addStringOption(o => o.setName('area').setDescription('Postcode or area, e.g. EC2A or Shoreditch'))
