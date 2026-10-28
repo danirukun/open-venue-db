@@ -28,7 +28,9 @@ const CAP = "capacity_standing,capacity_seated,capacity_est_min_standing,capacit
 const PRICE = "price_est_low,price_est_mid,price_est_high,price_est_unit,price_confidence,price_n_comparables"
 
 async function loadVenues(): Promise<[Venue[], string]> {
-  const tries = [`${BASE},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP})`]
+  let extra = ""
+  try { const r = await fetch(`${SB}/rest/v1/venues?select=*&limit=1`, { headers: { apikey: KEY } }); const j = r.ok ? await r.json() : []; extra = ["price_source_url", "price_basis"].filter(c => j[0] && c in j[0]).map(c => "," + c).join("") } catch {}
+  const tries = [`${BASE}${extra},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP})`]
   for (const sel of tries) {
     try {
       const url = `${SB}/rest/v1/venues?select=${sel}&order=id`, PG = 1000
@@ -88,6 +90,8 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
         <p className="text-xs font-medium mb-1">Tower colour = est. spend per head</p>
         <div className="grid gap-0.5 text-[11px]" style={{ gridTemplateColumns: `repeat(${breaks.length + 1}, 1fr)` }}>{[...Array(breaks.length + 1)].map((_, i) => <div key={i}><div className="h-2.5 rounded-sm" style={{ background: PRICE_RAMP[i] }} /><span className="text-muted-foreground">{lab(i)}</span></div>)}</div>
         <p className="text-xs text-muted-foreground mt-1">Height = capacity (taller = bigger room). <span className="inline-block size-2.5 align-middle rounded-sm opacity-50 bg-[#A8A8A2]" /> Grey = price unknown. Hover a tower for how likely it is free.</p>
+        <p className="text-xs font-medium mt-2 mb-1">Shape = room type</p>
+        <ul className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground" data-testid="shape-legend">{([["cinema", "Wide hall + screen slab"], ["cafe", "Low cube + awning"], ["pub", "Gabled block"], ["bar", "Diamond + spire"], ["music", "Octagon drum"], ["community", "Stepped tiers"]] as const).map(([t, d]) => <li key={t}>{TYPE_EMOJI[t]} {d}</li>)}</ul>
       </div> : breaks.length > 0 && <div>
         <p className="text-xs font-medium mb-1">Dot size = est. spend per head</p>
         <div className="flex items-end gap-2 text-[11px] text-muted-foreground">{DOT_SIZES.slice(0, breaks.length + 1).map((d, i) => <div key={i} className="flex flex-col items-center gap-0.5"><span className="rounded-full border-2 border-ink bg-white" style={{ width: d * 0.7, height: d * 0.7 }} />{lab(i)}</div>)}</div>
@@ -342,7 +346,8 @@ export default function App() {
             <div className="mx-auto h-1.5 w-10 rounded-full bg-ink/25" />
             <p className="text-center text-sm font-semibold mt-2">{shortlist ? `Top ${shortlist.length} matches` : `${total.toLocaleString()} venues in this area`}</p>
           </div>
-          <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] space-y-3" id="list-scroll">{panel}{results_}</div>
+          {panel && <div className="shrink-0 max-h-[45%] overflow-y-auto px-4 pb-2">{panel}</div>}
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] space-y-3" id="list-scroll">{results_}</div>
         </div>
       </div>
     ) : (
@@ -351,8 +356,9 @@ export default function App() {
           <div className="px-4 pt-4 pb-3 space-y-3 border-b border-ink/10">
             <div className="flex items-baseline justify-between px-1"><h1 className="font-heading text-[22px] font-semibold tracking-[-0.02em]">Offpeak</h1><span className="text-xs text-muted-foreground">Quiet London rooms for community events</span></div>
             {toolbar}
+            {panel && <div className="max-h-[45vh] overflow-y-auto">{panel}</div>}
           </div>
-          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" id="list-scroll">{panel}{results_}</div>
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" id="list-scroll">{results_}</div>
         </aside>
         <main className="flex-1 relative">{mapEl}{floating}</main>
       </div>
@@ -380,11 +386,13 @@ export default function App() {
         </button>
         {open && <div className="pb-3 pl-12 space-y-2.5">
           <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label ?? r.fee_label} />{pe?.conf && <Badge variant="outline" className="font-normal">{pe.conf} confidence price</Badge>}</div>
+          {v.price_basis && <p className="text-[13px]" data-testid="price-basis"><span className="text-muted-foreground">Price basis: </span>{String(v.price_basis)}</p>}
           {v.address && <p className="text-[13px] text-muted-foreground">{v.address}</p>}
           <p className="text-xs text-muted-foreground">Free estimate for {DAYNAME[day]} {searchSlot}{v.basis ? `, based on ${v.basis}` : ""}. Not a confirmed slot.</p>
           <div className="flex gap-2">
             <Button size="sm" className="rounded-full bg-ink text-fog hover:bg-ink/85 h-9" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: v.address, email: v.email, cap: v.f ? capText(v) : undefined, fee: v.fee_label ?? r.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</Button>
             {(v.url || r.source_url) && <a href={v.url || r.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center h-9 px-3 rounded-full border border-ink/15 text-sm font-medium hover:bg-ink/5">Source page</a>}
+            {typeof v.price_source_url === "string" && /^https?:/.test(v.price_source_url) && <a href={v.price_source_url} target="_blank" rel="noreferrer" data-testid="price-source" className="inline-flex items-center h-9 px-3 rounded-full border border-ink/15 text-sm font-medium hover:bg-ink/5">Price source</a>}
           </div>
         </div>}
       </li>)

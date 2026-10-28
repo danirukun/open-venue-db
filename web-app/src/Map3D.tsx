@@ -2,17 +2,31 @@ import { useEffect, useRef } from "react"
 import maplibregl from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 import type { Venue } from "./data"
-import { capText, priceEst, priceMid, priceClass, PRICE_RAMP } from "./data"
+import { typeOf, capText, priceEst, priceMid, priceClass, PRICE_RAMP } from "./data"
 import { P } from "./palette"
 export const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 
 export type Fly = { lat: number; lng: number; t: number } | null
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
 const capNum = (v: Venue) => { const f = (Array.isArray(v.f) ? v.f[0] : v.f) || {}; return +(f.capacity_standing || f.capacity_seated || f.capacity_est_max_standing || f.capacity_est_max_seated || 0) }
-function square(lng: number, lat: number, r = 6) {
-  const dx = r / (111320 * Math.cos(lat * Math.PI / 180)), dy = r / 110540
-  return [[[lng - dx, lat - dy], [lng + dx, lat - dy], [lng + dx, lat + dy], [lng - dx, lat + dy], [lng - dx, lat - dy]]]
+// Per-type 3D entities: list of [halfWidthM, halfDepthM, baseFrac|abs, top, sides(0=rect)] parts. base/top: number<=1 = fraction of h, string "+n" = h+n metres
+type Part = [number, number, number | string, number | string, number?]
+export const SHAPES: Record<string, Part[]> = {
+  cinema: [[11, 6, 0, 1], [11, 0.8, 0, "+7"], [12, 2.5, 0.35, 0.42]],
+  cafe: [[4, 4, 0, 1], [5.5, 5.5, 1, "+1.2"]],
+  pub: [[6.5, 6.5, 0, 1], [6.5, 4, 1, "+2.5"], [6.5, 1.5, "+2.5", "+4.5"]],
+  bar: [[6, 6, 0, 1, 4], [2, 2, 1, "+3"]],
+  music: [[7, 7, 0, 1, 8], [4, 4, 1, "+3", 8]],
+  community: [[9, 9, 0, 0.5], [6.5, 6.5, 0.5, 0.8], [4, 4, 0.8, 1]],
+  other: [[5, 5, 0, 1]],
 }
+function poly(lng: number, lat: number, hx: number, hy: number, n = 0) {
+  const kx = 1 / (111320 * Math.cos(lat * Math.PI / 180)), ky = 1 / 110540
+  const pts: number[][] = n ? Array.from({ length: n + 1 }, (_, i) => { const a = (i % n) / n * 2 * Math.PI + (n === 8 ? Math.PI / 8 : 0); return [lng + hx * Math.cos(a) * kx, lat + hy * Math.sin(a) * ky] })
+    : [[lng - hx * kx, lat - hy * ky], [lng + hx * kx, lat - hy * ky], [lng + hx * kx, lat + hy * ky], [lng - hx * kx, lat + hy * ky], [lng - hx * kx, lat - hy * ky]]
+  return [pts]
+}
+const lvl = (x: number | string, h: number) => typeof x === "string" ? h + +x.slice(1) * (1 + h / 45) : x * h
 function ringGeo(r?: [number, number, number]): any {
   if (!r) return { type: "FeatureCollection", features: [] }
   const [lat, lng, m] = r, dl = m / 111320, dg = m / (111320 * Math.cos(lat * Math.PI / 180))
@@ -24,7 +38,8 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
-    const cols = { type: "FeatureCollection", features: pins.filter(v => v.lat != null).map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: String(v.id), sel: String(v.id) === sel ? 1 : 0, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
+    const cols = { type: "FeatureCollection", features: pins.filter(v => v.lat != null).flatMap(v => { const pe = priceEst(v), h = capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6
+      return (SHAPES[typeOf(v)] || SHAPES.other).map(([hx, hy, b, t, n]) => ({ type: "Feature", properties: { b: lvl(b, h), t: lvl(t, h), ty: typeOf(v), id: String(v.id), sel: String(v.id) === sel ? 1 : 0, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: poly(v.lng, v.lat, hx * (1 + h / 45), hy * (1 + h / 45), n) } })) }) }
     return { pts, cols } as any
   }
   useEffect(() => {
@@ -41,8 +56,8 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
       map.addLayer({ id: "heat", type: "heatmap", source: "pts", paint: { "heatmap-weight": ["get", "s"], "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 11, 12, 16, 40], "heatmap-opacity": 0.6,
         "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(0,0,0,0)", 0.15, P.busy, 0.5, P.mid, 1, P.free] } }, lbl)
       const ramp: any[] = ["interpolate", ["linear"], ["get", "s"]]; RAMP.forEach((c, i) => ramp.push(i / (RAMP.length - 1), c))
-      map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-opacity": 0.35, "fill-extrusion-color": "#A8A8A2" } })
-      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["case", ["==", ["get", "sel"], 1], "#262626", ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]]] as any } })
+      map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "t"], "fill-extrusion-base": ["get", "b"], "fill-extrusion-opacity": 0.35, "fill-extrusion-color": "#A8A8A2" } })
+      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "t"], "fill-extrusion-base": ["get", "b"], "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["case", ["==", ["get", "sel"], 1], "#262626", ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]]] as any } })
       map.addSource("ring", { type: "geojson", data: ringGeo(ringRef.current) })
       map.addLayer({ id: "ring-f", type: "fill", source: "ring", paint: { "fill-color": "#6B8F71", "fill-opacity": 0.06 } }, lbl)
       map.addLayer({ id: "ring-l", type: "line", source: "ring", paint: { "line-color": "#43614A", "line-width": 2, "line-dasharray": [3, 3] } }, lbl)
