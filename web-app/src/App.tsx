@@ -1,32 +1,29 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type L from "leaflet"
-import { MapPin, Search, Users, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Clock, Layers, X, LocateFixed, SlidersHorizontal, Info, ShieldAlert, Shield, ShieldCheck } from "lucide-react"
+import { Search, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Layers, X, LocateFixed, Info, ShieldAlert, Shield, ShieldCheck, ChevronDown, TrainFront, CalendarDays, Users, PoundSterling, Circle as CircleIco, Sparkles, RotateCcw, ArrowLeft, Map as MapIco } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
-import { Separator } from "@/components/ui/separator"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import MapView from "./MapView"
+import MapView, { type Item } from "./MapView"
 import Enquiry, { type EnqCtx } from "./Enquiry"
 import { lazy, Suspense } from "react"
 import type { Fly } from "./Map3D"
 const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 const Map3D = lazy(() => import("./Map3D"))
 import { P } from "./palette"
-import { priceBreaks, PRICE_RAMP, TYPE_EMOJI } from "./data"
+import { priceBreaks, PRICE_RAMP, TYPE_EMOJI, priceMid } from "./data"
 import { DOT_SIZES } from "./MapView"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
 
 const MUSTS = [[Speaker, "PA system"], [Monitor, "Projector"], [Mic2, "Mics"], [Accessibility, "Step-free"], [GlassWater, "Bar"]] as const
 const TODAY = DAYS[(new Date().getDay() + 6) % 7]
-const BASE = "id,name,type,address,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url"
+const BASE = "id,name,type,address,lat,lng,free:free_grid,basis,events:event_count,fee_label,url:source_url,transit_score,safety_score,nearest_station_name,nearest_station_m"
 const CAP = "capacity_standing,capacity_seated,capacity_est_min_standing,capacity_est_max_standing,capacity_est_min_seated,capacity_est_max_seated,capacity_confidence"
 const PRICE = "price_est_low,price_est_mid,price_est_high,price_est_unit,price_confidence,price_n_comparables"
 
@@ -99,11 +96,9 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
       <ul className="grid gap-1.5 text-xs">
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-ink ring-2 ring-white" />Room seen in Luma or Meetup listings</li>
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-white border-2 border-ink" />Café, pub or bar from OpenStreetMap</li>
-        <li className="flex items-center gap-2.5"><span className="size-3.5 border border-ink/60" />Area about 300 m wide. Hover to see prices.</li>
-        <li className="flex items-center gap-2.5"><span className="size-3.5 hatched border border-ink/30" />Area with no stated prices</li>
         {nEst > 0 && <li className="flex items-center gap-2.5"><span className="h-3.5 px-1 text-[10px] leading-3.5 rounded-sm bg-lamp/30 text-ink">Est.</span>Price estimated from {nEst} similar rooms nearby</li>}
       </ul>
-      <p className="text-xs text-muted-foreground">Zoom in to see each room. Select one for details.</p>
+      <p className="text-xs text-muted-foreground">Pins match the list. Select one for details.</p>
     </div>
   )
 }
@@ -115,7 +110,14 @@ function SafetyTag({ score }: { score: number }) {
   const b = safetyBucket(score)
   return <Tooltip><TooltipTrigger render={<span />} className="inline-flex items-center gap-1 font-medium align-middle" style={{ color: b.color }}><b.Icon className="size-3.5" />{b.label}</TooltipTrigger><TooltipContent className="max-w-60">{SAFETY_TIP}</TooltipContent></Tooltip>
 }
+const capNum = (v: Venue) => { const f = (Array.isArray(v.f) ? v.f[0] : v.f) || {}; return +(f.capacity_standing || f.capacity_seated || f.capacity_est_max_standing || f.capacity_est_max_seated || 0) }
+const distM = (a: [number, number], b: [number, number]) => { const k = Math.PI / 180, x = (b[1] - a[1]) * k * Math.cos((a[0] + b[0]) * k / 2), y = (b[0] - a[0]) * k; return 6371000 * Math.hypot(x, y) }
+type Bx = [[number, number], [number, number]]
+const PAGE = 50
+const useMobile = () => { const q = "(max-width: 767px)"; const [m, setM] = useState(() => matchMedia(q).matches); useEffect(() => { const mm = matchMedia(q), f = () => setM(mm.matches); mm.addEventListener("change", f); return () => mm.removeEventListener("change", f) }, []); return m }
+
 export default function App() {
+  const mobile = useMobile()
   const [data, setData] = useState<Venue[]>([]), [src, setSrc] = useState("")
   const [day, setDay] = useState<string>("Wed"), [slot, setSlot] = useState<string>("evening")
   const [custom, setCustom] = useState(false), [range, setRange] = useState<[number, number]>([17, 21])
@@ -125,13 +127,22 @@ export default function App() {
   const todayISO = (() => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}` })()
   const pickDate = (v: string) => { setDate(v); if (v) { const d = new Date(v + "T12:00:00"); setDay(["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]) } }
   const [musts, setMusts] = useState<string[]>([]), [results, setResults] = useState<any[] | null>(null), [status, setStatus] = useState("")
-  const [sortBy, setSortBy] = useState("match"), [minT, setMinT] = useState(0), [minS, setMinS] = useState(0)
+  const [sortBy, setSortBy] = useState("match"), [minT, setMinT] = useState(0), [minS, setMinS] = useState(0), [freeOnly, setFreeOnly] = useState(false)
   const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
   const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.4927, -0.2240])
   const c3dLive = useRef<[number, number]>([51.4927, -0.2240])
-  const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") !== "0" } catch { return true } })
+  const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") === "1" } catch { return false } })
   const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
+  const [bounds, setBounds] = useState<Bx | null>(null), [mc, setMc] = useState<[number, number]>([51.4927, -0.2240])
+  const [hot, setHot] = useState<string | null>(null), [sel, setSel] = useState<string | null>(null), selFromMap = useRef(false)
+  const [chip, setChip] = useState<string | null>(null), [limit, setLimit] = useState(PAGE), [fitKey, setFitKey] = useState(0)
+  const [anchor, setAnchor] = useState<[number, number] | null>(null), reAnchor = useRef(false)
+  useEffect(() => { if (fitKey) reAnchor.current = true }, [fitKey])
+  useEffect(() => { setAnchor(null) }, [sc])
+  const [snap, setSnap] = useState(1), [dragH, setDragH] = useState<number | null>(null)
+  const [vh, setVh] = useState(innerHeight); useEffect(() => { const f = () => setVh(innerHeight); addEventListener("resize", f); return () => removeEventListener("resize", f) }, [])
+  const SNAPS = [148, Math.round(vh * 0.5), vh - 132], sheetH = dragH ?? SNAPS[snap]
 
   const hrs: [number, number] = custom ? range : (() => { const s = SLOTS.find(s => s.id === slot)!; return [s.from, s.to] })()
   const searchSlot = custom ? dominantSlot(range) : slot
@@ -141,17 +152,40 @@ export default function App() {
   const shown = useMemo(() => data.filter(v => types.includes(typeOf(v))), [data, types])
   const breaks = useMemo(() => priceBreaks(data), [data])
   const nEst = useMemo(() => data.filter(priceEst).length, [data])
+  const [pins, setPins] = useState<any[] | null>(null)
+  const byId = useMemo(() => { const m = new Map<string, Venue>(); data.forEach(v => m.set(String(v.id), v)); return m }, [data])
 
+  /** Browse mode: the single source of truth for both list and map pins */
+  const browse = useMemo<Item[]>(() => {
+    const need = +hc || 0, bud = +budget || 0, R = +radius
+    const out: Item[] = []
+    for (const v of shown) {
+      if (bounds && (v.lat < bounds[0][0] || v.lat > bounds[1][0] || v.lng < bounds[0][1] || v.lng > bounds[1][1])) continue
+      const dist = distM(sc, [v.lat, v.lng]); if (dist > R) continue
+      const cap = capNum(v); if (need && cap && cap < need) continue
+      const pm = priceMid(v); if (bud && pm != null && pm > bud) continue
+      if (minT && (v.transit_score ?? 0) < minT) continue
+      if (minS && (v.safety_score ?? 0) < minS) continue
+      const fr = freeScore(v, day, hrs); if (freeOnly && fr < 0.6) continue
+      out.push({ v, free: fr, dist })
+    }
+    const key = sortBy === "transit" ? (i: Item) => -(i.v.transit_score ?? 0) : sortBy === "safety" ? (i: Item) => -(i.v.safety_score ?? 0) : sortBy === "near" ? (i: Item) => i.dist : (i: Item) => -(i.free * 2 + ((i.v.events || 0) > 0 ? 0.3 : 0)) + i.dist / 20000
+    return out.sort((a, b) => key(a) - key(b))
+  }, [shown, bounds, sc, radius, hc, budget, minT, minS, freeOnly, day, hrs[0], hrs[1], sortBy])
+  const shortlist = useMemo<Item[] | null>(() => pins && pins.map((r: any) => { const v = byId.get(String(r.id)) || r; return { v: { ...v, ...(v.lat ? {} : { lat: r.lat, lng: r.lng }) }, free: r.likely_free ?? freeScore(v, day, hrs), dist: r.distance_m ?? distM(sc, [v.lat, v.lng]), rpc: r } }).filter((i: Item) => i.v.lat != null), [pins, byId])
+  const list = shortlist ?? browse.slice(0, limit)
+  const total = shortlist ? shortlist.length : browse.length
+  useEffect(() => { setLimit(PAGE) }, [browse.length === 0, sc, types, hc, budget, radius, minT, minS, freeOnly, sortBy])
+
+  function recentre(la: number, ln: number) { setSc([la, ln]); if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false }) }
   function locate() {
-    if (!navigator.geolocation) { setLocMsg("Your browser can't share location. Move the map instead."); return }
+    if (!navigator.geolocation) { setLocMsg("Your browser can't share location."); return }
     setLocMsg("Finding you…")
     navigator.geolocation.getCurrentPosition(p => {
       const { latitude: la, longitude: ln } = p.coords
-      if (la < 51.28 || la > 51.70 || ln < -0.52 || ln > 0.34) { setLocMsg("You seem to be outside London, so we kept the current map area."); return }
-      setHere([la, ln]); setLocMsg("")
-      if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false })
-      search({ lat: la, lng: ln })
-    }, e => setLocMsg(e.code === 1 ? "Location permission was denied. Move the map to choose an area." : "Couldn't get your location. Move the map to choose an area."), { timeout: 8000, maximumAge: 60000 })
+      if (la < 51.28 || la > 51.70 || ln < -0.52 || ln > 0.34) { setLocMsg("You seem to be outside London, so we kept the current area."); return }
+      setHere([la, ln]); setLocMsg(""); setPins(null); recentre(la, ln)
+    }, e => setLocMsg(e.code === 1 ? "Location permission was denied." : "Couldn't get your location."), { timeout: 8000, maximumAge: 60000 })
   }
   const [crimeOn, setCrimeOn] = useState(false), [crime, setCrime] = useState<CrimeCell[] | null>(null)
   async function toggleCrime(v: boolean) {
@@ -176,184 +210,210 @@ export default function App() {
         const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=gb&viewbox=-0.52,51.70,0.34,51.28&bounded=1&q=${encodeURIComponent(q)}`)
         const j = r.ok ? await r.json() : []; if (j[0]) at = [+j[0].lat, +j[0].lon]
       }
-      if (!at) { setPlaceMsg(`Couldn't find "${q}" in London. Try a postcode or a station name.`); return }
-      const [la, ln] = at; setPlaceMsg("")
-      if (is3d) { c3dLive.current = [la, ln]; setFly({ lat: la, lng: ln, t: Date.now() }) } else map?.setView([la, ln], 15, { animate: false })
-      search({ lat: la, lng: ln })
-    } catch { setPlaceMsg("Place search is unavailable right now. Move the map instead.") }
+      if (!at) { setPlaceMsg(`Couldn't find "${q}" in London. Try a postcode or station.`); return }
+      setPlaceMsg(""); setPins(null); recentre(at[0], at[1])
+    } catch { setPlaceMsg("Place search is unavailable right now.") }
   }
-  const [pins, setPins] = useState<Venue[] | null>(null)
-  async function search(at?: { lat: number; lng: number }, fromButton = false) {
-    const c = at ?? (is3d ? { lat: c3dLive.current[0], lng: c3dLive.current[1] } : map?.getCenter()) ?? { lat: 51.4927, lng: -0.2240 }
-    setStatus("Searching…"); setSc([c.lat, c.lng])
+  async function search() {
+    const c = { lat: mc[0], lng: mc[1] }
+    setStatus("Searching…"); setSc([c.lat, c.lng]); setChip(null)
     try {
       const base = { lat: c.lat, lng: c.lng, radius_m: +radius, min_capacity: +hc || null, max_budget: budget === "" ? null : +budget, weekday: day, slot: searchSlot, types, lim: 15 }
-      const extra: Record<string, any> = {}; if (sortBy !== "match") extra.sort = sortBy; if (minT) extra.min_transit_score = minT; if (minS) extra.min_safety_score = minS
+      const extra: Record<string, any> = {}; if (sortBy === "transit" || sortBy === "safety") extra.sort = sortBy; if (minT) extra.min_transit_score = minT; if (minS) extra.min_safety_score = minS
       const call = (b: any) => fetch(`${SB}/rest/v1/rpc/search_venues`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: JSON.stringify(b) })
       let r = await call({ ...base, ...extra })
       if (!r.ok && Object.keys(extra).length) r = await call(base)
       if (!r.ok) throw r.status
-      const rs = await r.json(); setResults(rs); if (fromButton) setPins(Array.isArray(rs) && rs.length ? rs.map((x: any) => data.find(d => d.id == x.id) || x) : null); setStatus(`Showing ${rs.length} matches`)
+      const rs = await r.json(); setResults(rs); setPins(rs); setFitKey(k => k + 1); setStatus(rs.length ? "" : "No rooms match those filters here. Try a wider radius or fewer people."); if (mobile) setSnap(1)
     } catch { setResults([]); setStatus("Search unavailable (Supabase unreachable).") }
   }
   useEffect(() => { loadVenues().then(([d, s]) => { setData(d.filter(v => v.lat)); setSrc(s) }) }, [])
-  useEffect(() => { if (data.length && results === null) search() }, [data, map])
 
   const slotObj = SLOTS.find(s => s.id === slot)!
-  const dayLabel = date ? new Date(date + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }).replace(",", "") : DAYNAME[day]
+  const dayLabel = date ? new Date(date + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }).replace(",", "") : DAYNAME[day]
+  const whenText = `${date ? dayLabel : day} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`
   const allTypes = Object.keys(TYPES)
-  const nActive = (types.length !== allTypes.length ? 1 : 0) + musts.length + (budget !== "0" && budget !== "" ? 1 : 0) + (radius !== "2000" ? 1 : 0) + (hc !== "45" ? 1 : 0) + (minT ? 1 : 0) + (minS ? 1 : 0)
-  const resetFilters = () => { setTypes(allTypes); setMusts([]); setBudget("0"); setRadius("2000"); setHc("45"); setMinT(0); setMinS(0); setSortBy("match") }
-  const mini = "text-xs text-muted-foreground underline-offset-2 hover:underline hover:text-ink rounded-sm"
+  const resetFilters = () => { setTypes(allTypes); setMusts([]); setBudget("0"); setRadius("2000"); setHc("45"); setMinT(0); setMinS(0); setSortBy("match"); setFreeOnly(false) }
+  const nActive = (types.length !== allTypes.length ? 1 : 0) + (budget !== "0" && budget !== "" ? 1 : 0) + (radius !== "2000" ? 1 : 0) + (hc !== "45" ? 1 : 0) + (minT ? 1 : 0) + (minS ? 1 : 0) + (freeOnly ? 1 : 0)
+  const moved = distM(anchor ?? sc, mc) > Math.max(300, +radius * 0.35)
+  const selectItem = (id: string, fromMap: boolean) => { selFromMap.current = fromMap; setSel(s => (!fromMap && s === id) ? null : id); if (fromMap && mobile && snap === 0) setSnap(1) }
+  useEffect(() => { if (sel && selFromMap.current) document.getElementById(`r-${sel}`)?.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }) }, [sel])
+  useEffect(() => { if (sel && !list.some(i => String(i.v.id) === sel)) setSel(null) }, [list])
+  const focusVenue = (v: Venue) => { if (is3d) setFly({ lat: v.lat, lng: v.lng, t: Date.now() }); else if (map) { if (map.getZoom() >= 14) map.panTo([v.lat, v.lng]); else map.setView([v.lat, v.lng], 15) } }
+  const typeLabel = types.length === allTypes.length ? "All types" : types.length === 1 ? types[0][0].toUpperCase() + types[0].slice(1) : `${types.length} types`
+  const bucket = minS === 67 ? "Lower crime" : minS === 34 ? "Average+" : "Safety"
+  const CHIPS: [string, string, any, boolean][] = [
+    ["when", whenText, CalendarDays, true], ["types", typeLabel, null, types.length !== allTypes.length], ["people", `${hc || "Any"} people`, Users, hc !== "45"],
+    ["budget", +budget ? `Up to £${budget}` : "Any price", PoundSterling, !!+budget], ["radius", RADII.find(r => r[0] === radius)?.[1].replace("Within ", "") || "", CircleIco, radius !== "2000"],
+    ["transit", minT ? `Transit ${minT}+` : "Transit", TrainFront, !!minT], ["safety", bucket, ShieldCheck, !!minS],
+  ]
+  const chipCls = (on: boolean, open: boolean) => `shrink-0 h-9 md:h-8 inline-flex items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap transition-colors ${open ? "bg-ink text-fog border-ink" : on ? "bg-lamp/15 border-lamp text-lampink" : "bg-white border-ink/15 text-ink hover:bg-ink/5"}`
+
+  const toolbar = (
+    <div className="space-y-2.5">
+      <div className="flex items-center gap-2 rounded-full bg-white border border-ink/15 shadow-sm pl-4 pr-1.5 h-12 focus-within:ring-2 focus-within:ring-ink/30" onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); centreOn() } }}>
+        <Search className="size-4 shrink-0 text-muted-foreground" />
+        <input aria-label="Search a place or postcode" placeholder="Search a place or postcode" className="flex-1 min-w-0 bg-transparent outline-none text-[15px] placeholder:text-muted-foreground" value={place} onChange={e => setPlace(e.target.value)} />
+        {place && <button aria-label="Clear" onClick={() => { setPlace(""); setPlaceMsg("") }} className="size-9 grid place-items-center rounded-full hover:bg-ink/10"><X className="size-4" /></button>}
+        <button aria-label="Use my location" title="Use my location" onClick={locate} className="size-9 grid place-items-center rounded-full hover:bg-ink/10"><LocateFixed className="size-4" /></button>
+      </div>
+      {(placeMsg || locMsg) && <p role="status" className="text-xs text-muted-foreground px-2 bg-white/90 rounded">{placeMsg || locMsg}</p>}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap pb-0.5" role="toolbar" aria-label="Filters">
+        {CHIPS.map(([k, l, Ic, on]) => <button key={k} aria-expanded={chip === k} onClick={() => { setChip(chip === k ? null : k); if (mobile && chip !== k && snap === 0) setSnap(1) }} className={chipCls(on, chip === k)}>{Ic && <Ic className="size-3.5" />}{l}<ChevronDown className={`size-3.5 transition-transform ${chip === k ? "rotate-180" : ""}`} /></button>)}
+        <button aria-pressed={freeOnly} onClick={() => setFreeOnly(!freeOnly)} className={chipCls(freeOnly, false)}><Sparkles className="size-3.5" />Likely free</button>
+        <button aria-pressed={crimeOn} onClick={() => toggleCrime(!crimeOn)} className={chipCls(crimeOn, false)}><MapIco className="size-3.5" />Crime map</button>
+        {nActive > 0 && <button onClick={resetFilters} className="shrink-0 h-9 md:h-8 inline-flex items-center gap-1 px-2 text-sm text-muted-foreground hover:text-ink"><RotateCcw className="size-3.5" />Reset</button>}
+      </div>
+    </div>
+  )
+  const panel = chip && (
+    <div className="rounded-2xl border border-ink/10 bg-white p-4 shadow-sm space-y-3" role="region" aria-label="Filter options">
+      <div className="flex items-center justify-between"><h3 className="font-semibold text-sm">{({ when: "When", types: "Kinds of room", people: "People", budget: "Room fee budget", radius: "Distance from search centre", transit: "Public transport", safety: "Street safety" } as any)[chip]}</h3>
+        <button onClick={() => setChip(null)} className="text-sm font-semibold text-canal hover:underline px-2 h-8">Done</button></div>
+      {chip === "when" && WhenPanel()}
+      {chip === "types" && <>
+        <div className="flex gap-3"><button type="button" className={mini} onClick={() => setTypes(allTypes)}>Select all</button><button type="button" className={mini} onClick={() => setTypes([])}>Clear</button></div>
+        <ToggleGroup multiple aria-label="Kinds of room" variant="outline" size="sm" spacing={2} value={types} onValueChange={v => setTypes(v as string[])} className="flex-wrap justify-start">
+          {Object.entries(TYPES).map(([t]) => <ToggleGroupItem key={t} value={t} className="h-9 rounded-full bg-white text-muted-foreground hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.cnt]:text-fog/70">
+            {TYPE_EMOJI[t]} {t[0].toUpperCase() + t.slice(1)} <span className="cnt text-muted-foreground">{counts[t] || 0}</span></ToggleGroupItem>)}
+        </ToggleGroup></>}
+      {chip === "people" && <div className="flex flex-wrap gap-2">{["10", "25", "45", "80", "150", "300"].map(n => <button key={n} onClick={() => setHc(n)} className={chipCls(false, hc === n)}>{n}+</button>)}<Input type="number" inputMode="numeric" aria-label="People" className="w-24 h-9" value={hc} onChange={e => setHc(e.target.value)} /><p className="text-xs text-muted-foreground w-full">Hides rooms known to be smaller. Rooms with unknown capacity stay in.</p></div>}
+      {chip === "budget" && <div className="flex flex-wrap gap-2">{[["0", "Any"], ["10", "£10"], ["20", "£20"], ["40", "£40"], ["100", "£100"]].map(([n, l]) => <button key={n} onClick={() => setBudget(n)} className={chipCls(false, budget === n)}>{l}</button>)}<p className="text-xs text-muted-foreground w-full">Uses estimated spend per head. Rooms with no price stay in.</p></div>}
+      {chip === "radius" && <div className="flex flex-wrap gap-2">{RADII.map(([r, l]) => <button key={r} onClick={() => setRadius(r)} className={chipCls(false, radius === r)}>{l.replace("Within ", "")}</button>)}<p className="text-xs text-muted-foreground w-full">The dashed circle on the map. Move the map and tap "Search this area" to move it.</p></div>}
+      {chip === "transit" && <div className="flex flex-wrap gap-2">{[[0, "Any"], [50, "50+ (good)"], [70, "70+ (great)"]].map(([n, l]) => <button key={n} onClick={() => setMinT(+n)} className={chipCls(false, minT === n)}>{l}</button>)}<button onClick={() => setSortBy(sortBy === "transit" ? "match" : "transit")} className={chipCls(false, sortBy === "transit")}>Sort by transit</button><p className="text-xs text-muted-foreground w-full">Score from walking distance to the nearest TfL station.</p></div>}
+      {chip === "safety" && <div className="flex flex-wrap gap-2">{[[0, "Any", Shield], [34, "Average or better", Shield], [67, "Lower crime only", ShieldCheck]].map(([n, l, I]: any) => <button key={n} onClick={() => setMinS(n)} className={chipCls(false, minS === n)}><I className="size-3.5" />{l}</button>)}<button onClick={() => setSortBy(sortBy === "safety" ? "match" : "safety")} className={chipCls(false, sortBy === "safety")}>Sort by safety</button><p className="text-xs text-muted-foreground w-full">{SAFETY_TIP}.</p></div>}
+    </div>
+  )
+  const results_ = (
+    <section aria-label="Results" aria-live="polite" className="space-y-2">
+      {shortlist ? <div className="flex items-center gap-2 rounded-xl bg-ink text-fog px-3 py-2 text-sm"><span className="flex-1">Top {shortlist.length} for {whenText}, {hc} people</span><button onClick={() => { setPins(null); setResults(null) }} className="inline-flex items-center gap-1 rounded-full bg-fog/15 hover:bg-fog/25 px-3 h-8 font-semibold"><ArrowLeft className="size-3.5" />Show all venues</button></div>
+        : <div className="flex items-center justify-between gap-2"><p className="text-sm" data-testid="count"><b className="tabular-nums">{total.toLocaleString()}</b> {total === 1 ? "venue" : "venues"} in this area{total > list.length ? <span className="text-muted-foreground">, showing {list.length}</span> : ""}</p>
+          <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-full border border-ink/15 bg-white px-2 text-sm"><option value="match">Best match</option><option value="near">Nearest</option><option value="transit">Near transit</option><option value="safety">Lower crime</option></select></div>}
+      {status && <p className="text-sm text-muted-foreground">{status}</p>}
+      {!shortlist && <Button size="lg" className="w-full h-11 rounded-full bg-ink hover:bg-ink/85 text-fog" disabled={status === "Searching…"} onClick={search}><Sparkles className="size-4" />{status === "Searching…" ? "Searching…" : `Find best rooms for ${whenText}`}</Button>}
+      {data.length > 0 && list.length === 0 && !status && <p className="text-sm text-muted-foreground py-6 text-center">No venues here with these filters. Zoom out, widen the distance or reset filters.</p>}
+      {!data.length && <p className="text-sm text-muted-foreground py-6 text-center">Loading 12,000+ London venues…</p>}
+      <ol className="divide-y divide-ink/10">{list.map((it, i) => Row(it, i))}</ol>
+      {!shortlist && total > list.length && <Button variant="outline" className="w-full rounded-full" onClick={() => setLimit(l => l + PAGE)}>Show {Math.min(PAGE, total - list.length)} more</Button>}
+      <p className="text-[11px] leading-relaxed text-muted-foreground pt-3">Estimates only. Café, pub and bar scores come from opening hours, event rooms from Luma and Meetup listings. "~" capacities come from building size{nEst ? ", \"Est.\" prices from similar rooms nearby" : ""}. Map © OpenStreetMap contributors. Data: {src}.</p>
+    </section>
+  )
+  const mapEl = is3d
+    ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c, b) => { c3dLive.current = c; setMc(c); setBounds(b); if (reAnchor.current) { reAnchor.current = false; setAnchor(c) } }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} items={list} numbered={!!shortlist} fitKey={fitKey} onSelect={id => selectItem(id, true)} sel={sel} /></Suspense>
+    : <MapView venues={shown} items={list} numbered={!!shortlist} fitKey={fitKey} padB={mobile ? sheetH : 0} score={score} onMap={setMap} onBounds={(b, c) => { setBounds([[b.getSouth(), b.getWest()], [b.getNorth(), b.getEast()]]); setMc([c.lat, c.lng]); if (reAnchor.current) { reAnchor.current = false; setAnchor([c.lat, c.lng]) } }} crime={crimeOn ? crime : null} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} hot={hot} sel={sel} onHover={setHot} onSelect={id => selectItem(id, true)} />
+  const ctrlBottom = mobile ? sheetH + 12 : 24
+  const floating = <>
+    {moved && <button onClick={() => { if (shortlist) search(); else setSc(mc) }} className="absolute left-1/2 -translate-x-1/2 z-[1000] h-10 px-4 rounded-full bg-white border border-ink/15 shadow-lg text-sm font-semibold inline-flex items-center gap-2 hover:bg-fog" style={{ top: mobile ? "calc(env(safe-area-inset-top) + 124px)" : 16 }}><Search className="size-4" />Search this area</button>}
+    <div className="absolute right-3 md:right-4 z-[1000] flex flex-col items-end gap-2" style={{ bottom: mobile ? ctrlBottom : 96 }}>
+      {showKey && <div id="map-key" className="w-72 max-w-[calc(100vw-1.5rem)] max-h-[45vh] overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
+        <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
+          <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-8 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10"><X className="size-4" /></button></div>
+        <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} is3d={is3d} breaks={breaks} /></div>}
+      <div className="flex gap-2">
+        <div role="group" aria-label="Map view" className="inline-flex rounded-full border border-ink/15 bg-white shadow-md p-0.5">
+          {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-10 md:h-9 px-3.5 rounded-full text-sm font-semibold ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
+        </div>
+        <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key" aria-label={showKey ? "Hide map key" : "Show map key"} title="Map key" className={`size-11 md:size-10 grid place-items-center rounded-full border shadow-md ${showKey ? "bg-ink text-fog border-ink" : "bg-white border-ink/15 hover:bg-fog"}`}><Layers className="size-4" /></button>
+      </div>
+    </div>
+    {crimeOn && <div className="absolute z-[1000] left-3 md:left-4 rounded-full bg-white/95 border border-ink/10 shadow px-3 py-1.5 text-xs flex gap-3" style={{ bottom: mobile ? ctrlBottom + 56 : 24 }}>{[80, 50, 10].map(x => { const b = safetyBucket(x); return <span key={x} className="inline-flex items-center gap-1"><b.Icon className="size-3.5" style={{ color: b.color }} />{b.label}</span> })}{is3d && <span className="text-muted-foreground">2D only</span>}{crime === null && <span>Loading…</span>}</div>}
+  </>
+
+  // ---- bottom sheet drag (mobile) ----
+  const drag = useRef<{ y: number; h: number; moved: boolean } | null>(null)
+  const onDown = (e: React.PointerEvent) => { drag.current = { y: e.clientY, h: sheetH, moved: false }; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId) }
+  const onMove = (e: React.PointerEvent) => { const d = drag.current; if (!d) return; const dy = d.y - e.clientY; if (Math.abs(dy) > 4) d.moved = true; if (d.moved) setDragH(Math.max(SNAPS[0] - 40, Math.min(SNAPS[2], d.h + dy))) }
+  const onUp = () => { const d = drag.current; drag.current = null; if (!d) return
+    if (!d.moved) { setSnap(s => s === 2 ? 0 : s + 1); setDragH(null); return }
+    const h = dragH ?? d.h, v = h - d.h; let best = 0; SNAPS.forEach((s, i) => { if (Math.abs(s - h) < Math.abs(SNAPS[best] - h)) best = i })
+    if (Math.abs(v) > 60 && best === snap) best = Math.max(0, Math.min(2, snap + (v > 0 ? 1 : -1)))
+    setSnap(best); setDragH(null) }
+
   return (
     <TooltipProvider>
     {enq && <Enquiry ctx={enq} onClose={() => setEnq(null)} />}
-    <div className="flex flex-col md:flex-row md:h-full w-full text-ink bg-fog">
-      <aside className="order-2 md:order-1 md:w-[400px] md:h-full bg-fog md:border-r border-ink/10 flex flex-col z-40">
-        <header className="hidden md:block px-6 pt-6 pb-4">
-          <h1 className="font-heading text-[31px] leading-none font-semibold tracking-[-0.02em]">Offpeak</h1>
-          <p className="mt-2 text-sm text-muted-foreground max-w-[34ch]">Quiet London rooms for meetups, comedy and gigs. Open data, kept up to date by organisers.</p>
-        </header>
-        <div className="flex-1 md:overflow-y-auto px-5 md:px-6 pb-6 space-y-7">
-          <section aria-labelledby="ask" className="space-y-4 pt-5 md:pt-2" onKeyDown={e => { if (e.key === "Enter" && (e.target as HTMLElement).tagName === "INPUT") { e.preventDefault(); search() } }}>
-            <h2 id="ask" className="font-heading text-xl font-semibold">What are you running?</h2>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5 col-span-2"><Label>Event type</Label>
-                <Select items={KINDS.map(([value,label]) => ({ value, label }))} value={kind} onValueChange={v => setKind(String(v))}><SelectTrigger className="w-full bg-white"><SelectValue /></SelectTrigger>
-                  <SelectContent>{KINDS.map(([v,l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent></Select></div>
-              <div className="space-y-1.5"><Label htmlFor="hc">People</Label><div className="relative"><Users className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" /><Input id="hc" type="number" inputMode="numeric" className="pl-8 bg-white" value={hc} onChange={e => setHc(e.target.value)} /></div></div>
-              <div className="space-y-1.5"><Label htmlFor="bud">Room fee budget</Label><div className="relative"><span className="absolute left-3 top-1.5 text-muted-foreground text-sm">£</span><Input id="bud" type="number" inputMode="numeric" className="pl-7 bg-white" value={budget} onChange={e => setBudget(e.target.value)} /></div></div>
-              <div className="space-y-1.5 col-span-2"><Label>Distance from the map centre</Label>
-                <Select items={RADII.map(([value,label]) => ({ value, label }))} value={radius} onValueChange={v => setRadius(String(v))}><SelectTrigger className="w-full bg-white"><SelectValue /></SelectTrigger>
-                  <SelectContent>{RADII.map(([r,l]) => <SelectItem key={r} value={r}>{l}</SelectItem>)}</SelectContent></Select></div>
-              <div className="col-span-2"><Button type="button" variant="outline" className="w-full bg-white" onClick={locate}><LocateFixed className="size-4" />Use my location</Button>
-                {locMsg && <p role="status" className="text-xs text-muted-foreground mt-1.5">{locMsg}</p>}</div>
-              <div className="col-span-2 space-y-1.5"><Label htmlFor="place">Centre on a place or postcode</Label>
-                <div className="flex gap-2" onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); centreOn() } }}><Input id="place" placeholder="e.g. W6 9YD or Angel" className="bg-white" value={place} onChange={e => setPlace(e.target.value)} /><Button type="button" variant="outline" className="bg-white" onClick={centreOn}><MapPin className="size-4" />Go</Button></div>
-                {placeMsg && <p role="status" className="text-xs text-muted-foreground">{placeMsg}</p>}</div>
-            </div>
-            <fieldset className="space-y-1.5">
-              <legend className="text-sm font-medium flex items-center gap-1 w-full">Must have
-                <Tooltip><TooltipTrigger aria-label="Why must-haves don't filter yet" className="text-muted-foreground rounded-sm"><Info className="size-3.5" /></TooltipTrigger><TooltipContent className="max-w-60">We don't have equipment data for most rooms yet. Your choices are saved with the request but don't narrow the results.</TooltipContent></Tooltip>
-                <span className="ml-auto flex gap-3 font-normal"><button type="button" className={mini} onClick={() => setMusts(MUSTS.map(m => m[1] as string))}>Select all</button><button type="button" className={mini} onClick={() => setMusts([])}>Clear</button></span>
-              </legend>
-              <ToggleGroup multiple variant="outline" size="sm" spacing={2} value={musts} onValueChange={v => setMusts(v as string[])} className="flex-wrap justify-start">
-                {MUSTS.map(([Icon, l]) => <ToggleGroupItem key={l} value={l} className="bg-white hover:bg-ink/5 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink"><Icon className="size-3.5" />{l}</ToggleGroupItem>)}
-              </ToggleGroup>
-            </fieldset>
-            <Button size="lg" className="w-full bg-ink hover:bg-ink/85 active:bg-ink/75 text-fog" disabled={status === "Searching…"} onClick={() => search(undefined, true)}><Search className="size-4" />{status === "Searching…" ? "Searching…" : `Find rooms for ${dayLabel} ${custom ? `${fmtH(range[0])}–${fmtH(range[1])}` : slotObj.label.toLowerCase()}`}</Button>
-            {nActive > 0 && <div className="flex justify-between items-center text-xs text-muted-foreground"><span>{nActive} filter{nActive > 1 ? "s" : ""} changed</span><button type="button" className={mini} onClick={resetFilters}>Reset filters</button></div>}
-          </section>
-
-          <section aria-labelledby="res" aria-live="polite" className="space-y-2">
-            <div className="flex justify-between items-baseline"><h2 id="res" className="font-heading text-xl font-semibold">Best matches</h2><span className="text-xs text-muted-foreground">{status.replace("Showing ", "").replace(" matches", " rooms")}</span></div>
-            {results?.some(r => "transit_score" in r || "safety_score" in r) && <div className="flex flex-wrap gap-2 text-sm">
-              <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value="match">Best match</option><option value="transit">Near transit</option>{results?.some(r => r.safety_score != null) && <option value="safety">Lower crime first</option>}</select>
-              <select aria-label="Minimum transit score" value={minT} onChange={e => setMinT(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any transit</option><option value={50}>Transit 50+</option><option value={70}>Transit 70+</option></select>
-              {results?.some(r => r.safety_score != null) && <select aria-label="Crime level" title={SAFETY_TIP} value={minS} onChange={e => setMinS(+e.target.value)} className="h-8 rounded-md border border-input bg-white px-2"><option value={0}>Any crime level</option><option value={34}>Average or better</option><option value={67}>Lower crime only</option></select>}
-              <Button size="sm" variant="outline" onClick={() => search()}>Apply</Button>
-            </div>}
-            {results === null && <p className="text-sm text-muted-foreground">Ranked by fit for your headcount, likely fee against your budget, and how likely the room is free.</p>}
-            {results?.length === 0 && status.startsWith("Showing") && <p className="text-sm text-muted-foreground">No rooms match. Try a wider radius, lower the headcount or move the map, then search again.</p>}
-            <ol className="divide-y divide-ink/10 border-y border-ink/10">
-            {results?.map((v, ri) => {
-              const p = Math.round(100 * v.likely_free), d = data.find(x => x.id == v.id) || ({} as Venue), pe = priceEst(d.id ? d : v)
-              const barC = p >= 70 ? P.free : p >= 40 ? P.accent : P.busy
-              const dist = (v.distance_m / 1000).toFixed(1)
-              return (
-                <li key={v.id}>
-                <Card size="sm" className={`rounded-none ring-0 shadow-none bg-transparent gap-2 py-3 pl-3 relative ${isEx(v.name) ? "bg-orders/5" : ""}`}>
-                  <span aria-hidden className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-ink/10"><span className="absolute bottom-0 left-0 w-1 rounded-full" style={{ height: `${Math.max(p, 6)}%`, background: barC }} /></span>
-                  <CardHeader className="px-2">
-                    <div className="flex justify-between items-start gap-3">
-                      <CardTitle className="font-heading text-[17px] leading-snug">{pins && <span className="inline-grid place-items-center size-5 mr-1.5 rounded-full bg-ink text-fog text-[11px] font-semibold align-[2px] tabular-nums">{ri + 1}</span>}<button className="text-left hover:underline underline-offset-2 rounded-sm" onClick={() => { if (!d.lat) return; if (is3d) setFly({ lat: d.lat, lng: d.lng, t: Date.now() }); else map?.setView([d.lat, d.lng], 17) }}>{v.name}</button><ExBadge name={v.name} /></CardTitle>
-                      <HoverCard><HoverCardTrigger render={<button className="rounded-sm" />}><span className="text-sm font-semibold whitespace-nowrap" style={{ color: barC === P.accent ? P.accentInk : barC }}>{p}% likely free</span></HoverCardTrigger>
-                        <HoverCardContent className="text-xs w-64">Our estimate for {DAYNAME[day]} {searchSlot}. {d.basis ? `Based on ${d.basis}.` : ""} It is not a confirmed booking slot.</HoverCardContent></HoverCard>
-                    </div>
-                    <CardDescription className="text-[13px]">{v.type[0].toUpperCase() + v.type.slice(1)}, {dist} km away. {d.f ? capText(d)[0].toUpperCase() + capText(d).slice(1) : v.capacity ? `Holds ${v.capacity}` : "Capacity unknown"}.{(v.nearest_station_name || v.safety_score != null) && <span className="block mt-0.5">{v.nearest_station_name ? `${v.nearest_station_m != null ? `${Math.max(1, Math.round(v.nearest_station_m / 80))} min walk to ` : "Near "}${v.nearest_station_name}` : ""}{v.nearest_station_name && v.safety_score != null ? ", " : ""}{v.safety_score != null ? <SafetyTag score={v.safety_score} /> : ""}</span>}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="px-2 space-y-2.5">
-                    <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label} />
-                      {!pe && v.price_label && v.price_label !== "price unknown" && <Badge variant="outline" className="bg-lamp/20 border-lamp text-ink">{v.price_label}</Badge>}
-                      {pe && <Tooltip><TooltipTrigger render={<span tabIndex={0} className="rounded-sm" />}><Badge variant="outline" className="bg-lamp/20 border-lamp text-ink">Est. £{Math.round(pe.low)}–£{Math.round(pe.high)}{pe.unit === "gbp_per_head" ? " a head" : ""}</Badge></TooltipTrigger><TooltipContent>Estimated from {pe.n ?? "nearby"} similar rooms{pe.conf ? `, ${pe.conf} confidence` : ""}</TooltipContent></Tooltip>}
-                    </div>
-                    <div className="flex gap-4 text-sm">
-                      <a href={v.source_url || "#"} target="_blank" rel="noreferrer" className="text-canal font-medium underline-offset-2 hover:underline rounded-sm">Open source page</a>
-                      <button className="text-canal font-medium underline-offset-2 hover:underline rounded-sm" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: d.address || v.address, email: d.email || v.email, cap: d.f ? capText(d) : undefined, fee: v.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</button>
-                    </div>
-                  </CardContent>
-                </Card>
-                </li>)
-            })}
-            </ol>
-          </section>
-        </div>
-        <footer className="px-6 py-4 border-t border-ink/10"><p className="text-xs leading-relaxed text-muted-foreground max-w-[60ch]">These are estimates. Café, pub and bar scores come from opening hours, event rooms from a small set of Luma and Meetup listings. "~" capacities come from building size{nEst ? ", and \"Est.\" prices from similar rooms nearby" : ""}. Rooms marked example data are made up for the demo. Map © OpenStreetMap contributors. Data from {src}.</p></footer>
-      </aside>
-
-      <main className="order-1 md:order-2 flex-1 relative flex flex-col">
-        <header className="md:hidden px-5 pt-5 pb-3"><h1 className="font-heading text-2xl font-semibold tracking-[-0.02em]">Offpeak</h1><p className="text-sm text-muted-foreground">Quiet London rooms for meetups, comedy and gigs.</p></header>
-        <div className="relative h-[52vh] md:h-full md:flex-1">
-          {is3d ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c: [number, number]) => { c3dLive.current = c }} breaks={breaks} here={here} pins={pins} ring={[sc[0], sc[1], +radius]} /></Suspense>
-            : <MapView venues={shown} all={data} score={score} slotLabel={slotLabel} onMap={setMap} crime={crimeOn ? crime : null} pins={pins} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} />}
-          {pins && <div className="absolute top-4 left-1/2 -translate-x-1/2 md:top-auto md:bottom-6 z-[1000] flex items-center gap-2 rounded-full border border-ink/20 bg-white shadow-md pl-3 pr-1 py-1 text-sm"><span className="tabular-nums">Showing {pins.length} match{pins.length === 1 ? "" : "es"}</span><button onClick={() => setPins(null)} className="rounded-full px-2.5 py-1 font-semibold hover:bg-ink/10">Show all venues</button></div>}
-          <button onClick={locate} aria-label="Use my location" title="Use my location" className="absolute top-16 right-4 md:top-auto md:bottom-6 md:left-[7.5rem] md:right-auto z-[1000] size-9 grid place-items-center rounded-lg border border-ink/20 bg-white shadow-md hover:bg-fog"><LocateFixed className="size-4" /></button>
-          <div role="group" aria-label="Map view" className="absolute top-4 right-4 md:top-auto md:bottom-6 md:right-auto md:left-4 z-[1000] inline-flex rounded-lg border border-ink/20 bg-white shadow-md p-0.5">
-            {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-8 px-3 rounded-md text-sm font-semibold transition-colors ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
+    {mobile ? (
+      <div className="fixed inset-0 text-ink bg-fog overflow-hidden">
+        <div className="absolute inset-0">{mapEl}</div>
+        <div className="absolute inset-x-0 top-0 z-[1100] px-3 pt-[calc(env(safe-area-inset-top)+10px)] pb-2 bg-gradient-to-b from-fog/90 via-fog/60 to-transparent">{toolbar}</div>
+        {floating}
+        <div data-testid="sheet" data-snap={snap} className="absolute inset-x-0 bottom-0 z-[1200] bg-fog rounded-t-3xl shadow-[0_-6px_24px_#0002] flex flex-col" style={{ height: sheetH, transition: dragH == null ? "height .25s ease" : "none" }}>
+          <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} role="button" tabIndex={0} aria-label="Drag or tap to resize the results panel" onKeyDown={e => { if (e.key === "Enter" || e.key === " ") setSnap(s => s === 2 ? 0 : s + 1) }} data-testid="sheet-handle" className="touch-none cursor-grab pt-2.5 pb-2 px-4 select-none">
+            <div className="mx-auto h-1.5 w-10 rounded-full bg-ink/25" />
+            <p className="text-center text-sm font-semibold mt-2">{shortlist ? `Top ${shortlist.length} matches` : `${total.toLocaleString()} venues in this area`}</p>
           </div>
-          <section aria-label="When" className="md:absolute md:top-4 md:left-4 md:right-4 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 z-[1000] hidden md:block">
-            {WhenPanel()}
-          </section>
-          <div className="absolute bottom-4 left-4 md:bottom-6 md:left-auto md:right-14 z-[1000] flex flex-col items-start md:items-end gap-2 max-w-[calc(100%-2rem)]">
-            {showKey && <div id="map-key" className="w-72 max-w-full max-h-[40vh] md:max-h-none overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
-              <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
-                <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-7 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10 hover:text-ink active:bg-ink/15"><X className="size-4" /></button></div>
-              <Legend busy={busy} slotLabel={slotLabel} nEst={nEst} is3d={is3d} breaks={breaks} /></div>}
-            <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key"
-              className={`h-9 px-3 inline-flex items-center gap-2 rounded-lg border text-sm font-medium shadow-md transition-colors ${showKey ? "bg-ink text-fog border-ink hover:bg-ink/90" : "bg-white text-ink border-ink/20 hover:bg-fog"}`}>
-              <Layers className="size-4" />{showKey ? "Hide map key" : "Show map key"}</button>
-          </div>
+          <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] space-y-3" id="list-scroll">{panel}{results_}</div>
         </div>
-        <section aria-label="When" className="md:hidden px-4 py-3 bg-white border-b border-ink/10">{WhenPanel()}</section>
-      </main>
-    </div>
+      </div>
+    ) : (
+      <div className="flex h-full w-full text-ink bg-fog">
+        <aside className="w-[420px] shrink-0 h-full border-r border-ink/10 flex flex-col z-40 bg-fog">
+          <div className="px-4 pt-4 pb-3 space-y-3 border-b border-ink/10">
+            <div className="flex items-baseline justify-between px-1"><h1 className="font-heading text-[22px] font-semibold tracking-[-0.02em]">Offpeak</h1><span className="text-xs text-muted-foreground">Quiet London rooms for community events</span></div>
+            {toolbar}
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" id="list-scroll">{panel}{results_}</div>
+        </aside>
+        <main className="flex-1 relative">{mapEl}{floating}</main>
+      </div>
+    )}
     </TooltipProvider>
   )
 
+  function Row(it: Item, i: number) {
+    const v = it.v, r = it.rpc || {}, id = String(v.id), p = Math.round(100 * (busy ? 1 - it.free : it.free)), pe = priceEst(v), open = sel === id
+    const barC = p >= 70 ? P.free : p >= 40 ? P.accentInk : P.busy
+    const t = typeOf(v), st = v.nearest_station_name ?? r.nearest_station_name, stm = v.nearest_station_m ?? r.nearest_station_m, saf = v.safety_score ?? r.safety_score
+    return (
+      <li key={id} id={`r-${id}`} data-testid="result" data-id={id} onMouseEnter={() => setHot(id)} onMouseLeave={() => setHot(null)} className={`relative -mx-2 px-2 rounded-xl transition-colors ${open ? "bg-white ring-1 ring-ink/15 shadow-sm my-1" : hot === id ? "bg-ink/[.05]" : ""}`}>
+        <button className="w-full text-left py-3 flex gap-3 items-start" aria-expanded={open} onClick={() => { selectItem(id, false); focusVenue(v) }}>
+          <span className={`shrink-0 size-9 grid place-items-center rounded-full text-base ${shortlist ? "bg-ink text-fog text-sm font-semibold" : "bg-white border border-ink/15"}`}>{shortlist ? i + 1 : TYPE_EMOJI[t]}</span>
+          <span className="flex-1 min-w-0">
+            <span className="flex justify-between gap-2"><span className="font-semibold text-[15px] leading-snug truncate">{v.name}<ExBadge name={v.name} /></span><span className="text-sm font-semibold whitespace-nowrap tabular-nums" style={{ color: barC }}>{p}% {busy ? "busy" : "free"}</span></span>
+            <span className="block text-[13px] text-muted-foreground truncate">{t[0].toUpperCase() + t.slice(1)} · {(it.dist / 1000).toFixed(1)} km · {v.f ? capText(v).replace(/ \(.*\)$/, "") : r.capacity ? `holds ${r.capacity}` : "capacity unknown"}</span>
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] mt-0.5">
+              {pe && <span className="text-ink">Est. £{Math.round(pe.low)}–£{Math.round(pe.high)}{pe.unit === "gbp_per_head" ? "/head" : ""}</span>}
+              {st && <span className="inline-flex items-center gap-1 text-muted-foreground"><TrainFront className="size-3.5" />{stm != null ? `${Math.max(1, Math.round(stm / 80))} min` : ""} {st}</span>}
+              {saf != null && <SafetyTag score={saf} />}
+            </span>
+          </span>
+        </button>
+        {open && <div className="pb-3 pl-12 space-y-2.5">
+          <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label ?? r.fee_label} />{pe?.conf && <Badge variant="outline" className="font-normal">{pe.conf} confidence price</Badge>}</div>
+          {v.address && <p className="text-[13px] text-muted-foreground">{v.address}</p>}
+          <p className="text-xs text-muted-foreground">Free estimate for {DAYNAME[day]} {searchSlot}{v.basis ? `, based on ${v.basis}` : ""}. Not a confirmed slot.</p>
+          <div className="flex gap-2">
+            <Button size="sm" className="rounded-full bg-ink text-fog hover:bg-ink/85 h-9" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: v.address, email: v.email, cap: v.f ? capText(v) : undefined, fee: v.fee_label ?? r.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</Button>
+            {(v.url || r.source_url) && <a href={v.url || r.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center h-9 px-3 rounded-full border border-ink/15 text-sm font-medium hover:bg-ink/5">Source page</a>}
+          </div>
+        </div>}
+      </li>)
+  }
+
   function WhenPanel() {
     return (
-      <div className="md:bg-white md:rounded-[14px] md:border md:border-ink/10 md:shadow-lg md:p-4 space-y-3 md:w-[620px] max-w-full">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <ToggleGroup aria-label="Day of the week" value={[day]} onValueChange={v => { if (v[0]) { setDay(v[0] as string); setDate("") } }} className="gap-0.5">
-            {DAYS.map(d => <ToggleGroupItem key={d} value={d} aria-label={DAYNAME[d] + (d === TODAY ? ", today" : "")} className="px-2.5 h-8 font-medium text-sm text-muted-foreground hover:bg-ink/10 hover:text-ink data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:font-semibold">
-              {d}{d === TODAY && <span aria-hidden className="ml-0.5 size-1.5 rounded-full bg-lamp inline-block align-top" />}</ToggleGroupItem>)}
-          </ToggleGroup>
-          <input type="date" aria-label="Specific date" min={todayISO} value={date} onChange={e => pickDate(e.target.value)} className="h-8 rounded-md border border-ink/15 bg-white px-2 text-sm text-ink" />
-          <div className="flex items-center gap-4 text-sm">
-            <label className="flex items-center gap-2 cursor-pointer"><Switch checked={custom} onCheckedChange={setCustom} />Pick hours</label>
-            <label className="flex items-center gap-2 cursor-pointer"><Switch checked={crimeOn} onCheckedChange={toggleCrime} />Show crime levels</label>
-            <label className="flex items-center gap-2 cursor-pointer"><Switch checked={busy} onCheckedChange={setBusy} className="data-[checked]:bg-orders" />Show busy</label>
-          </div>
+      <div className="space-y-3">
+        <div className="flex gap-1 overflow-x-auto no-scrollbar">
+          {DAYS.map(d => <button key={d} aria-pressed={day === d} aria-label={DAYNAME[d] + (d === TODAY ? ", today" : "")} onClick={() => { setDay(d); setDate("") }} className={`shrink-0 h-9 min-w-11 px-2 rounded-full text-sm font-medium ${day === d ? "bg-ink text-fog" : "hover:bg-ink/10 text-muted-foreground"}`}>{d}{d === TODAY && <span aria-hidden className="ml-0.5 size-1.5 rounded-full bg-lamp inline-block align-top" />}</button>)}
         </div>
-        {crimeOn && <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">{[80, 50, 10].map(x => { const b = safetyBucket(x); return <span key={x} className="inline-flex items-center gap-1"><span className="size-2.5 rounded-sm" style={{ background: b.color, opacity: 0.6 }} />{b.label}</span> })}<span>~1 km squares{is3d ? " (2D view only)" : ""}. police.uk Aug 2026, OGL v3.0</span>{crime === null && <span>Loading…</span>}</p>}
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <label className="flex items-center gap-2">Date <input type="date" aria-label="Specific date" min={todayISO} value={date} onChange={e => pickDate(e.target.value)} className="h-9 rounded-md border border-ink/15 bg-white px-2 text-sm" /></label>
+          <label className="flex items-center gap-2 cursor-pointer"><Switch checked={custom} onCheckedChange={setCustom} />Pick hours</label>
+          <label className="flex items-center gap-2 cursor-pointer"><Switch checked={busy} onCheckedChange={setBusy} className="data-[checked]:bg-orders" />Show busy</label>
+        </div>
         <TimeBand hrs={hrs} />
         {!custom ? (
-          <ToggleGroup aria-label="Time of day" value={[slot]} onValueChange={v => v[0] && setSlot(v[0] as string)} className="w-full gap-1">
-            {SLOTS.map(s => <ToggleGroupItem key={s.id} value={s.id} style={{ flexGrow: s.to - s.from, flexBasis: 0 }} className="h-auto py-1.5 px-2 flex-col items-start gap-0 rounded-md text-left border border-transparent hover:bg-ink/5 hover:border-ink/15 data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.sub]:text-fog/75">
-              <span className="text-sm font-semibold">{s.label}</span><span className="sub text-xs text-muted-foreground">{s.hours.replace("–", " to ")}</span></ToggleGroupItem>)}
-          </ToggleGroup>
+          <div className="grid grid-cols-4 gap-1">{SLOTS.map(s => <button key={s.id} aria-pressed={slot === s.id} onClick={() => setSlot(s.id)} className={`py-1.5 px-2 rounded-lg text-left border ${slot === s.id ? "bg-ink text-fog border-ink" : "border-ink/10 hover:bg-ink/5"}`}><span className="block text-sm font-semibold">{s.label}</span><span className={`block text-xs ${slot === s.id ? "text-fog/75" : "text-muted-foreground"}`}>{s.hours.replace("–", "–")}</span></button>)}</div>
         ) : (
-          <div className="space-y-1">
-            <Slider aria-label="Hours" min={6} max={30} step={1} value={range} onValueChange={v => setRange(v as [number, number])} />
-            <p className="text-sm font-semibold">{fmtH(range[0])} to {fmtH(range[1])}</p>
-          </div>
+          <div className="space-y-1"><Slider aria-label="Hours" min={6} max={30} step={1} value={range} onValueChange={v => setRange(v as [number, number])} /><p className="text-sm font-semibold">{fmtH(range[0])} to {fmtH(range[1])}</p></div>
         )}
-        <div className="flex gap-3"><button type="button" className={mini} onClick={() => setTypes(allTypes)}>Select all</button><button type="button" className={mini} onClick={() => setTypes([])}>Clear</button></div>
-        <ToggleGroup multiple aria-label="Kinds of room" variant="outline" size="sm" spacing={2} value={types} onValueChange={v => setTypes(v as string[])} className="flex-wrap justify-start">
-          {Object.entries(TYPES).map(([t, c]) => <ToggleGroupItem key={t} value={t} className="rounded-full bg-white text-muted-foreground border-dashed hover:bg-ink/5 hover:text-ink data-[pressed]:border-solid data-[pressed]:bg-ink data-[pressed]:text-fog data-[pressed]:border-ink [&[data-pressed]_.cnt]:text-fog/70">
-            <span className="size-2 rounded-full" style={{ background: c }} />{t[0].toUpperCase() + t.slice(1)} <span className="cnt text-muted-foreground">{counts[t] || 0}</span></ToggleGroupItem>)}
-        </ToggleGroup>
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <label className="space-y-1"><span className="text-xs text-muted-foreground">Event type</span><select value={kind} onChange={e => setKind(e.target.value)} className="w-full h-9 rounded-md border border-ink/15 bg-white px-2">{KINDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label>
+          <div className="space-y-1"><span className="text-xs text-muted-foreground flex items-center gap-1">Must have <Tooltip><TooltipTrigger aria-label="Why must-haves don't filter yet" className="rounded-sm"><Info className="size-3" /></TooltipTrigger><TooltipContent className="max-w-60">Saved into your enquiry. We don't have equipment data for most rooms yet, so these don't filter.</TooltipContent></Tooltip></span>
+            <div className="flex flex-wrap gap-1">{MUSTS.map(([Icon, l]) => <button key={l} title={l} aria-label={l} aria-pressed={musts.includes(l)} onClick={() => setMusts(m => m.includes(l) ? m.filter(x => x !== l) : [...m, l])} className={`size-9 grid place-items-center rounded-md border ${musts.includes(l) ? "bg-ink text-fog border-ink" : "border-ink/15 bg-white"}`}><Icon className="size-4" /></button>)}</div></div>
+        </div>
       </div>
     )
   }
 }
+const mini = "text-xs text-muted-foreground underline-offset-2 hover:underline hover:text-ink rounded-sm"

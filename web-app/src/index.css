@@ -137,6 +137,9 @@ body { font-feature-settings: "tnum" 1, "ss01" 0; letter-spacing: -0.005em; }
 :focus-visible { outline: 2px solid var(--p-ink); outline-offset: 2px; }
 .band-lit { transition: left .25s ease, width .25s ease; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
-@media (max-width: 767px) { html, body { overflow: auto; } #root { height: auto; min-height: 100%; } }
+.no-scrollbar { scrollbar-width: none; } .no-scrollbar::-webkit-scrollbar { display: none; }
+.venue-pin { transition: transform .15s ease; }
+.venue-pin.hot { z-index: 2000 !important; }
+@media (max-width: 767px) { .leaflet-control-zoom { display: none; } }
 /* quiet the basemap so the heat carries the colour */
 .leaflet-tile-pane { filter: grayscale(.85) contrast(.92) brightness(1.04); }

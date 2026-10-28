@@ -19,17 +19,18 @@ function ringGeo(r?: [number, number, number]): any {
   const ring = Array.from({ length: 65 }, (_, i) => { const a = (i / 64) * 2 * Math.PI; return [lng + dg * Math.cos(a), lat + dl * Math.sin(a)] })
   return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } }
 }
-export default function Map3D({ venues, score, center, fly, onCenter, breaks, here, ring, pins }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number]) => void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; pins?: Venue[] | null }) {
+export default function Map3D({ venues, score, center, fly, onCenter, breaks, here, ring, items, numbered, fitKey, onSelect, sel }: { venues: Venue[]; score: (v: Venue) => number; center: [number, number]; fly: Fly; onCenter?: (c: [number, number], b: [[number, number], [number, number]]) => void; breaks: number[]; here?: [number, number] | null; ring?: [number, number, number]; items: { v: Venue }[]; numbered: boolean; fitKey: number; onSelect?: (id: string) => void; sel?: string | null }) {
+  const pins = items.map(i => i.v), selRef = useRef(onSelect); selRef.current = onSelect
   const el = useRef<HTMLDivElement>(null), m = useRef<maplibregl.Map | null>(null), ready = useRef(false)
   const data = () => {
     const pts = { type: "FeatureCollection", features: venues.map(v => ({ type: "Feature", properties: { s: score(v) }, geometry: { type: "Point", coordinates: [v.lng, v.lat] } })) }
-    const cols = { type: "FeatureCollection", features: (pins ?? venues).filter(v => v.lat != null).map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: v.id, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
+    const cols = { type: "FeatureCollection", features: pins.filter(v => v.lat != null).map(v => { const pe = priceEst(v); return { type: "Feature", properties: { id: String(v.id), sel: String(v.id) === sel ? 1 : 0, s: score(v), k: priceClass(priceMid(v), breaks) >= 0 ? 1 : 0, pc: Math.max(priceClass(priceMid(v), breaks), 0), h: capNum(v) > 0 ? Math.min(8 + 9 * Math.sqrt(capNum(v)), 220) : 6, name: v.name, cap: capText(v), price: /inimum spend/.test(v.fee_label || "") ? "Minimum spend applies" : pe ? `Est. £${Math.round(pe.low)}–£${Math.round(pe.high)}${pe.unit === "gbp_per_head" ? " a head" : ""}` : (v.fee_label || "Fee unknown"), lat: v.lat, lng: v.lng }, geometry: { type: "Polygon", coordinates: square(v.lng, v.lat) } } }) }
     return { pts, cols } as any
   }
   useEffect(() => {
     const map = new maplibregl.Map({ container: el.current!, style: "https://tiles.openfreemap.org/styles/positron", center: [center[1], center[0]], zoom: 13.5, pitch: 0, bearing: 0, attributionControl: { compact: true } })
     m.current = map
-    map.on("moveend", () => { const c = map.getCenter(); onCenter?.([c.lat, c.lng]) })
+    map.on("moveend", () => { const c = map.getCenter(), b = map.getBounds(); onCenter?.([c.lat, c.lng], [[b.getSouth(), b.getWest()], [b.getNorth(), b.getEast()]]) })
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "bottom-right")
     map.on("load", () => {
       const d = data()
@@ -41,7 +42,7 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
         "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(0,0,0,0)", 0.15, P.busy, 0.5, P.mid, 1, P.free] } }, lbl)
       const ramp: any[] = ["interpolate", ["linear"], ["get", "s"]]; RAMP.forEach((c, i) => ramp.push(i / (RAMP.length - 1), c))
       map.addLayer({ id: "cols0", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 0], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-opacity": 0.35, "fill-extrusion-color": "#A8A8A2" } })
-      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]] as any } })
+      map.addLayer({ id: "cols", type: "fill-extrusion", source: "cols", filter: ["==", ["get", "k"], 1], paint: { "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95, "fill-extrusion-vertical-gradient": true, "fill-extrusion-color": ["case", ["==", ["get", "sel"], 1], "#262626", ["match", ["get", "pc"], 0, PRICE_RAMP[0], 1, PRICE_RAMP[1], 2, PRICE_RAMP[2], 3, PRICE_RAMP[3], PRICE_RAMP[4]]] as any } })
       map.addSource("ring", { type: "geojson", data: ringGeo(ringRef.current) })
       map.addLayer({ id: "ring-f", type: "fill", source: "ring", paint: { "fill-color": "#6B8F71", "fill-opacity": 0.06 } }, lbl)
       map.addLayer({ id: "ring-l", type: "line", source: "ring", paint: { "line-color": "#43614A", "line-width": 2, "line-dasharray": [3, 3] } }, lbl)
@@ -51,18 +52,20 @@ export default function Map3D({ venues, score, center, fly, onCenter, breaks, he
       map.on("mousemove", id, e => { const p = e.features?.[0]?.properties as any; if (!p) return; map.getCanvas().style.cursor = "pointer"
         pop.setLngLat(e.lngLat).setHTML(`<div style="font:13px/1.35 inherit"><b>${String(p.name).replace(/</g, "&lt;")}</b><br>${p.cap}<br>${p.price}<br>Likely free: ${Math.round(p.s * 100)}%</div>`).addTo(map) })
       map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; pop.remove() })
-      map.on("click", id, e => { const p = e.features?.[0]?.properties as any; if (p) go(map, p.lng, p.lat, 17) }) }
+      map.on("click", id, e => { const p = e.features?.[0]?.properties as any; if (p) { selRef.current?.(String(p.id)); go(map, p.lng, p.lat, 17) } }) }
       go(map, center[1], center[0], 14.5)
     })
     return () => { map.remove(); m.current = null; ready.current = false }
   }, [])
-  useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score, pins])
-  useEffect(() => { const map = m.current; if (!map || !pins?.length) return; const ps = pins.filter(v => v.lat != null); if (!ps.length) return
-    const mks = ps.map((v, i) => { const e = document.createElement("div"); e.textContent = String(i + 1); e.style.cssText = "width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 12px/1 sans-serif;background:#262626;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px #0005"
+  useEffect(() => { const map = m.current; if (!map || !ready.current) return; const d = data(); (map.getSource("pts") as any)?.setData(d.pts); (map.getSource("cols") as any)?.setData(d.cols) }, [venues, score, items, sel])
+  useEffect(() => { const map = m.current; if (!map || !numbered || !pins.length) return; const ps = pins.filter(v => v.lat != null)
+    const mks = ps.map((v, i) => { const e = document.createElement("div"); e.className = "venue-pin3d"; e.textContent = String(i + 1); e.style.cssText = "width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:600 12px/1 sans-serif;background:#262626;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px #0005;cursor:pointer"
+      e.onclick = () => selRef.current?.(String(v.id))
       return new maplibregl.Marker({ element: e }).setLngLat([v.lng, v.lat]).addTo(map) })
-    const b = new maplibregl.LngLatBounds(); ps.forEach(v => b.extend([v.lng, v.lat]))
-    const fit = () => map.fitBounds(b, { padding: 80, maxZoom: 16, pitch: 55, bearing: -17, duration: reduced() ? 0 : 1500 }); if (ready.current) fit(); else map.once("load", fit)
-    return () => mks.forEach(k => k.remove()) }, [pins])
+    return () => mks.forEach(k => k.remove()) }, [items, numbered])
+  useEffect(() => { const map = m.current; if (!map || !fitKey || !pins.length) return
+    const b = new maplibregl.LngLatBounds(); pins.forEach(v => b.extend([v.lng, v.lat]))
+    const fit = () => map.fitBounds(b, { padding: 80, maxZoom: 16, pitch: 55, bearing: -17, duration: reduced() ? 0 : 1500 }); if (ready.current) fit(); else map.once("load", fit) }, [fitKey])
   const ringRef = useRef(ring); ringRef.current = ring
   useEffect(() => { if (m.current && ready.current) (m.current.getSource("ring") as any)?.setData(ringGeo(ring)) }, [ring?.[0], ring?.[1], ring?.[2]])
   useEffect(() => { if (fly && m.current) go(m.current, fly.lng, fly.lat, 17) }, [fly])
