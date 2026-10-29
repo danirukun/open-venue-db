@@ -11,14 +11,15 @@ import { Slider } from "@/components/ui/slider"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import MapView, { type Item } from "./MapView"
+import MapView, { type Item, type HeatCfg } from "./MapView"
+import { LAYERS, type LayerId, VenueCard, SearchBox } from "./MapExtras"
 import Enquiry, { type EnqCtx } from "./Enquiry"
 import { lazy, Suspense } from "react"
 import type { Fly } from "./Map3D"
 const RAMP = ["#8E4F7E", "#B48AA6", "#DCCFB4", "#A9C2A3", "#6B8F71", "#2F5D4C"]
 const Map3D = lazy(() => import("./Map3D"))
 import { P } from "./palette"
-import { priceBreaks, PRICE_RAMP, TYPE_EMOJI, priceMid } from "./data"
+import { priceBreaks, PRICE_RAMP, TYPE_EMOJI, priceMid, priceClass } from "./data"
 import { DOT_SIZES } from "./MapView"
 import { SB, KEY, DAYS, SLOTS, TYPES, type Venue, typeOf, isEx, capText, priceEst, freeScore, dominantSlot, fmtH } from "./data"
 
@@ -82,11 +83,6 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
   return (
     <div className="space-y-3 text-sm">
       
-      <div>
-        <div className="h-3 w-full rounded-sm" style={{ background: busy ? `linear-gradient(90deg,${P.free},${P.mid},${P.busy})` : `linear-gradient(90deg,${P.busy},${P.mid},${P.free})` }} />
-        <div className="flex justify-between text-xs mt-1 text-muted-foreground"><span>{busy ? "Usually free" : "Usually busy"}</span><span className="font-semibold text-ink">{busy ? "Very likely busy" : "Very likely free"}</span></div>
-        <p className="text-xs text-muted-foreground mt-1">Colour shows {busy ? "how busy" : "how likely free"} rooms are on {slotLabel}.</p>
-      </div>
       {is3d ? <div>
         <p className="text-xs font-medium mb-1">Tower colour = est. spend per head</p>
         <div className="grid gap-0.5 text-[11px]" style={{ gridTemplateColumns: `repeat(${breaks.length + 1}, 1fr)` }}>{[...Array(breaks.length + 1)].map((_, i) => <div key={i}><div className="h-2.5 rounded-sm" style={{ background: PRICE_RAMP[i] }} /><span className="text-muted-foreground">{lab(i)}</span></div>)}</div>
@@ -103,7 +99,7 @@ function Legend({ busy, slotLabel, nEst, is3d, breaks }: { busy: boolean; slotLa
         <li className="flex items-center gap-2.5"><span className="size-3.5 rounded-full bg-white border-2 border-ink" />Café, pub or bar from OpenStreetMap</li>
         {nEst > 0 && <li className="flex items-center gap-2.5"><span className="h-3.5 px-1 text-[10px] leading-3.5 rounded-sm bg-lamp/30 text-ink">Est.</span>Price estimated from {nEst} similar rooms nearby</li>}
       </ul>
-      <p className="text-xs text-muted-foreground">Pins match the list. Select one for details.</p>
+      <p className="text-xs text-muted-foreground">Pins match the list. Numbers are groups of nearby venues: zoom in or tap to split them. Heatmaps live under Layers.</p>
     </div>
   )
 }
@@ -136,10 +132,10 @@ export default function App() {
   const [here, setHere] = useState<[number, number] | null>(null), [locMsg, setLocMsg] = useState("")
   const [map, setMap] = useState<L.Map | null>(null), [enq, setEnq] = useState<EnqCtx | null>(null)
   const [is3d, setIs3d] = useState(() => new URLSearchParams(location.search).get("view") === "3d"), [fly, setFly] = useState<Fly>(null), [c3d, setC3d] = useState<[number, number]>([51.4927, -0.2240])
-  const c3dLive = useRef<[number, number]>([51.4927, -0.2240])
+  const c3dLive = useRef<[number, number]>([51.4927, -0.2240]), m3 = useRef<any>(null), [m3ok, setM3ok] = useState(0)
   const [showKey, setShowKey] = useState(() => { try { return localStorage.getItem("ovdb-key") === "1" } catch { return false } })
   const toggleKey = (v: boolean) => { setShowKey(v); try { localStorage.setItem("ovdb-key", v ? "1" : "0") } catch {} }
-  const [bounds, setBounds] = useState<Bx | null>(null), [mc, setMc] = useState<[number, number]>([51.4927, -0.2240])
+  const [, setBounds] = useState<Bx | null>(null), [mc, setMc] = useState<[number, number]>([51.4927, -0.2240])
   const [hot, setHot] = useState<string | null>(null), [sel, setSel] = useState<string | null>(null), selFromMap = useRef(false)
   const [chip, setChip] = useState<string | null>(null), [limit, setLimit] = useState(PAGE), [fitKey, setFitKey] = useState(0)
   const [anchor, setAnchor] = useState<[number, number] | null>(null), reAnchor = useRef(false)
@@ -165,7 +161,6 @@ export default function App() {
     const need = +hc || 0, bud = +budget || 0, R = +radius
     const out: Item[] = []
     for (const v of shown) {
-      if (bounds && (v.lat < bounds[0][0] || v.lat > bounds[1][0] || v.lng < bounds[0][1] || v.lng > bounds[1][1])) continue
       const dist = distM(sc, [v.lat, v.lng]); if (dist > R) continue
       const cap = capNum(v); if (need && cap && cap < need) continue
       const pm = priceMid(v); if (bud && pm != null && pm > bud) continue
@@ -176,9 +171,13 @@ export default function App() {
     }
     const key = sortBy === "transit" ? (i: Item) => -(i.v.transit_score ?? 0) : sortBy === "safety" ? (i: Item) => -(i.v.safety_score ?? 0) : sortBy === "near" ? (i: Item) => i.dist : (i: Item) => -(i.free * 2 + ((i.v.events || 0) > 0 ? 0.3 : 0)) + i.dist / 20000
     return out.sort((a, b) => key(a) - key(b))
-  }, [shown, bounds, sc, radius, hc, budget, minT, minS, freeOnly, day, hrs[0], hrs[1], sortBy])
+  }, [shown, sc, radius, hc, budget, minT, minS, freeOnly, day, hrs[0], hrs[1], sortBy])
   const shortlist = useMemo<Item[] | null>(() => pins && pins.map((r: any) => { const v = byId.get(String(r.id)) || r; return { v: { ...v, ...(v.lat ? {} : { lat: r.lat, lng: r.lng }) }, free: r.likely_free ?? freeScore(v, day, hrs), dist: r.distance_m ?? distM(sc, [v.lat, v.lng]), rpc: r } }).filter((i: Item) => i.v.lat != null), [pins, byId])
   const list = shortlist ?? browse.slice(0, limit)
+  /** Map pins: the whole filtered set, independent of zoom/viewport, so nothing pops in or out */
+  const mapItems0 = shortlist ?? browse
+  const selV = sel ? byId.get(sel) ?? shortlist?.find(i => String(i.v.id) === sel)?.v : undefined
+  const mapItems = useMemo(() => !selV || mapItems0.some(i => String(i.v.id) === sel) ? mapItems0 : [...mapItems0, { v: selV, free: freeScore(selV, day, hrs), dist: distM(sc, [selV.lat, selV.lng]) }], [mapItems0, selV])
   const total = shortlist ? shortlist.length : browse.length
   useEffect(() => { setLimit(PAGE) }, [browse.length === 0, sc, types, hc, budget, radius, minT, minS, freeOnly, sortBy])
 
@@ -192,9 +191,14 @@ export default function App() {
       setHere([la, ln]); setLocMsg(""); setPins(null); recentre(la, ln)
     }, e => setLocMsg(e.code === 1 ? "Location permission was denied." : "Couldn't get your location."), { timeout: 8000, maximumAge: 60000 })
   }
-  const [crimeOn, setCrimeOn] = useState(false), [crime, setCrime] = useState<CrimeCell[] | null>(null)
+  const qs0 = new URLSearchParams(location.search)
+  const [layer, setLayer] = useState<LayerId | "">(() => (LAYERS.some(l => l.id === qs0.get("layer")) ? qs0.get("layer") as LayerId : "")), [lop, setLop] = useState(() => Math.min(1, Math.max(0.2, +(qs0.get("lop") || 0.7))))
+  const [showLayers, setShowLayers] = useState(false)
+  useEffect(() => { const u = new URL(location.href); if (layer) { u.searchParams.set("layer", layer); u.searchParams.set("lop", String(lop)) } else { u.searchParams.delete("layer"); u.searchParams.delete("lop") } history.replaceState(null, "", u) }, [layer, lop])
+  const [crime, setCrime] = useState<CrimeCell[] | null>(null)
+  useEffect(() => { if (layer === "crime") toggleCrime(true) }, [layer])
   async function toggleCrime(v: boolean) {
-    setCrimeOn(v); if (!v || crime) return
+    if (!v || crime) return
     try {
       const pages = await Promise.all([0, 1000, 2000].map(o => fetch(`${SB}/rest/v1/crime_cells?select=gy,gx,crime_count&order=gy,gx&limit=1000&offset=${o}`, { headers: { apikey: KEY } }).then(r => r.ok ? r.json() : [])))
       const rows: { gy: number; gx: number; crime_count: number }[] = pages.flat()
@@ -202,6 +206,16 @@ export default function App() {
       setCrime(rows.map(x => { const below = sorted.findIndex(c => c >= x.crime_count); return { gy: x.gy, gx: x.gx, n: x.crime_count, score: Math.round(100 * (1 - below / Math.max(1, sorted.length - 1))) } }))
     } catch { setCrime([]) }
   }
+  const heat = useMemo<HeatCfg | null>(() => {
+    const L_ = LAYERS.find(l => l.id === layer); if (!L_) return null
+    let pts: [number, number, number][] = []
+    if (layer === "crime") { if (!crime) return null; const mx = Math.max(1, ...crime.map(c => c.n)); pts = crime.map(c => [(c.gy + 0.5) * 0.009, (c.gx + 0.5) * 0.0144, Math.min(1, c.n / mx * 3)]) }
+    else if (layer === "density") pts = shown.map(v => [v.lat, v.lng, 0.35])
+    else if (layer === "price") pts = shown.flatMap(v => { const c = priceClass(priceMid(v), breaks); return c < 0 ? [] : [[v.lat, v.lng, (c + 1) / (breaks.length + 1)] as [number, number, number]] })
+    else if (layer === "transit") pts = shown.flatMap(v => v.transit_score == null ? [] : [[v.lat, v.lng, (v.transit_score as number) / 100] as [number, number, number]])
+    else if (layer === "free") pts = shown.map(v => [v.lat, v.lng, score(v)])
+    return { points: pts, gradient: L_.gradient, opacity: lop, radius: layer === "crime" ? 40 : 26, blur: layer === "crime" ? 34 : 20, max: layer === "density" ? 3 : 1 }
+  }, [layer, crime, shown, breaks, score, lop])
   const [place, setPlace] = useState(""), [placeMsg, setPlaceMsg] = useState("")
   async function centreOn() {
     const q = place.trim(); if (!q) return
@@ -241,10 +255,17 @@ export default function App() {
   const resetFilters = () => { setTypes(allTypes); setMusts([]); setBudget("0"); setRadius("2000"); setHc("45"); setMinT(0); setMinS(0); setSortBy("match"); setFreeOnly(false) }
   const nActive = (types.length !== allTypes.length ? 1 : 0) + (budget !== "0" && budget !== "" ? 1 : 0) + (radius !== "2000" ? 1 : 0) + (hc !== "45" ? 1 : 0) + (minT ? 1 : 0) + (minS ? 1 : 0) + (freeOnly ? 1 : 0)
   const moved = distM(anchor ?? sc, mc) > Math.max(300, +radius * 0.35)
-  const selectItem = (id: string, fromMap: boolean) => { selFromMap.current = fromMap; setSel(s => (!fromMap && s === id) ? null : id); if (fromMap && mobile && snap === 0) setSnap(1) }
+  const selectItem = (id: string, fromMap: boolean) => { selFromMap.current = fromMap; setSel(id); if (mobile) setSnap(0); const v = byId.get(id) ?? shortlist?.find(i => String(i.v.id) === id)?.v; if (v) focusVenue(v) }
   useEffect(() => { if (sel && selFromMap.current) document.getElementById(`r-${sel}`)?.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }) }, [sel])
-  useEffect(() => { if (sel && !list.some(i => String(i.v.id) === sel)) setSel(null) }, [list])
-  const focusVenue = (v: Venue) => { if (is3d) setFly({ lat: v.lat, lng: v.lng, t: Date.now() }); else if (map) { if (map.getZoom() >= 14) map.panTo([v.lat, v.lng]); else map.setView([v.lat, v.lng], 15) } }
+  /** Bring the pin to where its map card has room: left-middle on desktop, above card + sheet on mobile */
+  const pinTarget = (W: number, H: number): [number, number] => mobile ? [W / 2, Math.max(150, (130 + H - (SNAPS[0] + 280)) / 2)] : [Math.max(70, (W - 380) / 2), H / 2]
+  const focusVenue = (v: Venue) => {
+    const red = matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (is3d) { const mm = m3.current; if (!mm) { setFly({ lat: v.lat, lng: v.lng, t: Date.now() }); return } const c = mm.getContainer(), [tx, ty] = pinTarget(c.clientWidth, c.clientHeight)
+      const o = { center: [v.lng, v.lat], zoom: Math.max(mm.getZoom(), 16.5), pitch: 55, bearing: -17, offset: [tx - c.clientWidth / 2, ty - c.clientHeight / 2] }; red ? mm.jumpTo(o) : mm.easeTo({ ...o, duration: 900 }); return }
+    if (!map) return; const sz = map.getSize(), [tx, ty] = pinTarget(sz.x, sz.y)
+    map.setView([v.lat, v.lng], Math.max(map.getZoom(), 16), { animate: false }); map.panBy([sz.x / 2 - tx, sz.y / 2 - ty], { animate: !red })
+  }
   const typeLabel = types.length === allTypes.length ? "All types" : types.length === 1 ? types[0][0].toUpperCase() + types[0].slice(1) : `${types.length} types`
   const bucket = minS === 67 ? "Lower crime" : minS === 34 ? "Average+" : "Safety"
   const CHIPS: [string, string, any, boolean][] = [
@@ -256,17 +277,14 @@ export default function App() {
 
   const toolbar = (
     <div className="space-y-2.5">
-      <div className="flex items-center gap-2 rounded-full bg-white border border-ink/15 shadow-sm pl-4 pr-1.5 h-12 focus-within:ring-2 focus-within:ring-ink/30" onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); centreOn() } }}>
-        <Search className="size-4 shrink-0 text-muted-foreground" />
-        <input aria-label="Search a place or postcode" placeholder="Search a place or postcode" className="flex-1 min-w-0 bg-transparent outline-none text-[15px] placeholder:text-muted-foreground" value={place} onChange={e => setPlace(e.target.value)} />
-        {place && <button aria-label="Clear" onClick={() => { setPlace(""); setPlaceMsg("") }} className="size-9 grid place-items-center rounded-full hover:bg-ink/10"><X className="size-4" /></button>}
-        <button aria-label="Use my location" title="Use my location" onClick={locate} className="size-9 grid place-items-center rounded-full hover:bg-ink/10"><LocateFixed className="size-4" /></button>
-      </div>
+      <SearchBox value={place} onChange={setPlace} venues={data} center={sc} onLocate={locate}
+        onVenue={v => { setPins(null); if (!types.includes(typeOf(v))) setTypes(t => [...t, typeOf(v)]); setSel(String(v.id)); if (mobile) setSnap(0); focusVenue(v) }}
+        onPlace={(la, ln) => { setPlaceMsg(""); setPins(null); recentre(la, ln) }} onSubmit={centreOn}
+        onType={t => { setTypes([t]); setPins(null) }} />
       {(placeMsg || locMsg) && <p role="status" className="text-xs text-muted-foreground px-2 bg-white/90 rounded">{placeMsg || locMsg}</p>}
       <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap pb-0.5" role="toolbar" aria-label="Filters">
         {CHIPS.map(([k, l, Ic, on]) => <button key={k} aria-expanded={chip === k} onClick={() => { setChip(chip === k ? null : k); if (mobile && chip !== k && snap === 0) setSnap(1) }} className={chipCls(on, chip === k)}>{Ic && <Ic className="size-3.5" />}{l}<ChevronDown className={`size-3.5 transition-transform ${chip === k ? "rotate-180" : ""}`} /></button>)}
         <button aria-pressed={freeOnly} onClick={() => setFreeOnly(!freeOnly)} className={chipCls(freeOnly, false)}><Sparkles className="size-3.5" />Likely free</button>
-        <button aria-pressed={crimeOn} onClick={() => toggleCrime(!crimeOn)} className={chipCls(crimeOn, false)}><MapIco className="size-3.5" />Crime map</button>
         {nActive > 0 && <button onClick={resetFilters} className="shrink-0 h-9 md:h-8 inline-flex items-center gap-1 px-2 text-sm text-muted-foreground hover:text-ink"><RotateCcw className="size-3.5" />Reset</button>}
       </div>
     </div>
@@ -292,7 +310,7 @@ export default function App() {
   const results_ = (
     <section aria-label="Results" aria-live="polite" className="space-y-2">
       {shortlist ? <div className="flex items-center gap-2 rounded-xl bg-ink text-fog px-3 py-2 text-sm"><span className="flex-1">Top {shortlist.length} for {whenText}, {hc} people</span><button onClick={() => { setPins(null); setResults(null) }} className="inline-flex items-center gap-1 rounded-full bg-fog/15 hover:bg-fog/25 px-3 h-8 font-semibold"><ArrowLeft className="size-3.5" />Show all venues</button></div>
-        : <div className="flex items-center justify-between gap-2"><p className="text-sm" data-testid="count"><b className="tabular-nums">{total.toLocaleString()}</b> {total === 1 ? "venue" : "venues"} in this area{total > list.length ? <span className="text-muted-foreground">, showing {list.length}</span> : ""}</p>
+        : <div className="flex items-center justify-between gap-2"><p className="text-sm" data-testid="count"><b className="tabular-nums">{total.toLocaleString()}</b> {total === 1 ? "venue" : "venues"} within {+radius >= 1000 ? `${+radius / 1000} km` : `${radius} m`}{total > list.length ? <span className="text-muted-foreground">, showing {list.length}</span> : ""}</p>
           <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="h-8 rounded-full border border-ink/15 bg-white px-2 text-sm"><option value="match">Best match</option><option value="near">Nearest</option><option value="transit">Near transit</option><option value="safety">Lower crime</option></select></div>}
       {status && <p className="text-sm text-muted-foreground">{status}</p>}
       {!shortlist && <Button size="lg" className="w-full h-11 rounded-full bg-ink hover:bg-ink/85 text-fog" disabled={status === "Searching…"} onClick={search}><Sparkles className="size-4" />{status === "Searching…" ? "Searching…" : `Find best rooms for ${whenText}`}</Button>}
@@ -304,12 +322,26 @@ export default function App() {
     </section>
   )
   const mapEl = is3d
-    ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c, b) => { c3dLive.current = c; setMc(c); setBounds(b); if (reAnchor.current) { reAnchor.current = false; setAnchor(c) } }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} items={list} numbered={!!shortlist} fitKey={fitKey} onSelect={id => selectItem(id, true)} sel={sel} /></Suspense>
-    : <MapView venues={shown} items={list} numbered={!!shortlist} fitKey={fitKey} padB={mobile ? sheetH : 0} score={score} onMap={setMap} onBounds={(b, c) => { setBounds([[b.getSouth(), b.getWest()], [b.getNorth(), b.getEast()]]); setMc([c.lat, c.lng]); if (reAnchor.current) { reAnchor.current = false; setAnchor([c.lat, c.lng]) } }} crime={crimeOn ? crime : null} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} hot={hot} sel={sel} onHover={setHot} onSelect={id => selectItem(id, true)} />
+    ? <Suspense fallback={<div className="h-full grid place-items-center text-sm text-muted-foreground">Loading 3D map…</div>}><Map3D venues={shown} score={score} center={c3d} fly={fly} onCenter={(c, b) => { c3dLive.current = c; setMc(c); setBounds(b); if (reAnchor.current) { reAnchor.current = false; setAnchor(c) } }} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} items={mapItems} heat={heat} onReady={m => { m3.current = m; setM3ok(x => x + 1) }} numbered={!!shortlist} fitKey={fitKey} onSelect={id => selectItem(id, true)} sel={sel} /></Suspense>
+    : <MapView venues={shown} items={mapItems} numbered={!!shortlist} fitKey={fitKey} padB={mobile ? sheetH : 0} score={score} onMap={setMap} onBounds={(b, c) => { setBounds([[b.getSouth(), b.getWest()], [b.getNorth(), b.getEast()]]); setMc([c.lat, c.lng]); if (reAnchor.current) { reAnchor.current = false; setAnchor([c.lat, c.lng]) } }} heat={heat} breaks={breaks} here={here} ring={[sc[0], sc[1], +radius]} hot={hot} sel={sel} onHover={setHot} onSelect={id => selectItem(id, true)} />
   const ctrlBottom = mobile ? sheetH + 12 : 24
+  const selItem = sel ? mapItems.find(i => String(i.v.id) === sel) : undefined
+  const proj = is3d ? (m3.current ? (la: number, ln: number) => { const p = m3.current.project([ln, la]); return [p.x, p.y] as [number, number] } : null) : map ? (la: number, ln: number) => { const p = map.latLngToContainerPoint([la, ln]); return [p.x, p.y] as [number, number] } : null
   const floating = <>
+    {selItem && proj && <VenueCard key={sel} v={selItem.v} proj={proj} sub={is3d ? m3.current : map} tick={m3ok} mobile={mobile} bottom={mobile ? sheetH + 8 : 0} onClose={() => setSel(null)} title={<>{shortlist ? `${shortlist.indexOf(selItem) + 1}. ` : ""}{selItem.v.name}</>} meta={`${TYPE_EMOJI[typeOf(selItem.v)] || ""} ${typeOf(selItem.v)[0].toUpperCase() + typeOf(selItem.v).slice(1)} · ${(selItem.dist / 1000).toFixed(1)} km${selItem.v.f ? " · " + capText(selItem.v).replace(/ \(.*\)$/, "") : ""}`}>{CardBody(selItem.v, selItem.rpc || {})}</VenueCard>}
     {moved && <button onClick={() => { if (shortlist) search(); else setSc(mc) }} className="absolute left-1/2 -translate-x-1/2 z-[1000] h-10 px-4 rounded-full bg-white border border-ink/15 shadow-lg text-sm font-semibold inline-flex items-center gap-2 hover:bg-fog" style={{ top: mobile ? "calc(env(safe-area-inset-top) + 124px)" : 16 }}><Search className="size-4" />Search this area</button>}
-    <div className={`absolute right-3 md:right-4 z-[1000] flex flex-col items-end gap-2 transition-opacity ${mobile && sheetH > vh * 0.7 ? "opacity-0 pointer-events-none" : ""}`} style={{ bottom: mobile ? ctrlBottom : 96 }}>
+    <div className={`absolute right-3 md:right-4 z-[1000] flex flex-col items-end gap-2 transition-opacity ${mobile && (sheetH > vh * 0.7 || sel) ? "opacity-0 pointer-events-none" : ""}`} style={{ bottom: mobile ? ctrlBottom : 96 }}>
+      {showLayers && <div data-testid="layers-panel" role="dialog" aria-label="Map layers" className="w-72 max-w-[calc(100vw-1.5rem)] bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-3 space-y-2">
+        <div className="flex items-center justify-between"><h3 className="font-heading text-base font-semibold">Heatmap layer</h3><button onClick={() => setShowLayers(false)} aria-label="Close layers" className="size-8 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10"><X className="size-4" /></button></div>
+        <div role="radiogroup" aria-label="Heatmap" className="grid grid-cols-2 gap-1.5">
+          {[{ id: "", label: "None", gradient: { 0: "#fff", 1: "#fff" } } as any, ...LAYERS].map(l => <button key={l.id || "none"} role="radio" aria-checked={layer === l.id} onClick={() => setLayer(l.id)} className={`h-10 rounded-lg border px-2 text-sm font-medium text-left whitespace-nowrap overflow-hidden text-ellipsis ${layer === l.id ? "bg-ink text-fog border-ink" : "border-ink/15 hover:bg-ink/5"}`}>{l.label}</button>)}
+        </div>
+        {layer && (() => { const L_ = LAYERS.find(l => l.id === layer)!; const g = Object.entries(L_.gradient).sort((a, b) => +a[0] - +b[0]); return <div className="space-y-1.5" data-testid="layer-legend">
+          <div className="h-2.5 rounded-full" style={{ background: `linear-gradient(90deg,${g.map(([k, c]) => `${c} ${+k * 100}%`).join(",")})` }} />
+          <div className="flex justify-between text-xs"><span className="text-muted-foreground">{L_.lo}</span><b>{L_.hi}</b></div>
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">Opacity<input type="range" aria-label="Heatmap opacity" min={0.2} max={1} step={0.05} value={lop} onChange={e => setLop(+e.target.value)} className="flex-1 accent-[#262626]" /><span className="tabular-nums w-8 text-right">{Math.round(lop * 100)}%</span></label>
+          <p className="text-[11px] text-muted-foreground">{L_.src}{layer === "crime" && crime === null ? " · loading…" : ""}</p></div> })()}
+      </div>}
       {showKey && <div id="map-key" className="w-72 max-w-[calc(100vw-1.5rem)] max-h-[45vh] overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
         <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
           <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-8 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10"><X className="size-4" /></button></div>
@@ -318,10 +350,10 @@ export default function App() {
         <div role="group" aria-label="Map view" className="inline-flex rounded-full border border-ink/15 bg-white shadow-md p-0.5">
           {[["2d", "2D"], ["3d", "3D"]].map(([k, l]) => <button key={k} aria-pressed={(k === "3d") === is3d} onClick={() => { if ((k === "3d") === is3d) return; if (k === "3d") { const c = map?.getCenter(); if (c) { setC3d([c.lat, c.lng]); c3dLive.current = [c.lat, c.lng] } setMap(null) } setIs3d(k === "3d") }} className={`h-10 md:h-9 px-3.5 rounded-full text-sm font-semibold ${(k === "3d") === is3d ? "bg-ink text-fog" : "text-ink hover:bg-ink/10"}`}>{l}</button>)}
         </div>
-        <button onClick={() => toggleKey(!showKey)} aria-expanded={showKey} aria-controls="map-key" aria-label={showKey ? "Hide map key" : "Show map key"} title="Map key" className={`size-11 md:size-10 grid place-items-center rounded-full border shadow-md ${showKey ? "bg-ink text-fog border-ink" : "bg-white border-ink/15 hover:bg-fog"}`}><Layers className="size-4" /></button>
+        <button onClick={() => { setShowLayers(!showLayers); if (!showLayers) toggleKey(false) }} aria-expanded={showLayers} aria-label="Map layers" title="Layers" data-testid="layers-btn" className={`h-11 md:h-10 px-3.5 inline-flex items-center gap-1.5 rounded-full border shadow-md text-sm font-semibold whitespace-nowrap ${showLayers || layer ? "bg-ink text-fog border-ink" : "bg-white border-ink/15 hover:bg-fog"}`}><Layers className="size-4" />Layers</button>
+        <button onClick={() => { toggleKey(!showKey); setShowLayers(false) }} aria-expanded={showKey} aria-controls="map-key" aria-label={showKey ? "Hide map key" : "Show map key"} title="Map key" className={`size-11 md:size-10 grid place-items-center rounded-full border shadow-md ${showKey ? "bg-ink text-fog border-ink" : "bg-white border-ink/15 hover:bg-fog"}`}><Info className="size-4" /></button>
       </div>
     </div>
-    {crimeOn && <div className="absolute z-[1000] left-3 md:left-4 rounded-full bg-white/95 border border-ink/10 shadow px-3 py-1.5 text-xs flex gap-3" style={{ bottom: mobile ? ctrlBottom + 56 : 24 }}>{[80, 50, 10].map(x => { const b = safetyBucket(x); return <span key={x} className="inline-flex items-center gap-1"><b.Icon className="size-3.5" style={{ color: b.color }} />{b.label}</span> })}{is3d && <span className="text-muted-foreground">2D only</span>}{crime === null && <span>Loading…</span>}</div>}
   </>
 
   // ---- bottom sheet drag (mobile) ----
@@ -345,7 +377,7 @@ export default function App() {
         <div data-testid="sheet" data-snap={snap} className="absolute inset-x-0 bottom-0 z-[1200] bg-fog rounded-t-3xl shadow-[0_-6px_24px_#0002] flex flex-col" style={{ height: sheetH, transition: dragH == null ? "height .25s ease" : "none" }}>
           <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} role="button" tabIndex={0} aria-label="Drag or tap to resize the results panel" onKeyDown={e => { if (e.key === "Enter" || e.key === " ") setSnap(s => s === 2 ? 0 : s + 1) }} data-testid="sheet-handle" className="touch-none cursor-grab pt-2.5 pb-2 px-4 select-none">
             <div className="mx-auto h-1.5 w-10 rounded-full bg-ink/25" />
-            <p className="text-center text-sm font-semibold mt-2">{shortlist ? `Top ${shortlist.length} matches` : `${total.toLocaleString()} venues in this area`}</p>
+            <p className="text-center text-sm font-semibold mt-2">{shortlist ? `Top ${shortlist.length} matches` : `${total.toLocaleString()} venues within ${+radius / 1000} km`}</p>
           </div>
           {panel && <div className="shrink-0 max-h-[45%] overflow-y-auto px-4 pb-2">{panel}</div>}
           <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 pb-[calc(env(safe-area-inset-bottom)+16px)] space-y-3" id="list-scroll">{results_}</div>
@@ -373,7 +405,7 @@ export default function App() {
     const t = typeOf(v), st = v.nearest_station_name ?? r.nearest_station_name, stm = v.nearest_station_m ?? r.nearest_station_m, saf = v.safety_score ?? r.safety_score
     return (
       <li key={id} id={`r-${id}`} data-testid="result" data-id={id} onMouseEnter={() => setHot(id)} onMouseLeave={() => setHot(null)} className={`relative -mx-2 px-2 rounded-xl transition-colors ${open ? "bg-white ring-1 ring-ink/15 shadow-sm my-1" : hot === id ? "bg-ink/[.05]" : ""}`}>
-        <button className="w-full text-left py-3 flex gap-3 items-start" aria-expanded={open} onClick={() => { selectItem(id, false); focusVenue(v) }}>
+        <button className="w-full text-left py-3 flex gap-3 items-start" aria-expanded={open} onClick={() => selectItem(id, false)}>
           <span className={`shrink-0 size-9 grid place-items-center rounded-full text-base ${shortlist ? "bg-ink text-fog text-sm font-semibold" : "bg-white border border-ink/15"}`}>{shortlist ? i + 1 : TYPE_EMOJI[t]}</span>
           <span className="flex-1 min-w-0">
             <span className="flex justify-between gap-2"><span className="font-semibold text-[15px] leading-snug truncate">{v.name}<ExBadge name={v.name} /></span><span className="text-sm font-semibold whitespace-nowrap tabular-nums" style={{ color: barC }}>{p}% {busy ? "busy" : "free"}</span></span>
@@ -385,7 +417,12 @@ export default function App() {
             </span>
           </span>
         </button>
-        {open && <div className="pb-3 pl-12 space-y-2.5">
+      </li>)
+  }
+
+  function CardBody(v: any, r: any) {
+    const pe = priceEst(v)
+    return <>
           {v.price_amount_gbp == null && <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label ?? r.fee_label} />{pe?.conf && <Badge variant="outline" className="font-normal whitespace-nowrap">{pe.conf} confidence estimate</Badge>}</div>}
           <PriceBlock v={v} />
           {v.address && <p className="text-[13px] text-muted-foreground">{v.address}</p>}
@@ -395,8 +432,7 @@ export default function App() {
             {(v.url || r.source_url) && <a href={v.url || r.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 h-9 px-3 rounded-full border border-ink/15 text-sm font-medium whitespace-nowrap shrink-0 hover:bg-ink/5">Website ↗</a>}
             {typeof v.price_source_url === "string" && /^https?:/.test(v.price_source_url) && <a href={v.price_source_url} target="_blank" rel="noreferrer" data-testid="price-source" className="inline-flex items-center gap-1 h-9 px-3 rounded-full border border-ink/15 text-sm font-medium whitespace-nowrap shrink-0 hover:bg-ink/5">Prices ↗</a>}
           </div>
-        </div>}
-      </li>)
+    </>
   }
 
   function WhenPanel() {

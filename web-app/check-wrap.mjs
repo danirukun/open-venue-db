@@ -14,7 +14,7 @@ for (const [w, h] of sizes) {
   await fr.getByRole("button", { name: "Done" }).click(); await p.waitForTimeout(1500)
   if (w < 768) { const hd = p.getByTestId("sheet-handle"); for (let i = 0; i < 1; i++) { await hd.click().catch(() => {}); await p.waitForTimeout(400) } }
   const card = p.locator("li button[aria-expanded]", { hasText: "Prince Charles" }).first()
-  if (await card.count()) { await card.scrollIntoViewIfNeeded(); await card.click(); await p.waitForTimeout(800) } else console.log(`${w}x${h}: Prince Charles card not found`)
+  if (await card.count()) { await card.scrollIntoViewIfNeeded(); await card.click(); await p.waitForTimeout(1500); if (!(await p.getByTestId("venue-card").count())) { console.log(`${w}x${h}: map card did not open`); bad++ } } else console.log(`${w}x${h}: Prince Charles card not found`)
   const issues = await p.evaluate(() => [...document.querySelectorAll('button, a[class*="rounded-full"], [role=button], [data-slot=badge], [data-testid=price-block] span, select')].filter(e => {
     if (e.closest(".leaflet-pane, .maplibregl-canvas-container") || e.closest("li button[aria-expanded]") === e) return false
     const r = e.getBoundingClientRect(); if (!r.width || !(e.innerText || "").trim()) return false
