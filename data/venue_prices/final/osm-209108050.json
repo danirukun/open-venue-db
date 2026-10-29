@@ -1,0 +1,60 @@
+{
+ "target": {
+  "key": "osm-209108050",
+  "who": "Metro Cinema (cinema, London)",
+  "website": null,
+  "chain": null,
+  "venue_ids": [
+   "osm-209108050"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:12:40.801865+00:00",
+ "extraction": {
+  "found": false,
+  "source_kind": "official",
+  "price_amount_gbp": null,
+  "price_amount_max_gbp": null,
+  "price_unit": null,
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": null,
+  "capacity_per_screen": null,
+  "price_basis": "No published \u00a3 hire price found. Metro Cinema's site (metrocinema.co.uk) says the cinema can be hired for conferences and parties, but its Harrow cine-information page could not be fetched, so no price was verified.",
+  "source_url": "https://www.metrocinema.co.uk/cine-information",
+  "source_quote": "Cinema is available to hire for conferences, presentations, celebration parties, or special screenings.",
+  "quote_verbatim": false,
+  "source_fetched": false
+ },
+ "sources": {},
+ "usage": {
+  "input_tokens": 131627,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1509,
+  "output_tokens_details": {
+   "thinking_tokens": 669
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 4,
+   "web_fetch_requests": 2
+  }
+ },
+ "judge": {
+  "verdict": "fail",
+  "grounded": false,
+  "correct": false,
+  "issues": [
+   "source URL was not fetched; cannot verify"
+  ],
+  "fix_hint": "fetch the cited page"
+ }
+}

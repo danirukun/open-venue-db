@@ -1,0 +1,62 @@
+{
+ "target": {
+  "key": "osm-3193683067",
+  "who": "Lumiere Cinema Romford (cinema, London, postcode RM1 3EE)",
+  "website": "https://www.lumiereromford.com/",
+  "chain": null,
+  "venue_ids": [
+   "osm-3193683067"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:12:55.689083+00:00",
+ "extraction": {
+  "found": false,
+  "source_kind": "official",
+  "price_amount_gbp": null,
+  "price_amount_max_gbp": null,
+  "price_unit": null,
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": null,
+  "capacity_per_screen": null,
+  "price_basis": "No published \u00a3 hire price found. Official homepage and /about-and-pricing failed to fetch. Crowdfunder page (run by operator) mentions a Private Hire Option but gives no price.",
+  "source_url": "https://www.crowdfunder.co.uk/p/lumiere-cinema-romford-phase-2",
+  "source_quote": "The Private Hire Option will be redeemable from January 1st onwards.",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.crowdfunder.co.uk/p/lumiere-cinema-romford-phase-2": "Lumiere Cinema Romford (Phase 2)\n\nRomford, Greater London, United Kingdom\n\nLumiere Cinema Romford (Phase 2)\n\n\u00a311,541\n\nraised so far\n\nWe are raising funds\n\n\nCrowdfunder is secure\n\nYour payment details are protected\n\n\nAlways on\n\nThis project successfully funded on 5th December 2025, you can still support them with a donation.\n\nAim\n\nOur goal is to create space for community groups and organisations and to build a stage in one of the auditoriums.\n\n\nIn\u00a02025, the\u00a0Romford Film Trust\u00a0was founded with a singular mission: to save a beloved community cinema in Romford. Our initial crowdfunding campaign successfully raised\u00a0\u00a331,000, which was enough to get the doors open in\u00a0March 2025. While this was a monumental achievement, we did not raise enough to fully realize our long-term vision for a fully accessible and multi-functional arts space.\n\nOver the past six months, we\u2019ve worked tirelessly to make significant improvements. Thanks to donations from organizations like\u00a0Google\u00a0and local businesses, we've adapted and modified the venue for our customers.\n\nHere is what the venue looked like before we took it on. And I guess our origin story.\n\nOur Remaining Core Projects\n\nWhile we're open and thriving, there are\u00a0four fundamental capital projects\u00a0that are essential to securing the cinema's future as a vibrant community hub. We need your help to address these:\n\nPermanent Stage in Screen Eight:\u00a0To install a permanent stage, making the space fully usable for live events, performances, and conferences.\n\nCommunity Hall Conversion:\u00a0To convert Screen Six into a dedicated, flexible community hall.\n\nEssential Disabled Lift:\u00a0To install a disabled lift, ensuring\u00a0both levels\u00a0of the cinema are fully accessible. While the cinema has one accessible entrance, this lift is required for free movement throughout the entire building.\n\nAccessible Unisex Toilets:\u00a0To convert our existing toilet facilities into accessible, modern unisex units with full ceiling-to-floor partitioning for enhanced privacy.\n\nOnce our charity is formally established for a year, completing these core projects will allow us to apply for significant\u00a0capital funding\u00a0from various arts and cultural organizations, truly making our long-term vision a reality. Furthermore, we will soon be able to reclaim a substantial amount of\u00a0VAT\u00a0on purchases already made for the cinema.\n\nHeres our story so far since we opened\u2026.\n\nPhase Two: The Festive Fundraiser\n\nThis is the start of our\u00a0second phase of fundraising, but with the doors now open, we are changing our format. This campaign is timed for the\u00a0holiday season, offering pledge rewards that are perfect as\u00a0Christmas gifts\u2014for loved ones, or for yourself!\n\nWith the exception of one,\u00a0all rewards\u00a0for this crowdfunder will be redeemable in time for Christmas.\n\n* The Private Hire Option will be redeemable from January 1st onwards. This is simply because our Christmas schedule is so packed that there is no available space to hire out screens ahead of the festive period.\n\nOur Goal and the \u00a318,000 Match\n\nWhile we need to raise the remaining\u00a0\u00a370,000\u00a0to complete all four projects, our goal for this campaign is to raise\u00a0\u00a350,000.\n\nIf we can successfully raise this amount to complete either the permanent stage or the community hall conversion, we can unlock a further \u00a318,000 in matched funding from a partnering organization. This match is dependent on us creating a space fully usable for their conferences and awards events. Our current setup is functional, but the completed project would create the ideal, high-standard venue they require.\n\nProgress to Date\n\nWe\u2019ve made significant changes already. Here is a snapshot of what your previous support has achieved:\n\n* Sound Systems: Four screens feature 7.1 Surround Sound, and the remaining screens have had all faulty functionality repaired and operate with 5.1 Surround Sound.\n\n* Projector Upgrades: New light engines have been installed in some projectors.\n\n* Maintenance & Safety: All existing toilets have been repaired/replaced, a full health and safety updating system has been introduced, and nine skips of waste left by the previous tenant have been cleared.\n\n* Venue Improvements: The entire reception area has been painted, and all broken seats in the screens have been repaired or replaced.\n\nWhat Makes Lumiere Different?\n\nWe are more than just a cinema. We break with usual conventions to create a unique arts and community space:\n\n* Diverse Programming: We show a dynamic mix of major new releases, independent films, international cinema, and classics.\n\n* Curated Seasons: We host film seasons normally found only in central London, including retrospectives of David Lynch, Michael Haneke, Studio Ghibli, and a current screening of the 100 Greatest Horror Films.\n\n* Community Wellness: We hold regular film festivals, conventions, and wellness sessions in conjunction with local organizations, from creative writing workshops to Sound Baths.\n\nOur Community Commitment\n\nWe are dedicated to being a resource for the community, providing the following essential services:\n\n* Free Screenings: Complimentary film screenings for the over 60s on Thursday mornings.\n\n* Accessibility: Regular relaxed screenings for those with neurodiversity and hard-of-hearing screenings. We have also increased disabled access in all screens.\n\n* Community Space: We provide free space for community groups and host a number of community and charity events.\n\n* Support for Filmmakers: We give small filmmakers space to show their work\u2014an opportunity that can cost thousands in similar venues.\n\n* Free Resources: Free sanitary products are available in our ladies' and disabled facilities. Starting in November, we will offer free hot-desking spaces for local workers who are normally home-based.\n\n* Parent & Baby Sessions: We host regular sessions tailored for parents and their babies.\n\n* Safe Space: We are proud to provide a safe, quiet space for people to relax and simply be themselves.\n\nPlease pledge today and help us complete the final pieces of the puzzle to make the Lumiere \u00a0the cultural landmark our community deserves!\n\n\nFunding method\n\nKeep what you raise \u2013 this project will receive all pledges made\n\n\nShow your support\n\nPayment and personal details are protected"
+ },
+ "usage": {
+  "input_tokens": 74701,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1463,
+  "output_tokens_details": {
+   "thinking_tokens": 605
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 2,
+   "web_fetch_requests": 3
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "source_kind 'official' is debatable for a Crowdfunder page, though it is run by the operator"
+  ],
+  "fix_hint": "Optionally classify operator-run crowdfunding pages as a distinct or third-party source_kind. Otherwise found=false is correct: the text mentions a Private Hire Option but gives no \u00a3 price, and the quote is verbatim."
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "target": {
+  "key": "osm-8348478722",
+  "who": "London Dock - Residents Cinema (cinema, London, postcode E1W 2AH)",
+  "website": null,
+  "chain": null,
+  "venue_ids": [
+   "osm-8348478722"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:13:02.971924+00:00",
+ "extraction": {
+  "found": false,
+  "source_kind": "official",
+  "price_amount_gbp": null,
+  "price_amount_max_gbp": null,
+  "price_unit": null,
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": null,
+  "capacity_per_screen": null,
+  "price_basis": "No public hire price. The London Dock residents portal says residents can book the building's Cinema; no fee or rate is shown. Venue is residents-only, not open for external hire.",
+  "source_url": "https://mylondondock.com/",
+  "source_quote": "The portal provides a secure and convenient means of booking building facilities - including the Cinema, Spa Studio, Spa Treatment room and Virtual Golf room",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://mylondondock.com/": "---\nmeta-description:\nmeta-keywords:\nmeta-revisit-after:\nmeta-robots: index,follow\nmeta-viewport: width=device-width, minimum-scale=0, maximum-scale=1.8\ntitle: London Dock\n---\n\n![London Dock](https://mylondondock.com/UserFiles/binary_data/londondockbrandevolution-hoardings-logo-white.png \"London Dock\")\n\n\u00a0\n\nLOGIN\n\nREMEMBER ME\n\nRESET PASSWORD\n\nDon't have an account? REGISTER\n\nRESET PASSWORD\n\nTo reset your password please enter your email address.\n\nBACK TO LOGIN\n\nThank you for registering.\n\nThe building manager will approve your account shortly, and you will receive an email notification to alert you when your account is active.\n\nRESET PASSWORD\n\nThank you, if the email you have entered matches an account you'll receive an email with instructions to reset your password.\n\nREGISTER\n\n### WHY REGISTER?\n\nWelcome to the London Dock\u00a0residents portal, an exclusive online community for your building. The portal provides a secure and\u00a0convenient means of booking building facilities - including the Cinema, Spa Studio, Spa Treatment room and Virtual Golf room - along with access to your home owner documents and service charge statements.\n\nAt London Dock we are proud to offer the highest levels of service in the industry, and the portal reflects that. Register now for an account to take full advantage of your new home.\n\nBACK TO LOGIN\n\nDr Miss Mr Mrs Ms Other\n\nEstate Agent Leaseholder Leaseholder Family Leaseholder Representative Social Housing Social Housing Tenants St George CS Tenant Tenant Family Units\n\nLondon Dock\n\nI have read and understood the Privacy\u00a0Notice and Fair\u00a0Processing\u00a0Notice\n\nI agree to the Terms & Conditions\n\nAllow all cookies Decline cookies\n\nWe use cookies on this website to enable core functionality, maintain security and to analyse your usage. Essential cookies will be set, but you can choose whether or not to permit us to place non-essential cookies on your device which will help us improve the services we offer. [Find out more about the cookies we use here.](https://mylondondock.com/content/popup/cookie_policy)"
+ },
+ "usage": {
+  "input_tokens": 83121,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1009,
+  "output_tokens_details": {
+   "thinking_tokens": 349
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 3,
+   "web_fetch_requests": 1
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "'not open for external hire' is a reasonable inference from the 'exclusive online community' wording, not stated outright"
+  ],
+  "fix_hint": "None needed. Optionally keep price_basis strictly to what the text states, e.g. 'residents-only booking portal, no fee shown'."
+ }
+}

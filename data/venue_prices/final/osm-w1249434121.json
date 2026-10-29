@@ -1,0 +1,60 @@
+{
+ "target": {
+  "key": "osm-w1249434121",
+  "who": "Institute Of Light (cinema, London)",
+  "website": null,
+  "chain": null,
+  "venue_ids": [
+   "osm-w1249434121"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:13:44.641132+00:00",
+ "extraction": {
+  "found": false,
+  "source_kind": "official",
+  "price_amount_gbp": null,
+  "price_amount_max_gbp": null,
+  "price_unit": null,
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": null,
+  "capacity_per_screen": null,
+  "price_basis": "No published hire price found. Official site (the-institute-of-light.com) could not be fetched; Time Out lists only 'Prices vary'. Listing hits were for a different London venue (Cin\u00e9 Lumi\u00e8re).",
+  "source_url": "https://www.the-institute-of-light.com",
+  "source_quote": "",
+  "quote_verbatim": false,
+  "source_fetched": false
+ },
+ "sources": {},
+ "usage": {
+  "input_tokens": 184250,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1857,
+  "output_tokens_details": {
+   "thinking_tokens": 880
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 4,
+   "web_fetch_requests": 4
+  }
+ },
+ "judge": {
+  "verdict": "fail",
+  "grounded": false,
+  "correct": false,
+  "issues": [
+   "source URL was not fetched; cannot verify"
+  ],
+  "fix_hint": "fetch the cited page"
+ }
+}

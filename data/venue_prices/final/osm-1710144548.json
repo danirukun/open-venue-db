@@ -1,0 +1,65 @@
+{
+ "target": {
+  "key": "osm-1710144548",
+  "who": "Regent Street Cinema (cinema, London)",
+  "website": "https://www.regentstreetcinema.com/",
+  "chain": null,
+  "venue_ids": [
+   "osm-1710144548"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:12:51.540023+00:00",
+ "extraction": {
+  "found": true,
+  "source_kind": "official",
+  "price_amount_gbp": 2100,
+  "price_amount_max_gbp": 6100,
+  "price_unit": "per_event",
+  "min_spend_gbp": null,
+  "vat": "ex",
+  "included": "Projectionist, duty manager and two ushers; no minimum spend required for catering",
+  "capacity_per_screen": "185-seat auditorium (plus bar 110 standing, foyer 80 standing)",
+  "price_basis": "Exclusive venue hire from \u00a32,100 (2-hour daytime) to \u00a36,100 (evening 5pm-10pm), ex VAT; 2022 rate card, weekday 9am-5pm \u00a34,800; half-day \u00a33,000",
+  "source_url": "https://regent-street-cinema-production.s3.amazonaws.com/documents/At_A_Glance_Venue_Hire_Rate_Card_2022_db99dr9.pdf",
+  "source_quote": "2-hour hire (daytime) \u00a32,100",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.regentstreetcinema.com/": "---\nmeta-apple-mobile-web-app-capable: yes\nmeta-apple-mobile-web-app-status-bar-style: black\nmeta-description: Check showtimes and buy tickets at your local cinema\nmeta-format-detection: telephone=no\nmeta-msapplication-tap-highlight: no\nmeta-viewport: user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,viewport-fit=cover\ntitle: REGENT STREET CINEMA\n---\n\n![REGENT](https://indy-systems.imgix.net/zyqrn2065ufgtjlv3zqkglo24um8?w=1200&auto=format%2Ccompress)\n\nLoading...",
+  "https://regent-street-cinema-production.s3.amazonaws.com/documents/At_A_Glance_Venue_Hire_Rate_Card_2022_db99dr9.pdf": "                                               AT A GLANCE RATE CARD 2022\n\n\n\n\nRegent Street Cinema is a unique, historical cinema, conveniently located just a\ntwo-minute walk North of Oxford Street. Exclusive use of the venue includes access to the\nluxurious 185-seat auditorium, bar and spacious foyer. The venue can be used to host film\nscreenings, premieres, Q&A\u2019s, conferences, awards ceremonies, film shoots and press\nconferences, to name but a few. And if your event is unique, even better \u2013 we are always\nopen to new and innovative ways of utilising this amazing space.\n\n\nAT A GLANCE                                         BOOKING INFORMATION\nAuditorium \u2013 185 seats                              \u2022 \u0007A ll rates are exclusive of VAT.\n\nBar \u2013 110 standing                                  \u2022 \u0007A 30% deposit is required to secure your\n                                                      booking.\nFoyer \u2013 80 standing\n                                                    \u2022 \u0007T he venue hire cost includes a projectionist,\nGreen Room                                            a duty manager and two ushers.\n\n                                                    \u2022 \u0007I f you require full use of the bar for four\nBRANDING OPPORTUNITIES                                hours or less, there is an additional fee\nOur versatile venue lends itself to being fully       of \u00a3250 that includes two extra staff\ncustomised with multiple branding opportunities.      members.\n\n                                                    \u2022 \u0007Additional costs may be incurred for some\nOn Arrival:\n                                                      events for security, cleaning and on bank\n\u2022 \u0007Two portrait digital screens in the front          holidays. The cost will be outlined at the\n  windows to welcome your guests                      time of enquiry.\n\n\u2022 Ticker reel on the front of the building          \u2022 \u0007O ur team provides one free media test in\n                                                      your package, to be taken no less than 2\n\u2022 Poster trolley with two quad posters                working days before your event.\n\u2022 Landscape projector screen in the foyer           \u2022 \u0007A ll bookings, including catering, must\n\u2022 Up to 9 A0 poster cases                             be confirmed and paid at least 10\n                                                      working days in advance. If appropriate,\nIn the Bar:                                           cancellation charges will be applied,\n\u2022 Two landscape digital screens                       according to our Terms and Conditions.\n\n                                                    All booking enquiries should go to\n\u2022 One projector screen behind the bar\n                                                    sales@regentstreetcinema.com\n\u2022 6 quad posters                                    or call +44 (0)20 3506 4733.\n\fEXCLUSIVE VENUE HIRE RATES (EXCLUDING VAT)\n\nVenue Hire                              Rate\n\nEvening hire (5pm \u2013 10pm)               \u00a36,100\n\nWeekday hire (9am \u2013 5pm)                \u00a34,800\n\nHalf-day weekday hire (total 4 hours)   \u00a33,000\n\n2-hour hire (daytime)                   \u00a32,100\n\n\nLOGISTICS & PLANNING\n\nItem                                    Details\n\n                                        \u2022 Drink and food packages are available to book in advance\n                                        \u2022 Bar tabs can be created for your guests\nCatering\n                                        \u2022 No minimum spend is required\n                                        \u2022 Canap\u0450 orders under \u00a3500 will incur a delivery charge of \u00a340 + vat\n\n                                        \u2022 \u0007Any single piece of content under 30 mins costs \u00a350 - 100 depending on the content.\n                                          To be sent to our projectionist a minimum of 1 week in advance.\nDCP File Conversion\n                                        \u2022 \u0007Any single piece of content between 30mins \u2013 2hr 30 mins costs \u00a3400.\n                                          To be sent to our projectionist a minimum of 2 weeks in advance.\n\f"
+ },
+ "usage": {
+  "input_tokens": 35267,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1588,
+  "output_tokens_details": {
+   "thinking_tokens": 982
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 1,
+   "web_fetch_requests": 2
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "source_quote collapses table whitespace between label and price; textually faithful otherwise",
+   "rate card is dated 2022, so prices may be outdated",
+   "the unit 'per_event' approximates time-block pricing (2h/half-day/day/evening)"
+  ],
+  "fix_hint": "Optionally flag rate-card year or staleness in price_basis and allow a 'per_session/time_block' unit for tiered duration pricing; otherwise no change needed."
+ }
+}

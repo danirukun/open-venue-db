@@ -1,0 +1,64 @@
+{
+ "target": {
+  "key": "osm-w78230879",
+  "who": "Peckhamplex (cinema, London, postcode SE15 4ST)",
+  "website": "http://www.peckhamplex.com/",
+  "chain": null,
+  "venue_ids": [
+   "osm-w78230879"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:13:22.459232+00:00",
+ "extraction": {
+  "found": true,
+  "source_kind": "official",
+  "price_amount_gbp": 150,
+  "price_amount_max_gbp": 185,
+  "price_unit": "per_event",
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": "Exclusive screen with surround sound and projection; bring your own console, controllers and games; refreshments can be added",
+  "capacity_per_screen": null,
+  "price_basis": "Gaming screen hire, 2 hours: \u00a3150 Mon\u2013Fri 10.30am\u20132.30pm; \u00a3185 Sat/Sun & school holidays 10.30am\u201312.30pm. News post dated Nov 2024; VAT not stated.",
+  "source_url": "https://www.peckhamplex.london/news/calling-all-gamers-big-screen-gaming-is-coming-to-peckham",
+  "source_quote": "GAMING:  2 hours  \nMon \u2013 Fri from 10.30am \u2013 2.30pm:   \u00a3150   \nSat/Sun & School Holidays 10.30am \u2013 12.30pm:  \u00a3185",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.peckhamplex.london/news/calling-all-gamers-big-screen-gaming-is-coming-to-peckham": "---\ncanonical: https://www.peckhamplex.london/news/calling-all-gamers-big-screen-gaming-is-coming-to-peckham\nmeta-HandheldFriendly: True\nmeta-MobileOptimized: 320\nmeta-_token: dC8ZD4plA3OaGaZGgLnE682rhsfPygxl6Novky3f\nmeta-application-name: Peckhamplex\nmeta-author: Premier\nmeta-classification: Entertainment\nmeta-copyright: Peckhamplex 2026\nmeta-description: Bring your own console, controllers and games. Enjoy surround sound and world class projection in the comfort of your own exclusive screen.\nmeta-distribution: GLOBAL\nmeta-fb:admins: 162039430516395\nmeta-fb:app_id: 1524763987822481\nmeta-format-detection: telephone=no\nmeta-google-site-verification: g8ZPEvRuEunj0EkCxBXtImulPtTbbUBmvFQ7FCxG8-k\nmeta-keywords: peckhamplex, peckham plex, peckham, cinema, cinemas, films, film, trailers, trailer, london, cinemas london, peckham cinemas , news, articles, article\nmeta-language: en-GB\nmeta-msapplication-TileColor: #f918ac\nmeta-msapplication-TileImage: /imgs/icons/mstile-144x144.png\nmeta-msapplication-square150x150logo: /imgs/icons/mstile-150x150.png\nmeta-msapplication-square310x310logo: /imgs/icons/mstile-310x310.png\nmeta-msapplication-square70x70logo: /imgs/icons/mstile-70x70.png\nmeta-msapplication-wide310x150logo: /imgs/icons/mstile-310x150.png\nmeta-msvalidate.01: DF6282279EE47CDAC23DAFC60BAA0902\nmeta-og:description: Bring your own console, controllers and games. Enjoy surround sound and world class projection in the comfort of your own exclusive screen.\nmeta-og:image: https://www.peckhamplex.london/imgs/news\nmeta-og:locale: en_GB\nmeta-og:site_name: Peckhamplex Multi-screen Cinema London\nmeta-og:title: CALLING ALL GAMERS BIG SCREEN GAMING IS COMING TO PECKHAM\nmeta-og:type: company\nmeta-og:url: https://www.peckhamplex.london/news/calling-all-gamers-big-screen-gaming-is-coming-to-peckham\nmeta-rating: Safe for Kids\nmeta-revisit-after: 1 days\nmeta-robots: ALL, Index, Follow\nmeta-twitter:card: summary_large_image\nmeta-twitter:creator: @peckhamplex\nmeta-twitter:description: Bring your own console, controllers and games. Enjoy surround sound and world class projection in the comfort of your own exclusive screen.\nmeta-twitter:image: https://www.peckhamplex.london/imgs/news\nmeta-twitter:site: @peckhamplex\nmeta-twitter:title: CALLING ALL GAMERS BIG SCREEN GAMING IS COMING TO PECKHAM\nmeta-twitter:url: https://www.peckhamplex.london/news/calling-all-gamers-big-screen-gaming-is-coming-to-peckham\nmeta-viewport: width=device-width, initial-scale=1.0, minimum-scale=1 maximum-scale=1.0\ntitle: CALLING ALL GAMERS BIG SCREEN GAMING IS COMING TO PECKH...\n---\n\n# Peckhamplex\n\n[![Peckhamplex London logo](https://www.peckhamplex.london/imgs/generic/peckhamplex-title-treatment.png \"Peckhamplex, London\")](https://www.peckhamplex.london) [![Time Out The Best of The City 2024 Award](https://www.peckhamplex.london/imgs/generic/timeout-award-2024.jpg \"We are very proud to receive the Time Out Award for The Best of The City 2024\")](https://www.timeout.com/london/news/our-favourite-venues-in-london-right-now-time-outs-2024-recommended-stickers-have-hit-the-streets-121724)\n\nALL TICKETS \u00a36.99 PLUS A 60P PER TICKET BOOKING FEE  \n(Total ticket price \u00a37.59)\n\n(Additional \u00a31 supplement for 3D features)\n\n- [Home](https://www.peckhamplex.london)\n- [Films Out Now](https://www.peckhamplex.london/films/out-now)\n- [Films Coming Soon](https://www.peckhamplex.london/films/coming-soon)\n- [Watch With Baby](https://www.peckhamplex.london/films/watch-with-baby)\n- [Subtitled for the Hard of Hearing](https://www.peckhamplex.london/films/hard-of-hearing)\n- [Autism Friendly Films](https://www.peckhamplex.london/films/autism-friendly)\n- [About Us](https://www.peckhamplex.london/about-us)\n- [Cinema Info](https://www.peckhamplex.london/cinema/information)\n- [Scholarships](https://www.peckhamplex.london/scholarships)\n- [News & Events](https://www.peckhamplex.london/news-and-events)\n\n# News\n\n## CALLING ALL GAMERS BIG SCREEN GAMING IS COMING TO PECKHAM\n\nWednesday 6th of November 2024\n\nCALLING ALL GAMERS  \nBIG SCREEN GAMING IS COMING TO PECKHAM\n\nBring your own console, controllers and games.  \nEnjoy surround sound and world class projection in the comfort of your own exclusive screen.  \nAdd refreshments and make a party of it\n\nGAMING:\u00a0 2 hours  \nMon \u2013 Fri from 10.30am \u2013 2.30pm:\u00a0 \u00a0\u00a3150\u00a0  \nSat/Sun & School Holidays 10.30am \u2013 12.30pm:\u00a0 \u00a3185\n\n[CLICK HERE TO DOWNLOAD MORE INFORMATION AND OUR BOOKING FORM](https://peckhamplex.london/downloads/GamingBookingform.doc)\n\n[Tweet](https://twitter.com/share)\n\n[Back to News](https://www.peckhamplex.london/news-and-events)\n\nSubscribe to the Peckhamplex newsletter to receive our latest film news, events & releases.\n\n[Subscribe](https://www.peckhamplex.london/newsletter/subscribe)\n\n- [Home](https://www.peckhamplex.london)\n- [Films Out Now](https://www.peckhamplex.london/films/out-now)\n- [Films Coming Soon](https://www.peckhamplex.london/films/coming-soon)\n- [About Us](https://www.peckhamplex.london/about-us)\n- [Cinema Info](https://www.peckhamplex.london/cinema/information)\n- [Peckhamplex Scholarships](https://www.peckhamplex.london/scholarships)\n- [News & Events](https://www.peckhamplex.london/news-and-events)\n\nPeckhamplex  \n95a Rye Lane, Peckham  \nLondon SE15 4ST  \nmanagers@peckhamplex.net  \n0844 567 2742*\n\n*Calls cost 7p per minute, plus your phone company's access charge.\n\n[Terms & Conditions](https://www.peckhamplex.london/terms-and-conditions) / [Privacy & Cookies Policy](https://www.peckhamplex.london/privacy-and-cookies-policy) / [Data Subject Response Procedures](https://www.peckhamplex.london/data-subject-response-procedures)\n\n\u00a92026 Peckhamplex Ltd / [Sitemap](https://www.peckhamplex.london/site-map) / [Site By 2smallfeet](https://2smallfeet.com)\n\nFollow Us on\n\n[Following us on Facebook](https://www.facebook.com/PeckhamPlex) [Following us on Twitter](https://www.twitter.com/PeckhamPlex) [Following us on Instagram](https://www.instagram.com/peckhamplexcinema/)\n\n\u00d7\n\n#### Choose Film By Title\n\nPlease select a film title from the options below.\n\n* * *\n\n**Please Note:**  \nThese films **DO NOT** include the [Watch With Baby](https://www.peckhamplex.london/films/watch-with-baby) dates & times.  \n- Denotes a [Hard of Hearing](https://www.peckhamplex.london/films/hard-of-hearing) Film.  \n- Denotes a [Autism Friendly](https://www.peckhamplex.london/films/autism-friendly) Film.\n\nReset\n\n\u00d7\n\n#### Choose Film By Date\n\nPlease select a date from the options below.\n\n* * *\n\n**Please Note:**  \nThese films **DO NOT** include the [Watch With Baby](https://www.peckhamplex.london/films/watch-with-baby) dates & times.  \n- Denotes a [Hard of Hearing](https://www.peckhamplex.london/films/hard-of-hearing) Film.  \n- Denotes a [Autism Friendly](https://www.peckhamplex.london/films/autism-friendly) Film.\n\nReset"
+ },
+ "usage": {
+  "input_tokens": 30478,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1337,
+  "output_tokens_details": {
+   "thinking_tokens": 778
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 1,
+   "web_fetch_requests": 2
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "Unit 'per_event' is acceptable, but the price is really a fixed 2-hour session; 'per_2_hours' or 'per_session' would be more precise",
+   "This is gaming-specific screen hire, not general private or film screening hire; price_basis states this correctly",
+   "Source domain is peckhamplex.london while the OSM tag says peckhamplex.com, but the address SE15 4ST matches, so it is the same venue"
+  ],
+  "fix_hint": "When a price covers a fixed time block (e.g. '2 hours'), use a session or duration unit rather than per_event. Also flag in price_basis when the hire is restricted to a specific activity such as gaming."
+ }
+}

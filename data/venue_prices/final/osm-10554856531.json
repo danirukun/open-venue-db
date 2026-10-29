@@ -1,0 +1,63 @@
+{
+ "target": {
+  "key": "osm-10554856531",
+  "who": "ICA Cinema (cinema, London)",
+  "website": null,
+  "chain": null,
+  "venue_ids": [
+   "osm-10554856531"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:13:14.936968+00:00",
+ "extraction": {
+  "found": true,
+  "source_kind": "official",
+  "price_amount_gbp": 300,
+  "price_amount_max_gbp": null,
+  "price_unit": "per_hour",
+  "min_spend_gbp": null,
+  "vat": "ex",
+  "included": "Projectionist, Wifi, Complimentary annual ICA Green Membership; additional: AV equipment, Technical support",
+  "capacity_per_screen": "45 (Cinema 2)",
+  "price_basis": "Cinema 2 (45 cap.) hire from \u00a3300/hour (Tue\u2013Thu 8am\u20134pm, Fri\u2013Sun 8am\u2013noon), ex VAT. Page also lists Monday day \u00a31500 and Monday evening \u00a32000 (per event, not per hour, so no max set).",
+  "source_url": "https://www.ica.art/media/06410.pdf",
+  "source_quote": "Tuesday\u2013Thursday Hourly, 8am\u20134pm \u00a3300",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.ica.art/media/06410.pdf": "64\n     Venue Hire   Cinema 2\n\f2\n    Introduction\n\n\n\n\n    The ICA offers comprehensive\n    screening room services in a\n    central London location, just\n    a short walk from Leicester\n    Square and Piccadilly Circus.\n    Our recently refurbished cinemas\n    can be used for press views,\n    presentations, and screenings.\n    Both screens can play DCP,\n    35mm, Digi Beta, Blu-Ray, DVD\n    and computer files. The Cinemas\n    can also be hired in conjunction\n    with the ICA Bar or the Nash and\n    Brandon Rooms.\n\f3\n    Hire Rates\n\n\n\n\n    Capacity\n    45\n\n\n\n    Hire inclusions\n    Projectionist\n    Wifi\n    Complimentary annual ICA\n    Green Membership\n\n    Additional services\n    AV equipment\n    Technical support\n\n\n\n    Venue Hire Time                    Rate\n    Monday, 9am\u20135pm                    \u00a31500\n    Monday, 6pm\u201311pm                   \u00a32000\n    Tuesday\u2013Thursday Hourly, 8am\u20134pm    \u00a3300\n    Friday\u2013Sunday Hourly, 8am\u2013noon      \u00a3300\n\n    *Pricing not inclusive of VAT\n\f67\n                               ICA Venue Hire\n\n\n\n\nPhoto Credits\nPage 2:\nRob Battersby\nPage 3:\nLeft photo by TheTwins\nRight photo by Mark Bothwell\nPage 4:                        Contact Details\nLeft photo by Mark Bothwell\nPage 5:\n                               020 7766 1432\nEmilyWhite                     events@ica.art\n\f"
+ },
+ "usage": {
+  "input_tokens": 50630,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1912,
+  "output_tokens_details": {
+   "thinking_tokens": 1287
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 2,
+   "web_fetch_requests": 1
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "source_quote matches except for collapsed whitespace (acceptable)",
+   "covers Cinema 2 only; Cinema 1 rates are not in this document"
+  ],
+  "fix_hint": "No change needed. Optionally note in price_basis when the source covers only one of several screens."
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "target": {
+  "key": "cineworld",
+  "who": "Cineworld (chain, London branches)",
+  "website": null,
+  "chain": "cineworld",
+  "venue_ids": [
+   "osm-416380417",
+   "osm-1950561370",
+   "osm-2763450295",
+   "osm-10583928430",
+   "osm-11861674142",
+   "osm-w4421348",
+   "osm-w22476427",
+   "osm-w332400975",
+   "osm-w708645222",
+   "osm-w1240494131"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:12:46.213716+00:00",
+ "extraction": {
+  "found": true,
+  "source_kind": "official",
+  "price_amount_gbp": 180,
+  "price_amount_max_gbp": null,
+  "price_unit": "per_event",
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": "Screen hire for 2 hours of group gaming on the big screen; consoles and games are extra (third-party hire); the hirer supplies power, game and HDMI cables.",
+  "capacity_per_screen": "Up to 30 people",
+  "price_basis": "Private gaming from \u00a3180 for 2 hours, up to 30 people (chain-wide, excl. Leicester Square; price varies by cinema group). Page lists 'starts from', no max. VAT not stated.",
+  "source_url": "https://www.cineworld.co.uk/static/en/uk/venue-hire-events/gaming",
+  "source_quote": "Prices start from \u00a3180 for 2 hours and up to 30 people, see below for further details and to enquire*.",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.cineworld.co.uk/static/en/uk/venue-hire-events/gaming": "Private Gaming\n\nLevel up your Cineworld experience with\u00a0group gaming on the big screen, available at all of Cineworld\u2019s screens throughout the UK (excluding Leicester Square).\n\nCineworld gaming is hosted\u00a0with state-of-the-art projection and immersive sound bringing your favourite games to life. Race against your competitors, create your own football tournament or battle it out with your family, friends and colleagues.\n\nEnjoy your own safe space where you have total control, choose a cinema, pick your team and select a time\u2026.\n\nPrices start from \u00a3180 for 2 hours and up to 30 people, see below for further details and to enquire*.\n\n\nWant to hire a cinema screen for a private film screening ? Find out more here.\n\nPrices vary at each cinema depending upon their group. To find out which price applies to your chosen cinema, select from the drop down below.\n\n\n\nTerm Time Prices\n\n\n\nSchool Holidays Prices\n\n\nFor hires outside of these times please see our corporate prices\n\n\n*prices are based on screen hire for 2 hours and may vary depending on location, duration and day booked. See table above for full pricing details.\n\nYou must supply the console with power supply, game and HDMI cables. All other cinema equipment is included. Pre event testing at the cinema may be required. One console per hire can be used unless otherwise agreed. Console controllers must be wireless.\n\nConsoles and games can be hired at an additional cost from our approved third party - click here for further details.\n\nInternet connectivity varies dependent upon location and Cineworld take no responsibility for internet issues that are beyond our control.\n\nGaming\u00a0hires are subject to availability and only a limited number of screens are available to hire per cinema.\n\nCineworld Leicester Square is not included in this offer.\n\nCineworld reserves the right to withdraw this offer at any time without notice.\n\nAll bookings are subject to contract."
+ },
+ "usage": {
+  "input_tokens": 94248,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 1770,
+  "output_tokens_details": {
+   "thinking_tokens": 751
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 2,
+   "web_fetch_requests": 6
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "Gaming-specific screen hire, not a general private film screening hire. The page links separately to film screening hire, which may be the more relevant price.",
+   "The \u00a3180 is a chain-wide 'from' price. London branches may fall into a pricier group, and Leicester Square is excluded. The per-cinema price table was not captured.",
+   "The price_unit 'per_event' is approximate: the price covers a 2-hour slot, and the page says it may vary by duration and day.",
+   "The 'included' field omits that the hirer must supply the console itself, and that all other cinema equipment is included."
+  ],
+  "fix_hint": "Prefer the private film screening hire page for general screen hire. If gaming hire is used, label it as gaming hire. Use a duration-based unit such as per_2_hours, or put the slot length in price_unit. Flag that London branch pricing may differ from the chain 'from' price. Include in 'included' that the hirer must supply the console."
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "target": {
+  "key": "osm-9333021746",
+  "who": "Act One Cinema (cinema, London, postcode W3 6NA)",
+  "website": "https://actonecinema.co.uk/",
+  "chain": null,
+  "venue_ids": [
+   "osm-9333021746"
+  ]
+ },
+ "prompt": "v4",
+ "model": "claude-haiku-5-5",
+ "extracted_at": "2026-10-28T23:13:13.200427+00:00",
+ "extraction": {
+  "found": true,
+  "source_kind": "listing",
+  "price_amount_gbp": 50,
+  "price_amount_max_gbp": 175,
+  "price_unit": "per_hour",
+  "min_spend_gbp": null,
+  "vat": null,
+  "included": null,
+  "capacity_per_screen": "2 air-conditioned 60-seat screening rooms with 5m screen",
+  "price_basis": "Lounge \u00a350-\u00a3100/hr by time/day (no VAT stated); screening room \u00a3175/hr plus VAT (min 2 hrs). Operator site blocked; rates from Ealing Grid for Learning reprint.",
+  "source_url": "https://www.egfl.org.uk/news/2024/08/actone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity",
+  "source_quote": "- \u00a350 per hour on weekdays before 6pm\n- \u00a360 per hour on weekdays after 6pm",
+  "quote_verbatim": true,
+  "source_fetched": true
+ },
+ "sources": {
+  "https://www.egfl.org.uk/news/2024/08/actone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity": "---\ncanonical: https://www.egfl.org.uk/news/2024/08/actone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity\nmeta-Generator: Drupal 10 (https://www.drupal.org)\nmeta-HandheldFriendly: true\nmeta-MobileOptimized: width\nmeta-description: Hire a cinema screen Concessions available for schools and local groups We have 2 beautiful, air conditioned, 60-seat screening rooms, with 5m screen, both are available to hire and suitable for all kinds of film events, including, private screenings and presentations. Your school or group can make use of ActOne Cinema and caf\u00e9 on any weekday except Tuesday, with flexible times to suit you, within normal working hours.\nmeta-viewport: width=device-width, initial-scale=1.0\ntitle: ActOne Cinema - Hire a cinema screen or lounge area for your meeting or activity | Ealing Grid for Learning\n---\n\n[Skip to main content](#main-content)\n\n[![Home](https://www.egfl.org.uk/themes/custom/bbd_starter/logo.svg)](https://www.egfl.org.uk/)\n\nOpen menu\n\nMenu\n\nClose menu\n\nQuick access\n\n## Featured link\n\n- [Ealing CPD Online](https://www.ealingcpd.org.uk)\n- [GovernorHub](https://myaccount.governorhub.com/interaction/D3WPjyb8ImqUdgM5KuTjJ/login)\n- [iTrent](https://lbealli.webitrent.com/lbealli_ess)\n\nSearch\n\n## User account menu\n\n- [Register](https://www.egfl.org.uk/user/register \"Create new account.\")\n- [Log in](https://www.egfl.org.uk/user/login?current=%2Fnews%2F2024%2F08%2Factone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity)\n\n## Main navigation\n\n- [Home](https://www.egfl.org.uk/)\n- [Ealing Learning Partnership](https://www.egfl.org.uk/ealing-learning-partnership)\n- [Statutory duties](https://www.egfl.org.uk/statutory-duties)\n- [Find a school, setting or school report](https://www.egfl.org.uk/schools-contact-listing)\n- [S4S](https://www.egfl.org.uk/s4s)\n- [News](https://www.egfl.org.uk/news)\n\n## Breadcrumb\n\n1. [Home](https://www.egfl.org.uk/)\n2. [Latest news](https://www.egfl.org.uk/news)\n3. ActOne Cinema - Hire a cinema screen or lounge area for your meeting or activity\n\n[Back](https://www.egfl.org.uk/news)\n\n\u00a0\n\n# ActOne Cinema - Hire a cinema screen or lounge area for your meeting or activity\n\n# ActOne Cinema - Hire a cinema screen or lounge area for your meeting or activity\n\nConcessions available for schools and local groups in the old library on Acton High Street.\n\n![ActOne_Logo](https://www.egfl.org.uk/sites/default/files/styles/large/public/ActOne_Logo.png?itok=7EsvQ0Ga)\n\n30 August 2024\n\n### Hire a cinema screen\n\nConcessions available for schools and\u00a0 local groups\n\nWe have 2 beautiful, air conditioned, 60-seat screening rooms, with 5m screen, both are available to hire and suitable for all kinds of film events, including, private screenings and presentations.\n\nYour\u00a0school or group can make use of ActOne Cinema and caf\u00e9 on any weekday except Tuesday, with flexible times to suit you, within normal working hours.\n\nWe can also provide technical support with PA systems.\u00a0The cinema is situated in the old library on Acton High Street, and has excellent public transport links, and nearby off-street parking.\n\nWe can also provide high quality catering from our caf\u00e9, including baked goods, coffee, and other refreshments as well as popcorn.\n\nRates: \u00a3175\u00a0plus VAT per hour (minimum 2 hours hire)\n\n\u00a380\u00a0plus VAT fee for technical support\n\nCatering priced by arrangement\n\n### Use our spacious lounge area for your activity or meeting\n\nConcessions available for schools and\u00a0 local groups\n\n- \u00a350 per hour on weekdays before 6pm\n- \u00a360 per hour on weekdays after 6pm\n- \u00a375 per hour on weekends before 6pm\n- \u00a3100 per hour on weekends after 6pm\n\n### Contact\n\nDimitris Poteas by email at\u00a0manager@actonecinema.co.uk\n\nFurther information:\u00a0[Hire Us (actonecinema.co.uk)](https://www.actonecinema.co.uk/hire-us)\n\n\u00a0\n\n\u00a0\n\n\u00a0\n\n\u00a0\n\nOpen filters\n\n## Search news\n\nTo do a more advanced search or to search other categories or sections click here.\n\nNews search\n\n## Find a person\n\nLogin to search our directory of key LA and school/setting personnel.\n\n[Log in](https://www.egfl.org.uk/user/login?destination=%2Fnews%2F2024%2F08%2Factone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity&current=%2Fnews%2F2024%2F08%2Factone-cinema-hire-cinema-screen-or-lounge-area-your-meeting-or-activity)\n\n## Date filter\n\nDate filter Select a date October 2026 September 2026 August 2026 July 2026 June 2026 May 2026 April 2026 March 2026 February 2026 January 2026\n\n[Clear all filters](https://www.egfl.org.uk/news)\n\n## Latest news\n\n[ELP breakfast briefing in October now available to view](https://www.egfl.org.uk/news/2026/10/elp-breakfast-briefing-october-now-available-view)\n\n23 October 2026\n\n[Local authority school reports 2025-26](https://www.egfl.org.uk/news/2026/10/local-authority-school-reports-2025-26)\n\n23 October 2026\n\nAudience\n\nPrimary headteachers\n\n[Ealing Book Festival 2027 Oracy Project KS2](https://www.egfl.org.uk/news/2026/10/ealing-book-festival-2027-oracy-project-ks2)\n\n23 October 2026\n\nAudience\n\nSecondary headteachers\n\n[Family group conferencing and early help 4 November, Perceval House](https://www.egfl.org.uk/news/2026/10/family-group-conferencing-and-early-help-4-november-perceval-house)\n\n22 October 2026\n\n[Key dates Find meetings and key dates in our calendar](https://www.egfl.org.uk/events)\n\n## Stay informed\n\nSubscribe to our newsletters for updates relevant to your sector. Choose the areas that matter most to your school.\n\nSelect your areas of interest\n\nEarly years\n\nPrimary\n\nHigh schools\n\nSpecial schools\n\nSEN\n\nEmail address\n\nWe will use your email address only to send you newsletters. You can unsubscribe at any time.\n\nLast updated\n\n30 August 2025\n\nWas this page useful?\n\n- No\n- Moderately\n- Yes\n\nName (optional)\n\nEmail address (optional)\n\nSend feedback Close\n\n[![London Borough of Ealing \u2014 www.ealing.gov.uk](https://www.egfl.org.uk/themes/custom/bbd_starter/src/img/ealing-council-logo-white.png)](https://www.ealing.gov.uk/)\n\nSupporting schools and settings in Ealing with statutory services, learning partnerships, and professional development.\n\n## Connect\n\n- [Follow us on X](https://x.com/EalingLearning)\n- [Follow us on LinkedIn](https://www.linkedin.com/showcase/ealing-learning-partnership/)\n\n\u00a9 2026 Ealing Learning Partnership. All rights reserved.\n\n- [About us](https://www.egfl.org.uk/about-us)\n- [Copyright](https://www.egfl.org.uk/about-us/copyright)\n- [How to use our website](https://www.egfl.org.uk/about-us/how-use-our-website)\n- [Terms and conditions](https://www.egfl.org.uk/about-us/terms-and-conditions)\n- [Site map](https://www.egfl.org.uk/sitemap.xml)"
+ },
+ "usage": {
+  "input_tokens": 68085,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 0,
+  "cache_creation": {
+   "ephemeral_5m_input_tokens": 0,
+   "ephemeral_1h_input_tokens": 0
+  },
+  "output_tokens": 2579,
+  "output_tokens_details": {
+   "thinking_tokens": 1702
+  },
+  "service_tier": "standard",
+  "inference_geo": "global",
+  "speed": "standard",
+  "server_tool_use": {
+   "web_search_requests": 1,
+   "web_fetch_requests": 5
+  }
+ },
+ "judge": {
+  "verdict": "pass",
+  "grounded": true,
+  "correct": true,
+  "issues": [
+   "Range mixes two spaces: the \u00a350 minimum is lounge hire and the \u00a3175 maximum is screening-room hire. This is disclosed in price_basis.",
+   "vat is null even though the screening rate is stated as plus VAT. The lounge rates have no VAT stated, so a single field cannot capture both.",
+   "Screening room has a minimum 2-hour hire (effective \u00a3350 + VAT minimum). This is noted in price_basis but not in a structured field.",
+   "The source is a 2024 third-party reprint from Ealing Grid for Learning, so the rates may be stale."
+  ],
+  "fix_hint": "When a venue offers several hireable spaces, consider recording the screen-hire price separately from the lounge or other-room prices, or flag it as mixed. Capture minimum-hours terms (e.g. min 2 hrs \u00d7 rate) in a structured field, and set vat per component or as 'mixed' when only some rates are plus VAT."
+ }
+}
