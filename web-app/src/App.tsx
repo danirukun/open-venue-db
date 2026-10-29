@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type L from "leaflet"
 import { Search, Speaker, Monitor, Mic2, Accessibility, GlassWater, CheckCircle2, Layers, X, LocateFixed, Info, ShieldAlert, Shield, ShieldCheck, ChevronDown, TrainFront, CalendarDays, Users, PoundSterling, Circle as CircleIco, Sparkles, RotateCcw, ArrowLeft, Map as MapIco } from "lucide-react"
@@ -29,7 +30,7 @@ const PRICE = "price_est_low,price_est_mid,price_est_high,price_est_unit,price_c
 
 async function loadVenues(): Promise<[Venue[], string]> {
   let extra = ""
-  try { const r = await fetch(`${SB}/rest/v1/venues?select=*&limit=1`, { headers: { apikey: KEY } }); const j = r.ok ? await r.json() : []; extra = ["price_source_url", "price_basis"].filter(c => j[0] && c in j[0]).map(c => "," + c).join("") } catch {}
+  try { const r = await fetch(`${SB}/rest/v1/venues?select=*&limit=1`, { headers: { apikey: KEY } }); const j = r.ok ? await r.json() : []; extra = ["price_source_url", "price_basis", "price_amount_gbp", "price_amount_max_gbp", "price_unit", "price_min_spend_gbp", "price_source_kind", "price_scope", "price_sourced_confidence", "price_source_quote"].filter(c => j[0] && c in j[0]).map(c => "," + c).join("") } catch {}
   const tries = [`${BASE}${extra},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP},${PRICE})`, `${BASE},f:venue_features(${CAP})`]
   for (const sel of tries) {
     try {
@@ -308,7 +309,7 @@ export default function App() {
   const ctrlBottom = mobile ? sheetH + 12 : 24
   const floating = <>
     {moved && <button onClick={() => { if (shortlist) search(); else setSc(mc) }} className="absolute left-1/2 -translate-x-1/2 z-[1000] h-10 px-4 rounded-full bg-white border border-ink/15 shadow-lg text-sm font-semibold inline-flex items-center gap-2 hover:bg-fog" style={{ top: mobile ? "calc(env(safe-area-inset-top) + 124px)" : 16 }}><Search className="size-4" />Search this area</button>}
-    <div className="absolute right-3 md:right-4 z-[1000] flex flex-col items-end gap-2" style={{ bottom: mobile ? ctrlBottom : 96 }}>
+    <div className={`absolute right-3 md:right-4 z-[1000] flex flex-col items-end gap-2 transition-opacity ${mobile && sheetH > vh * 0.7 ? "opacity-0 pointer-events-none" : ""}`} style={{ bottom: mobile ? ctrlBottom : 96 }}>
       {showKey && <div id="map-key" className="w-72 max-w-[calc(100vw-1.5rem)] max-h-[45vh] overflow-auto bg-white/95 backdrop-blur rounded-xl border border-ink/15 shadow-lg p-4">
         <div className="flex items-center justify-between mb-2"><h3 className="font-heading text-base font-semibold">How to read the map</h3>
           <button onClick={() => toggleKey(false)} aria-label="Hide map key" className="size-8 grid place-items-center rounded-md text-muted-foreground hover:bg-ink/10"><X className="size-4" /></button></div>
@@ -378,21 +379,21 @@ export default function App() {
             <span className="flex justify-between gap-2"><span className="font-semibold text-[15px] leading-snug truncate">{v.name}<ExBadge name={v.name} /></span><span className="text-sm font-semibold whitespace-nowrap tabular-nums" style={{ color: barC }}>{p}% {busy ? "busy" : "free"}</span></span>
             <span className="block text-[13px] text-muted-foreground truncate">{t[0].toUpperCase() + t.slice(1)} · {(it.dist / 1000).toFixed(1)} km · {v.f ? capText(v).replace(/ \(.*\)$/, "") : r.capacity ? `holds ${r.capacity}` : "capacity unknown"}</span>
             <span className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] mt-0.5">
-              {pe && <span className="text-ink">Est. £{Math.round(pe.low)}–£{Math.round(pe.high)}{pe.unit === "gbp_per_head" ? "/head" : ""}</span>}
+              {v.price_amount_gbp != null ? <span className="text-ink font-medium whitespace-nowrap">From £{Math.round(v.price_amount_gbp).toLocaleString("en-GB")}{v.price_unit ? ` / ${UNIT[v.price_unit] || String(v.price_unit).replace(/^per_/, "")}` : ""}</span> : pe && <span className="text-ink whitespace-nowrap">Est. £{Math.round(pe.low)}–£{Math.round(pe.high)}{pe.unit === "gbp_per_head" ? "/head" : ""}</span>}
               {st && <span className="inline-flex items-center gap-1 text-muted-foreground"><TrainFront className="size-3.5" />{stm != null ? `${Math.max(1, Math.round(stm / 80))} min` : ""} {st}</span>}
               {saf != null && <SafetyTag score={saf} />}
             </span>
           </span>
         </button>
         {open && <div className="pb-3 pl-12 space-y-2.5">
-          <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label ?? r.fee_label} />{pe?.conf && <Badge variant="outline" className="font-normal">{pe.conf} confidence price</Badge>}</div>
-          {v.price_basis && <p className="text-[13px]" data-testid="price-basis"><span className="text-muted-foreground">Price basis: </span>{String(v.price_basis)}</p>}
+          {v.price_amount_gbp == null && <div className="flex flex-wrap gap-1.5"><FeeBadge label={v.fee_label ?? r.fee_label} />{pe?.conf && <Badge variant="outline" className="font-normal whitespace-nowrap">{pe.conf} confidence estimate</Badge>}</div>}
+          <PriceBlock v={v} />
           {v.address && <p className="text-[13px] text-muted-foreground">{v.address}</p>}
-          <p className="text-xs text-muted-foreground">Free estimate for {DAYNAME[day]} {searchSlot}{v.basis ? `, based on ${v.basis}` : ""}. Not a confirmed slot.</p>
-          <div className="flex gap-2">
-            <Button size="sm" className="rounded-full bg-ink text-fog hover:bg-ink/85 h-9" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: v.address, email: v.email, cap: v.f ? capText(v) : undefined, fee: v.fee_label ?? r.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</Button>
-            {(v.url || r.source_url) && <a href={v.url || r.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center h-9 px-3 rounded-full border border-ink/15 text-sm font-medium hover:bg-ink/5">Source page</a>}
-            {typeof v.price_source_url === "string" && /^https?:/.test(v.price_source_url) && <a href={v.price_source_url} target="_blank" rel="noreferrer" data-testid="price-source" className="inline-flex items-center h-9 px-3 rounded-full border border-ink/15 text-sm font-medium hover:bg-ink/5">Price source</a>}
+          <p className="text-xs text-muted-foreground">{!v.basis || /no data/i.test(String(v.basis)) ? `Availability unknown for ${DAYNAME[day]} ${searchSlot}, no event history yet.` : `Availability estimated for ${DAYNAME[day]} ${searchSlot} from ${String(v.basis).replace(/\s*\([\d.]+\)\s*$/, "")}.`} Not a confirmed slot.</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" className="rounded-full bg-ink text-fog hover:bg-ink/85 h-9 px-4 whitespace-nowrap shrink-0" onClick={() => setEnq({ venue: v.name, vtype: v.type, address: v.address, email: v.email, cap: v.f ? capText(v) : undefined, fee: v.fee_label ?? r.fee_label, kind: KINDS.find(k => k[0] === kind)?.[1] || "event", people: hc, when: `${dayLabel} ${custom ? `${fmtH(range[0])} to ${fmtH(range[1])}` : `${slotObj.label.toLowerCase()} (${slotObj.hours.replace("–", ":00 to ")}:00)`}`, budget, musts })}>Draft an enquiry</Button>
+            {(v.url || r.source_url) && <a href={v.url || r.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 h-9 px-3 rounded-full border border-ink/15 text-sm font-medium whitespace-nowrap shrink-0 hover:bg-ink/5">Website ↗</a>}
+            {typeof v.price_source_url === "string" && /^https?:/.test(v.price_source_url) && <a href={v.price_source_url} target="_blank" rel="noreferrer" data-testid="price-source" className="inline-flex items-center gap-1 h-9 px-3 rounded-full border border-ink/15 text-sm font-medium whitespace-nowrap shrink-0 hover:bg-ink/5">Prices ↗</a>}
           </div>
         </div>}
       </li>)
@@ -425,3 +426,23 @@ export default function App() {
   }
 }
 const mini = "text-xs text-muted-foreground underline-offset-2 hover:underline hover:text-ink rounded-sm"
+
+const UNIT: Record<string, string> = { per_event: "slot", per_slot: "slot", per_hour: "hour", per_day: "day", per_head: "head", per_session: "session", min_spend: "min spend" }
+const gbp = (n: any) => `£${Math.round(+n).toLocaleString("en-GB")}`
+function PriceBlock({ v }: { v: any }) {
+  const amt = v.price_amount_gbp, max = v.price_amount_max_gbp, unit = v.price_unit ? (UNIT[v.price_unit] || String(v.price_unit).replace(/^per_/, "").replace(/_/g, " ")) : ""
+  const basis = v.price_basis ? String(v.price_basis) : "", quote = v.price_source_quote ? String(v.price_source_quote).replace(/\s*\n+\s*/g, " · ") : ""
+  if (amt == null && !basis && v.price_min_spend_gbp == null) return null
+  const vat = /\b(ex|excl\.?|excluding|plus|\+)\s*VAT\b/i.test(basis) ? "excl. VAT" : /\b(inc|incl\.?|including)\s*VAT\b/i.test(basis) ? "incl. VAT" : ""
+  const chip = "inline-flex items-center h-6 px-2 rounded-full border border-ink/15 text-xs whitespace-nowrap"
+  const chips = [vat, v.price_source_kind && (v.price_source_kind === "official" ? "Official" : "Listing"), v.price_scope && (v.price_scope === "chain" ? "Chain-wide" : "This venue"), v.price_sourced_confidence && `${v.price_sourced_confidence} confidence`].filter(Boolean) as string[]
+  const rows: [string, string][] = []
+  if (amt != null && max != null && +max > +amt) rows.push(["Range", `${gbp(amt)}–${gbp(max)}`])
+  if (v.price_min_spend_gbp != null) rows.push(["Min spend", gbp(v.price_min_spend_gbp)])
+  return <div className="space-y-1.5" data-testid="price-block">
+    {amt != null && <p className="text-[15px]"><span className="font-semibold">From {gbp(amt)}</span>{unit && <span className="text-muted-foreground"> / {unit}</span>}</p>}
+    {chips.length > 0 && <div className="flex flex-wrap gap-1">{chips.map(c => <span key={c} className={chip}>{c}</span>)}</div>}
+    {rows.length > 0 && <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-[13px]">{rows.map(([k, val]) => <Fragment key={k}><dt className="text-muted-foreground">{k}</dt><dd className="tabular-nums">{val}</dd></Fragment>)}</dl>}
+    {(basis || quote) && <details className="text-xs text-muted-foreground group" data-testid="price-basis"><summary className="cursor-pointer select-none w-fit hover:text-ink">Details</summary><p className="mt-1 line-clamp-3">{basis}</p>{quote && <p className="mt-1 line-clamp-2 italic">“{quote}”</p>}</details>}
+  </div>
+}

@@ -14,8 +14,13 @@ export const typeOf = (v:{type:string}) => TYPES[v.type] ? v.type : "other"
 export const isEx = (n?:string) => /^EXAMPLE/.test(n||"")
 export function capText(v: Venue) {
   const f = (Array.isArray(v.f) ? v.f[0] : v.f) || {}
-  if (f.capacity_standing || f.capacity_seated) return `${f.capacity_standing||"?"} standing / ${f.capacity_seated||"?"} seated (stated)`
-  if (f.capacity_est_max_standing) return `~${f.capacity_est_min_standing}–${f.capacity_est_max_standing} standing, ~${f.capacity_est_min_seated}–${f.capacity_est_max_seated} seated (est., ${f.capacity_confidence} conf.)`
+  if (f.capacity_standing || f.capacity_seated) return f.capacity_standing && f.capacity_seated && f.capacity_standing !== f.capacity_seated ? `${f.capacity_standing} standing / ${f.capacity_seated} seated (stated)` : `${f.capacity_standing || f.capacity_seated} people (stated)`
+  if (f.capacity_est_max_standing) {
+    const st = `${f.capacity_est_min_standing}–${f.capacity_est_max_standing}`, se = `${f.capacity_est_min_seated}–${f.capacity_est_max_seated}`
+    const conf = f.capacity_confidence ? ` (est., ${f.capacity_confidence} conf.)` : " (est.)"
+    if (st === se || !f.capacity_est_max_seated) return `~${st} people${conf}`
+    return `~${st} standing, ~${se} seated${conf}`
+  }
   return "capacity unknown"
 }
 /** price estimate fields may live on the venue or its features; absent → null */
